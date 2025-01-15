@@ -22,7 +22,9 @@ interface ProductCardProps {
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const discountPercentage =
     product.quantity_sold > 0
-      ? Math.round((product.price - product.price * 0.9) / product.price * 100)
+      ? Math.round(
+          ((product.price - product.price * 0.9) / product.price) * 100
+        )
       : null;
 
   return (
