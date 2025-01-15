@@ -44,7 +44,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       </div>
       {/* Content Section */}
       <div className="p-4">
-        <h3 className="text-lg font-semibold truncate">{product.name}</h3>
+        <h3 className="text-lg font-semibold">{product.name}</h3>
         <div className="flex items-center mt-2 text-yellow-500 text-sm">
           <span>⭐ ({product.quantity_sold} đánh giá)</span>
         </div>

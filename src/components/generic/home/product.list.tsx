@@ -19,10 +19,10 @@ interface Product {
 
 const ProductList: React.FC = () => {
   return (
-    <div className="bg-gray-100 py-8">
+    <div className="bg-white py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 className="text-2xl font-bold mb-6">Đặt hàng sớm cùng Elecee</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
           {products.map((product: Product) => (
             <ProductCard key={product.id} product={product} />
           ))}
