@@ -1,27 +1,8 @@
-import React from 'react';
 import logo1 from "../../assets/Elecee_logo.jpg";
+
 export const Footer = () => {
   return (
-    <footer className="bg-yellow-400">
-      {/* Top Section */}
-      <div className="text-center py-8">
-        <p className="text-lg font-bold text-white">
-          SALE UPTO 20%
-        </p>
-        <p className="text-2xl font-bold text-white">
-          Đăng ký email để nhận voucher ưu đãi
-        </p>
-        <div className="mt-4 flex justify-center items-center">
-          <input
-            type="email"
-            placeholder="Nhập email của bạn"
-            className="w-80 p-2 rounded-l-md border-none focus:outline-none"
-          />
-          <button className="bg-black text-white px-6 py-2 rounded-r-md">
-            Đăng ký
-          </button>
-        </div>
-      </div>
+    <footer className="bg-gray-100 border-t border-gray-200">
 
       {/* Bottom Section */}
       <div className="bg-white py-10">
@@ -74,13 +55,13 @@ export const Footer = () => {
               Liên hệ
             </h4>
             <p className="text-gray-600">
-              Gọi ngay: <span className="font-bold">0977936223</span>
+              Gọi ngay: <span className="font-bold">0869872830</span>
             </p>
             <p className="text-gray-600">
-              Email: eurekavn.2023@gmail.com
+              Email: elecee@gmail.com
             </p>
             <p className="text-gray-600">
-              Địa chỉ: 15/84 Ngô Xuân Quảng, Thị Trấn Trâu Quỳ, Gia Lâm, Hà Nội
+              Địa chỉ: 174/13A, đường 63, tổ 8, ấp Láng cát, Xã Tân Phú Trung. huyện Củ Chi, TP. HCM
             </p>
           </div>
         </div>
