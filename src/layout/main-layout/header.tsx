@@ -8,7 +8,7 @@ export const Header = () => {
       {/* Logo Section */}
       <div className="flex items-center space-x-2">
         <img src={logo1} alt="Eureka Logo" className="w-8 h-8 rounded-full" />
-        <span className="text-2xl font-bold text-black">Eureka</span>
+        <span className="text-2xl font-bold text-black">Elecee</span>
       </div>
 
       {/* Navigation Links */}
@@ -30,23 +30,39 @@ export const Header = () => {
         </Link>
       </nav>
 
-      {/* Action Buttons */}
-      <div className="flex items-center space-x-4">
-        <button className="text-xl text-gray-600 hover:text-gray-800 transition">
-          🔍
-        </button>
-        <button className="text-xl text-gray-600 hover:text-gray-800 transition">
-          ⬆️
-        </button>
-        <button className="text-xl text-gray-600 hover:text-gray-800 transition">
-          ⬇️
-        </button>
-        <button className="flex items-center justify-center w-6 h-6 bg-yellow-400 text-black font-bold rounded-full">
-          0
-        </button>
-        <button className="text-xl text-gray-600 hover:text-gray-800 transition">
-          🛒
-        </button>
+        {/* Action Buttons */}
+        <div className="flex items-center space-x-4">
+          <button className="text-xl text-gray-600 hover:text-gray-800 transition">
+            🔍
+          </button>
+          <button className="text-xl text-gray-600 hover:text-gray-800 transition">
+            ⬆️
+          </button>
+          <button className="text-xl text-gray-600 hover:text-gray-800 transition">
+            ⬇️
+          </button>
+          <button className="flex items-center justify-center w-6 h-6 bg-yellow-400 text-black font-bold rounded-full">
+            0
+          </button>
+          <button className="text-xl text-gray-600 hover:text-gray-800 transition">
+            🛒
+          </button>
+        </div>
+      
+      {/* User Authentication and Actions */}
+      <div className="flex items-center space-x-6">
+        {/* Đăng nhập & Đăng ký */}
+        <div className="flex items-center space-x-4">
+          <Link to="/login" className="text-black hover:text-blue-600 transition">
+            Đăng nhập
+          </Link>
+          <Link
+            to="/register"
+            className="text-black border border-black px-3 py-1 rounded-md hover:bg-black hover:text-white transition"
+          >
+            Đăng ký
+          </Link>
+        </div>
       </div>
     </header>
   );

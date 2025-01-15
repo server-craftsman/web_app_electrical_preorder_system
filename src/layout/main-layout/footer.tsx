@@ -30,7 +30,7 @@ export const Footer = () => {
           <div>
             <div className="flex items-center space-x-2 mb-4">
               <img src={logo1} alt="Eureka Logo" className="w-8 h-8 rounded-full" />
-              <span className="text-2xl font-bold text-black">Eureka</span>
+              <span className="text-2xl font-bold text-black">Elecee</span>
             </div>
             <p className="text-gray-600">
               Elecee - Sản phẩm đột phá sáng tạo trên bàn làm việc của bạn
