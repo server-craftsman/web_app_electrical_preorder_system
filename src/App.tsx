@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
 // import ScrollToTopButton from "./components/generic/home/ScrollToTopButton";
-import { Loading } from './app/redux/loading';
+import Loading from './app/redux/loading';
 import { useSelector } from 'react-redux';
 import RunRoutes from './routes/run/run.route';
 import { ToastContainer } from 'react-toastify';
@@ -15,6 +15,7 @@ export const App = () => {
       <Suspense>
         <RunRoutes />
       </Suspense>
+
       {/* <ScrollToTopButton /> */}
       <ToastContainer />
     </>
