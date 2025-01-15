@@ -4,7 +4,7 @@ import { RouteObject } from 'react-router-dom';
 
 //================= PUBLIC SUB PATHS =================
 import { MainLayout } from '../../layout/main-layout/main.layout';
-
+import Home from '../../pages/home/home';
 //======================================================
 //export public sub paths
 export const publicSubPaths: Record<string, RouteObject[]> = {
@@ -14,7 +14,7 @@ export const publicSubPaths: Record<string, RouteObject[]> = {
       children: [
         {
           path: ROUTER_URL.COMMON.HOME,
-          element: <h1>Home</h1>, // children
+          element: <Home />, // children
         },
       ],
     },
