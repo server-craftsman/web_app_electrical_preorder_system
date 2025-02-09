@@ -11,7 +11,7 @@ export const MainLayout = () => {
 
       <div className="flex-1 container mx-auto">
         <div className="flex justify-between items-start">
-          <motion.div
+          {/* <motion.div
             animate={{ y: [0, -20, 0] }}
             transition={{
               duration: 4, 
@@ -28,7 +28,7 @@ export const MainLayout = () => {
                 className="w-full h-full object-cover rounded-xl shadow-md animate-zoomInOut"
               />
             </div>
-          </motion.div>
+          </motion.div> */}
 
           <div className="flex-1 min-w-0 max-w-[1200px] mx-auto">
             <div className="bg-white rounded-xl shadow-lg">
@@ -36,7 +36,7 @@ export const MainLayout = () => {
             </div>
           </div>
 
-          <motion.div
+          {/* <motion.div
             animate={{ y: [0, -20, 0] }}
             transition={{
               duration: 4, 
@@ -53,7 +53,7 @@ export const MainLayout = () => {
                 className="w-full h-full object-cover rounded-xl shadow-md animate-zoomInOut"
               />
             </div>
-          </motion.div>
+          </motion.div> */}
         </div>
       </div>
 

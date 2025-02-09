@@ -4,9 +4,6 @@ import { storage, upload } from "../../utils";
 import { DOMAIN_API, ROUTER_URL } from "../../const";
 import { store } from "../../app/redux/store";
 import { toggleLoading } from "../../app/redux/loading.slice";
-
-
-
 import { HTTP_STATUS } from "../../app/enums";
 import { HttpException } from "../../app/exceptions";
 import { helper } from "../../utils";
@@ -19,7 +16,6 @@ export const axiosInstance = axios.create({
   timeout: 300000,
   timeoutErrorMessage: `Connection is timeout exceeded`
 });
-
 
 export const BaseService = {
   get<T = any>({

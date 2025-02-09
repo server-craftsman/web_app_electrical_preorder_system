@@ -16,3 +16,8 @@ export const notificationMessage = (message: string, type: "success" | "error" |
   
     return type === "success" ? toast.success(message, options as ToastOptions<unknown>) : type === "error" ? toast.error(message, options as ToastOptions<unknown>) : type === "info" ? toast.info(message, options as ToastOptions<unknown>) : toast.warning(message, options as ToastOptions<unknown>);
   };
+
+export const formatCurrency = (value: number) => {
+    return value.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+  };
+
