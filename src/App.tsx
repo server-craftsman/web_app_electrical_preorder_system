@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import RunRoutes from './routes/run/run.route';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import { ScrollTopUI } from './app/ui/scroll.top.ui';
 export const App = () => {
   const isLoading = useSelector((state: any) => state.loading);
 
@@ -16,8 +16,8 @@ export const App = () => {
         <RunRoutes />
       </Suspense>
 
-      {/* <ScrollToTopButton /> */}
       <ToastContainer />
+      <ScrollTopUI />
     </>
   );
 };
