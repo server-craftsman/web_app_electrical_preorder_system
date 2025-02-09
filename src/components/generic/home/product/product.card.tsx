@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { GetAllCategoryResponseModel } from '../../../../models/api/response/product.res.model';
 import { formatCurrency } from '../../../../utils/helper';
 
@@ -7,6 +7,11 @@ interface ProductCardProps {
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+  const [isHovered, setIsHovered] = useState(false);
+
+  const handleMouseEnter = () => setIsHovered(true);
+  const handleMouseLeave = () => setIsHovered(false);
+
   const discountPercentage =
     product.quantity > 0
       ? Math.round(
@@ -17,12 +22,24 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const discountedPrice = product.price * 0.9;
 
   return (
-    <div className="bg-white shadow-md rounded-md overflow-hidden w-[228px] h-[399px]">
+    <div
+      className="bg-white shadow-md rounded-md overflow-hidden w-[228px] h-[399px]"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
       {/* Image Section */}
       <div className="relative h-[160px]">
         <img
-          src={product.imageProducts.length > 0 ? product.imageProducts[0].imageUrl : 'https://via.placeholder.com/150'}
-          alt={product.imageProducts.length > 0 ? product.imageProducts[0].altText : ''}
+          src={
+            product.imageProducts.length > 1 && isHovered
+              ? product.imageProducts[1].imageUrl
+              : product.imageProducts[0].imageUrl
+          }
+          alt={
+            product.imageProducts.length > 1 && isHovered
+              ? product.imageProducts[1].altText
+              : product.imageProducts[0].altText
+          }
           className="w-[160px] h-[160px] object-cover scale-95 mx-auto"
         />
         {discountPercentage && (

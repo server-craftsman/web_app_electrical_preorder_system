@@ -1,8 +1,28 @@
 import { Link } from 'react-router-dom';
 import logo1 from '../../assets/Elecee_logo.jpg';
 import { ROUTER_URL } from '../../const/router.path';
+import { useState, useEffect } from 'react';
+import Search from '../../components/generic/home/search/search';
 
 export const Header = () => {
+  const [showSearch, setShowSearch] = useState(false);
+
+  const handleSearchClick = () => {
+    setShowSearch(true);
+  };
+
+  const handleCloseSearch = () => {
+    setShowSearch(false);
+  };
+
+  useEffect(() => {
+    if (showSearch) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+  }, [showSearch]);
+
   return (
     <>
       <header className="fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-8 py-4 bg-white border-b border-gray-100 shadow-md">
@@ -29,9 +49,9 @@ export const Header = () => {
           <Link to="/products" className="tab-custom">
             SẢN PHẨM
           </Link>
-          <Link to="/review" className="tab-custom">
+          {/* <Link to="/review" className="tab-custom">
             REVIEW
-          </Link>
+          </Link> */}
           <Link to="/guide" className="tab-custom">
             HƯỚNG DẪN
           </Link>
@@ -39,7 +59,10 @@ export const Header = () => {
 
         <div className="flex items-center space-x-6">
           <div className="flex items-center space-x-4">
-            <button className="p-2 hover:bg-gray-100 rounded-full transition-colors duration-200">
+            <button
+              className="p-2 hover:bg-gray-100 rounded-full transition-colors duration-200"
+              onClick={handleSearchClick}
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -85,6 +108,32 @@ export const Header = () => {
         </div>
       </header>
       <div className="h-[72px]"></div>
+
+      {/* Search Component below the Header */}
+      {showSearch && (
+        <div className="fixed top-[72px] left-0 right-0 bg-white bg-opacity-90 flex justify-center items-center transition-opacity duration-500 ease-in-out">
+          <button
+            className="absolute top-4 right-4 p-2 bg-red-500 rounded-full hover:bg-red-600 transition-colors"
+            onClick={handleCloseSearch}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="w-6 h-6 text-white"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+          <Search />
+        </div>
+      )}
     </>
   );
 };
