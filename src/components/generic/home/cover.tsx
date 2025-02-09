@@ -9,7 +9,13 @@ const cover = () => {
 
   return (
     <div className="w-full mt-2 max-w-10xl mx-auto border-2 border-gray-500 shadow-md rounded-b-lg">
-      <Carousel autoplay dots={true} className="rounded-b-lg" arrows>
+      <Carousel
+        autoplay
+        dots={false}
+        className="rounded-b-lg group"
+        arrows
+        draggable
+      >
         {topSellingProducts.map((product) => (
           <div key={product.id} className="relative">
             <img
