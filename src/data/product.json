@@ -6,8 +6,9 @@
     "updated_at": "2025-01-12T15:00:00",
     "quantity": 50,
     "quantity_sold": 10,
-    "description": "A high-performance smartphone with a sleek design and 128GB storage.",
+    "description": "Một smartphone hiệu suất cao với thiết kế sang trọng và bộ nhớ 128GB.",
     "price": 599.99,
+    "price_vnd": "12,999,000",
     "status": "active",
     "is_deleted": false,
     "categories_id": 1,
@@ -20,11 +21,13 @@
     "updated_at": "2025-01-11T10:00:00",
     "quantity": 100,
     "quantity_sold": 20,
-    "description": "Premium noise-cancelling wireless earbuds with long battery life.",
+    "description": "Tai nghe không dây cao cấp với khả năng chống ồn và tuổi thọ pin dài.",
     "price": 149.99,
+    "price_vnd": "3,199,000",
     "status": "active",
     "is_deleted": false,
     "categories_id": 2,
+
     "image": "https://img.drz.lazcdn.com/static/bd/p/85b2ecf7239358231ab38abc5bf31336.jpg_720x720q80.jpg"
   },
   {
@@ -34,10 +37,12 @@
     "updated_at": "2025-01-08T18:00:00",
     "quantity": 40,
     "quantity_sold": 20,
-    "description": "A powerful gaming laptop with the latest graphics card and fast SSD storage.",
+    "description": "Một laptop chơi game mạnh mẽ với thẻ đồ họa mới nhất và lưu trữ SSD nhanh.",
     "price": 1299.99,
+    "price_vnd": "27,999,000",
     "status": "active",
     "is_deleted": false,
+
     "categories_id": 3,
     "image": "https://m.media-amazon.com/images/I/71mNXFjWXtL.jpg"
   },
@@ -48,10 +53,12 @@
     "updated_at": "2025-01-10T11:00:00",
     "quantity": 15,
     "quantity_sold": 3,
-    "description": "A 55-inch 4K Ultra HD Smart TV with HDR support and voice control.",
+    "description": "Một TV 4K Ultra HD thông minh 55 inch với hỗ trợ HDR và điều khiển bằng giọng nói.",
     "price": 799.99,
+    "price_vnd": "17,199,000",
     "status": "active",
     "is_deleted": false,
+
     "categories_id": 4,
     "image": "https://res.cloudinary.com/sharp-consumer-eu/image/fetch/w_1100,f_auto,q_auto/https://s3.infra.brandquad.io/accounts-media/SHRP/DAM/origin/c605d682-daad-11ec-90e7-12a58052ce36.jpg"
   },
@@ -62,11 +69,13 @@
     "updated_at": "2025-01-12T09:00:00",
     "quantity": 75,
     "quantity_sold": 15,
-    "description": "Portable Bluetooth speaker with deep bass and water-resistant design.",
+    "description": "Loa Bluetooth di động với âm trầm sâu và thiết kế chống nước.",
     "price": 89.99,
+    "price_vnd": "1,999,000",
     "status": "active",
     "is_deleted": false,
     "categories_id": 2,
+
     "image": "https://dmau.imgix.net/media/catalog/product/8/8/883848-0020-bose-soundlink-max-portable-speaker-blue-dusk-3_pn6unlwzfp201els.jpg?auto=compress&auto=format&fill-color=FFFFFF&fit=fill&fill=solid&w=496&h=279"
   },
   {
@@ -76,10 +85,12 @@
     "updated_at": "2025-01-07T14:00:00",
     "quantity": 30,
     "quantity_sold": 0,
-    "description": "Advanced smartwatch with fitness tracking and health monitoring features.",
+    "description": "Một smartwatch tiên tiến với các tính năng theo dõi thể dục và giám sát sức khỏe.",
     "price": 399.99,
+    "price_vnd": "8,999,000",
     "status": "active",
     "is_deleted": false,
+
     "categories_id": 5,
     "image": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSIN5A_OX9H9WE6olvdqZPr9XciSqbJhRtB95lmQWpFFkwUO1NYUDVhIsEGqEwsKhlfv3HEGKxfNiIAdAbNOcP-zQY5xen2RaMNDBG_yJ166UKqkcoPJdTFGiRQcu5N86IbdWNkww&usqp=CAc"
   },
@@ -90,9 +101,11 @@
     "updated_at": "2025-01-08T16:00:00",
     "quantity": 10,
     "quantity_sold": 0,
-    "description": "Professional digital camera with 20MP resolution and 4K video recording capability.",
+    "description": "Máy ảnh kỹ thuật số chuyên nghiệp với độ phân giải 20MP và khả năng quay video 4K.",
     "price": 999.99,
+    "price_vnd": "21,999,000",
     "status": "active",
+
     "is_deleted": false,
     "categories_id": 6,
     "image": "https://example.com/images/digital_camera_pro.jpg"
@@ -104,10 +117,12 @@
     "updated_at": "2025-01-06T20:00:00",
     "quantity": 200,
     "quantity_sold": 0,
-    "description": "High-precision wireless gaming mouse with customizable buttons and RGB lighting.",
+    "description": "Chuột chơi game không dây với độ chính xác cao và nút bấm tùy chỉnh, đèn RGB.",
     "price": 59.99,
+    "price_vnd": "1,299,000",
     "status": "active",
     "is_deleted": false,
+
     "categories_id": 7,
     "image": "https://example.com/images/wireless_gaming_mouse.jpg"
   },
@@ -118,10 +133,12 @@
     "updated_at": "2025-01-09T13:00:00",
     "quantity": 40,
     "quantity_sold": 0,
-    "description": "Smart home security camera with motion detection and cloud storage support.",
+    "description": "Camera an ninh thông minh cho gia đình với phát hiện chuyển động và hỗ trợ lưu trữ đám mây.",
     "price": 129.99,
+    "price_vnd": "2,999,000",
     "status": "active",
     "is_deleted": false,
+
     "categories_id": 8,
     "image": "https://example.com/images/home_security_camera.jpg"
   },
@@ -132,8 +149,9 @@
     "updated_at": "2025-01-12T12:00:00",
     "quantity": 60,
     "quantity_sold": 0,
-    "description": "Over-ear noise-cancelling headphones with exceptional sound quality and comfort.",
+    "description": "Tai nghe chống ồn trên tai với chất lượng âm thanh vượt trội và sự thoải mái.",
     "price": 299.99,
+    "price_vnd": "6,999,000",
     "status": "active",
     "is_deleted": false,
     "categories_id": 2,

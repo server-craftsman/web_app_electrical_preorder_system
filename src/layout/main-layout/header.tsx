@@ -75,7 +75,7 @@ export const Header = () => {
 
           {/* Auth Buttons */}
           <div className="flex items-center space-x-4">
-            <Link to={ROUTER_URL.LOGIN} className="btn-custom">
+            <Link to={ROUTER_URL.LOGIN} className="btn-custom-secondary">
               ĐĂNG NHẬP
             </Link>
             <Link to={ROUTER_URL.REGISTER} className="btn-custom">
