@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import logo1 from '../../assets/Elecee_logo.jpg';
 import { ROUTER_URL } from '../../const/router.path';

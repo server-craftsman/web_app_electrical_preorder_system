@@ -1,19 +1,28 @@
-import { createContext, useContext, ReactNode } from 'react';
+import { createContext, useContext, ReactNode, useState } from 'react';
 import { HTTP_STATUS } from '../app/enums';
 import { HttpException } from '../app/exceptions';
+import { UserRole } from '../models/modules/User';
 
 interface AuthContextType {
-  // role: UserRole | null;
+  role: UserRole | null;
+  setRole: (role: UserRole | null) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
+
+  const [role, setRole] = useState<UserRole | null>(() => {
+    const storedRole = localStorage.getItem("role");
+    return storedRole as UserRole | null;
+  });
+
   return (
     <AuthContext.Provider
       value={
         {
-          // role: null,
+          role,
+          setRole,
         }
       }
     >

@@ -1,4 +1,3 @@
-import React from 'react';
 import { Carousel } from 'antd';
 import products from '../../../data/product.json';
 

@@ -1,9 +1,5 @@
-import React from 'react'
+import * as storage from './storage';
+import * as helper from './helper';
+import * as upload from './upload';
 
-const index = () => {
-  return (
-    <h1>Hello</h1>
-  )
-}
-
-export default index
+export { storage, helper, upload };

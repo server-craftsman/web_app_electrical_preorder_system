@@ -1,13 +1,12 @@
-import React, { lazy, useEffect } from 'react';
-import { Link, Outlet, useNavigate } from 'react-router-dom';
+import { Link, Outlet } from 'react-router-dom';
 import { Layout } from 'antd';
 import { Content } from 'antd/es/layout/layout';
 
-export const AdminLayout = () => {
-  return;
-  <Layout>
+const AdminLayout = () => {
+  return (
     <Layout>
-      <Content>
+      <Layout>
+        <Content>
         <header>
           <nav>
             <ul>
@@ -28,5 +27,8 @@ export const AdminLayout = () => {
         <p>Footer</p>
       </footer>
     </Layout>
-  </Layout>;
+    </Layout>
+  );
 };
+
+export default AdminLayout;

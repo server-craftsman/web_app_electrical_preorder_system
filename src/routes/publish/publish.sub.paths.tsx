@@ -4,11 +4,12 @@ import { RouteObject } from 'react-router-dom';
 
 //================= PUBLIC SUB PATHS =================
 import { MainLayout } from '../../layout/main-layout/main.layout';
-import  Login  from '../../pages/login/login'
-import  Register  from '../../pages/register/register'
-import Home from '../../pages/home/home'
+const Login = lazy(() => import('../../pages/login/login'));
+const Register = lazy(() => import('../../pages/register/register'));
+const Home = lazy(() => import('../../pages/home/home'));
 //======================================================
 //export public sub paths
+
 
 export const publicSubPaths: Record<string, RouteObject[]> = {
   [ROUTER_URL.COMMON.HOME]: [

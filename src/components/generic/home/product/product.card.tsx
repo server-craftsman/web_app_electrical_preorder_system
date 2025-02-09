@@ -1,27 +1,13 @@
 import React from 'react';
-
-interface Product {
-  id: number;
-  name: string;
-  image: string;
-  price: number;
-  quantity: number;
-  quantity_sold: number;
-  created_at: string;
-  updated_at: string;
-  description: string;
-  status: string;
-  is_deleted: boolean;
-  categories_id: number;
-}
+import { GetAllCategoryResponseModel } from '../../../../models/api/response/product.res.model';
 
 interface ProductCardProps {
-  product: Product;
+  product: GetAllCategoryResponseModel;
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const discountPercentage =
-    product.quantity_sold > 0
+    product.quantity > 0
       ? Math.round(
           ((product.price - product.price * 0.9) / product.price) * 100
         )
@@ -32,7 +18,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       {/* Image Section */}
       <div className="relative">
         <img
-          src={product.image}
+          src={product.imageProducts[0]}
           alt={product.name}
           className="w-full h-48 object-cover"
         />
@@ -46,23 +32,18 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       <div className="p-4">
         <h3 className="text-lg font-semibold">{product.name}</h3>
         <div className="flex items-center mt-2 text-yellow-500 text-sm">
-          <span>⭐ ({product.quantity_sold} đánh giá)</span>
+          <span>⭐</span>
         </div>
         <div className="flex items-center justify-between mt-2">
           <div>
             <span className="text-red-500 font-bold text-lg">
               {product.price.toLocaleString('vi-VN')}₫
             </span>
-            {product.quantity_sold > 0 && (
-              <span className="text-gray-500 line-through text-sm ml-2">
-                {(product.price * 1.2).toLocaleString('vi-VN')}₫
-              </span>
-            )}
           </div>
         </div>
         <div className="flex justify-between items-center mt-2 text-gray-500">
           <span>Số lượng: {product.quantity}</span>
-          <span>Đã bán: {product.quantity_sold}</span>
+          <span>Mã SP: {product.productCode}</span>
         </div>
       </div>
     </div>

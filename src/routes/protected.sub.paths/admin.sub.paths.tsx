@@ -1,4 +1,4 @@
-import { lazy } from 'react';
+
 import { ROUTER_URL } from '../../const/router.path';
 import { RouteObject } from 'react-router-dom';
 //import admin page

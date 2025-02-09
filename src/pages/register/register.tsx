@@ -16,11 +16,11 @@ const Register = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [phone, setPhone] = useState('');
-    const [birthDate, setBirthDate] = useState(null); 
+    const [birthDate, setBirthDate] = useState<Date | null>(null); 
 
 
     // Function to handle form submission
-    const handleSubmit = (e) => {
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (password !== confirmPassword) {
             alert('Mật khẩu và xác nhận mật khẩu không khớp!');
@@ -99,9 +99,8 @@ const Register = () => {
                                     <div className="w-1/2 relative">
                                         <DatePicker
                                             selected={birthDate}
-                                            onChange={(date) => setBirthDate(date)}
+                                            onChange={(date: Date | null) => setBirthDate(date)}
                                             className="w-full px-4 py-3 text-black border-2 border-gray-200 rounded-lg outline-none transition-all duration-200 focus:border-red-500"
-                                            
                                         />
                                         <label className="absolute left-4 top-3 text-gray-500 transition-all duration-200 -translate-y-7 peer-placeholder-shown:translate-y-0 peer-focus:-translate-y-7 peer-focus:text-red-500 text-sm bg-white px-2">
                                             Ngày sinh
@@ -178,13 +177,14 @@ const Register = () => {
 
 
                             <div className="w-full flex flex-col my-4">
-                                <button
-                                    className="btn-custom"
-                                    type="submit"
-                                    onClick={handleSubmit}
-                                >
-                                    Đăng kí
-                                </button>
+                                <form onSubmit={handleSubmit}>
+                                    <button
+                                        type="submit"
+                                        className="btn-custom"
+                                    >
+                                        Đăng kí
+                                    </button>
+                                </form>
                             </div>
 
                             <Divider plain className="text-gray-400">
