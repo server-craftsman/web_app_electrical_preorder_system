@@ -1,8 +1,6 @@
 import { Outlet } from 'react-router-dom';
 import { Header } from './header';
 import { Footer } from './footer';
-import subOutlet from '../../assets/piucture_tet.jpg';
-import { motion } from 'framer-motion';
 
 export const MainLayout = () => {
   return (
