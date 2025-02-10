@@ -1,32 +1,28 @@
 import { Link, Outlet } from 'react-router-dom';
 import { Layout } from 'antd';
-import { Content } from 'antd/es/layout/layout';
+import AdminNavbar from './admin.navbar';
+import { Footer } from '../main-layout/footer';
+
+const { Content } = Layout;
 
 const AdminLayout = () => {
   return (
-    <Layout>
-      <Layout>
-        <Content>
-        <header>
-          <nav>
-            <ul>
-              <li>
-                <Link to="/">Home</Link>
-              </li>
-              <li>
-                <Link to="/">Link</Link>
-              </li>
-            </ul>
-          </nav>
-        </header>
-        <section>
-          <Outlet />
-        </section>
-      </Content>
-      <footer>
-        <p>Footer</p>
-      </footer>
-    </Layout>
+    <Layout className="min-h-screen flex flex-col">
+      <Layout className="flex flex-row">
+        <AdminNavbar />
+        <Content className="flex-1 bg-gray-100 p-8">
+          <header className="mb-6">
+            <nav className="flex gap-4">
+              <Link to="/" className="text-blue-600 hover:underline">Home</Link>
+              <Link to="/" className="text-blue-600 hover:underline">Link</Link>
+            </nav>
+          </header>
+          <section>
+            <Outlet />
+          </section>
+        </Content>
+      </Layout>
+      <Footer />
     </Layout>
   );
 };
