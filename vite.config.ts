@@ -20,7 +20,7 @@ export default defineConfig({
           if (id.includes("@src/components")) {
             return "components";
           }
-          if (id.includes("@src/context")) {
+          if (id.includes("@src/contexts")) {
             return "context";
           }
           if (id.includes("@src/const")) {
