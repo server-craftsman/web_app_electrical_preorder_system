@@ -121,16 +121,20 @@ const AdminNavbar: React.FC = () => {
       <div className="flex flex-col items-center p-4 w-full relative">
         <div className="text-white text-lg font-bold mb-4">
           {collapsed ? (
+            <Link to="/">
             <img src={logo} alt="logo" className="w-10 h-10 rounded-full" />
+            </Link>
           ) : (
-            <div className="flex items-center">
+            <Link to="/">
+            <div className="flex items-center hover:text-red-500">
               <img
                 src={logo}
                 alt="logo"
                 className="w-10 h-10 rounded-full object-cover mr-2"
               />
-              Elecee
+              <h1 className='hover:text-red-500'>Elecee</h1>
             </div>
+            </Link>
           )}
         </div>
         <div className="flex flex-col space-y-4 w-full">
