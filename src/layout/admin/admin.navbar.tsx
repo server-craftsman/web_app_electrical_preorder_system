@@ -116,14 +116,16 @@ const AdminNavbar: React.FC = () => {
 
   return (
     <div
-      className={`h-screen flex ${collapsed ? 'w-20' : 'w-64'} transition-all bg-gray-800`}
+      className={`h-screen flex ${collapsed ? 'w-20' : 'w-[160px]'} transition-all bg-gray-800`}
     >
-      <div className="flex flex-col items-center p-4 w-full relative">
+      <div className="flex flex-col items-center p-4 w-[150px] relative">
         <div className="text-white text-lg font-bold mb-4">
           {collapsed ? (
-            <img src={logo} alt="logo" className="w-10 h-10 rounded-full" />
+            <Link to="/">
+              <img src={logo} alt="logo" className="w-10 h-10 rounded-full" />
+            </Link>
           ) : (
-            <div className="flex items-center">
+            <div className="flex items-center justify-center">
               <img
                 src={logo}
                 alt="logo"

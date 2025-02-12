@@ -38,14 +38,9 @@ const AdminLayout = () => {
   return (
     <Layout className="min-h-screen flex flex-col">
       <Layout className="flex flex-row">
-       
         <AdminNavbar />
-
-     
         <Layout className="flex-1">
-      
-          <Header className="bg-white flex justify-between items-center px-6 shadow-md">
-            <h2 className="text-xl font-bold">Welcome, </h2>
+          <Header className="bg-white flex justify-end items-center px-6 shadow-md">
             <div className="flex items-center gap-4">
               {user && (
                 <Dropdown overlay={userMenu} placement="bottomRight" arrow>
@@ -57,8 +52,6 @@ const AdminLayout = () => {
               )}
             </div>
           </Header>
-
-
           <Content className="bg-gray-100 p-8">
             <Outlet />
           </Content>
