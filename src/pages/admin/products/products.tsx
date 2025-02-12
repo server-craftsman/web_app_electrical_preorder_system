@@ -1,7 +1,7 @@
 import { Button } from 'antd';
-import Search from '../../../components/generic/home/search/Search';
-
+import Search from '../../../components/generic/home/search/search';
 import ViewProducts from '../../../components/admin/products/ViewProducts';
+
 const Products = () => {
   return (
     <div>

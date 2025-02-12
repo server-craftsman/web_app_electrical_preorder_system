@@ -6,7 +6,7 @@ interface SearchProps {
   placeholder?: string;
 }
 
-const Search: React.FC<SearchProps> = ({ onSearch, placeholder = "Search..." }) => {
+const Search: React.FC<SearchProps> = ({ onSearch, placeholder = "Tìm kiếm..." }) => {
   const [searchTerm, setSearchTerm] = useState('');
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {

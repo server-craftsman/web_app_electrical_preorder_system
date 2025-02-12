@@ -2,7 +2,7 @@ import { Button, Modal } from 'antd'
 import { useState } from 'react'
 import CreateCategory from '../../../components/admin/category/CreateCategory'
 import ViewCategory from '../../../components/admin/category/ViewCategory'
-import Search from '../../../components/generic/home/search/Search'
+import Search from '../../../components/generic/home/search/search'
 const Category = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
 
