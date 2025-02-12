@@ -1,4 +1,7 @@
-import { Table } from 'antd';
+import { Table, Button } from 'antd';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPenToSquare } from '@fortawesome/free-solid-svg-icons'; 
+import { faTrash } from '@fortawesome/free-solid-svg-icons'; 
 
 const Account = () => {
   const columns = [
@@ -8,38 +11,33 @@ const Account = () => {
       key: 'name',
     },
     {
-      title: 'Name',
-      dataIndex: 'name',
-      key: 'name',
+      title: 'Email',
+      dataIndex: 'email',
+      key: 'email',
     },
     {
-      title: 'Name',
-      dataIndex: 'name',
-      key: 'name',
-    },
-    {
-      title: 'Name',
-      dataIndex: 'name',
-      key: 'name',
-    },
-    {
-      title: 'Name',
-      dataIndex: 'name',
-      key: 'name',
-    },
+      title: 'Action',
+      key: 'action',
+      render: () => (
+        <span className='flex space-x-5'>
+          <Button className='bg-blue-500' icon={<FontAwesomeIcon icon={faPenToSquare} />} />
+          <Button className='bg-red-500'icon={<FontAwesomeIcon icon={faTrash} />} />
+        </span>
+      ),
+    }
   ];
 
   const data = [
     {
       key: '1',
-      productCode: 'P001',
-      name: 'Product 1',
-      description: 'Description of Product 1',
-      quantity: 10,
-      price: 100,
-      category: 'Category 1',
+      name: 'Electronics',
+      email: 'Devices and gadgets',
     },
-    // Add more product data here
+    {
+      key: '2',
+      name: 'Furniture',
+      email: 'khoabeo@gmail.com',
+    },
   ];
 
   return (

@@ -12,7 +12,7 @@ const Home = lazy(() => import('../../pages/home/home'));
 const Dashboard = lazy(() => import('../../pages/dashboard/dashboard'));
 const AdminCategory = lazy(() => import('../../pages/admin/category/category'));
 const AdminProduct = lazy(() => import('../../pages/admin/products/products'));
-const Account = lazy(() => import('../../components/admin/account/viewaccount'));
+const Account = lazy(() => import('../../pages/admin/account/account'));
 
 //======================================================
 //export public sub paths
