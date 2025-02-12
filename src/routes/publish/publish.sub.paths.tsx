@@ -4,6 +4,7 @@ import { RouteObject } from 'react-router-dom';
 
 //================= PUBLIC SUB PATHS =================
 import { MainLayout } from '../../layout/main-layout/main.layout';
+
 const  AdminLayout = lazy (() => import('../../layout/admin/admin.layout'));
 const Login = lazy(() => import('../../pages/login/login'));
 const Register = lazy(() => import('../../pages/register/register'));
@@ -11,9 +12,10 @@ const Home = lazy(() => import('../../pages/home/home'));
 const Dashboard = lazy(() => import('../../pages/dashboard/dashboard'));
 const AdminCategory = lazy(() => import('../../pages/admin/category/category'));
 const AdminProduct = lazy(() => import('../../pages/admin/products/products'));
+const Account = lazy(() => import('../../components/admin/account/viewaccount'));
+
 //======================================================
 //export public sub paths
-
 
 export const publicSubPaths: Record<string, RouteObject[]> = {
   [ROUTER_URL.COMMON.HOME]: [
@@ -49,7 +51,7 @@ export const publicSubPaths: Record<string, RouteObject[]> = {
           path: ROUTER_URL.ADMIN.BASE,
         },
         {
-          element: <h1>Account</h1>,
+          element: <Account/>,
           path: ROUTER_URL.ADMIN.ACCOUNT,
         },
         {

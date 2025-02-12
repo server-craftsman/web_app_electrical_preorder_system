@@ -1,8 +1,16 @@
+import { useState } from "react";
 import { CheckCircleIcon, ShoppingBagIcon, UserIcon } from "@heroicons/react/24/solid";
-import { Table, Tag, Input, } from "antd";
-import { SearchOutlined } from "@ant-design/icons";
+import { Table, Tag } from "antd";
+import Search from '../../components/generic/home/search/search'; 
+
 
 const Dashboard = () => {
+  const [currentPage, setCurrentPage] = useState(1); 
+  const [searchTerm, setSearchTerm] = useState('');
+  const handleSearch = (term: string) => {
+    setSearchTerm(term);
+    console.log("Tìm kiếm với từ khóa: ", term);
+  };
   const stats = [
     {
       icon: <CheckCircleIcon className="h-10 w-10 text-white" />,
@@ -82,17 +90,23 @@ const Dashboard = () => {
     },
   ];
 
+  const handleChangePage = (page: number) => {
+    setCurrentPage(page);
+  };
+
   const data = [
-    { order: "#1002", date: "11 Feb, 2024", customer: "Wade Warren", payment: "Pending", total: "$20.00", delivery: "N/A", items: "2 items", fulfillment: "Unfulfilled" },
-    { order: "#1004", date: "13 Feb, 2024", customer: "Esther Howard", payment: "Success", total: "$22.00", delivery: "N/A", items: "3 items", fulfillment: "Fulfilled" },
-    { order: "#1007", date: "15 Feb, 2024", customer: "Jenny Wilson", payment: "Pending", total: "$25.00", delivery: "N/A", items: "1 items", fulfillment: "Unfulfilled" },
-    { order: "#1002", date: "11 Feb, 2024", customer: "Wade Warren", payment: "Pending", total: "$20.00", delivery: "N/A", items: "2 items", fulfillment: "Unfulfilled" },
-    { order: "#1004", date: "13 Feb, 2024", customer: "Esther Howard", payment: "Success", total: "$22.00", delivery: "N/A", items: "3 items", fulfillment: "Fulfilled" },
-    { order: "#1007", date: "15 Feb, 2024", customer: "Jenny Wilson", payment: "Pending", total: "$25.00", delivery: "N/A", items: "1 items", fulfillment: "Unfulfilled" },
-    { order: "#1007", date: "15 Feb, 2024", customer: "Jenny Wilson", payment: "Pending", total: "$25.00", delivery: "N/A", items: "1 items", fulfillment: "Unfulfilled" },
-    { order: "#1002", date: "11 Feb, 2024", customer: "Wade Warren", payment: "Pending", total: "$20.00", delivery: "N/A", items: "2 items", fulfillment: "Unfulfilled" },
-    { order: "#1004", date: "13 Feb, 2024", customer: "Esther Howard", payment: "Success", total: "$22.00", delivery: "N/A", items: "3 items", fulfillment: "Fulfilled" },
-    { order: "#1007", date: "15 Feb, 2024", customer: "Jenny Wilson", payment: "Pending", total: "$25.00", delivery: "N/A", items: "1 items", fulfillment: "Unfulfilled" },
+    { order: "#1", date: "11 Feb, 2024", customer: "Wade Warren", payment: "Pending", total: "$20.00", delivery: "N/A", items: "2 items", fulfillment: "Unfulfilled" },
+    { order: "#2", date: "13 Feb, 2024", customer: "Esther Howard", payment: "Success", total: "$22.00", delivery: "N/A", items: "3 items", fulfillment: "Fulfilled" },
+    { order: "#3", date: "15 Feb, 2024", customer: "Jenny Wilson", payment: "Pending", total: "$25.00", delivery: "N/A", items: "1 items", fulfillment: "Unfulfilled" },
+    { order: "#4", date: "11 Feb, 2024", customer: "Wade Warren", payment: "Pending", total: "$20.00", delivery: "N/A", items: "2 items", fulfillment: "Unfulfilled" },
+    { order: "#5", date: "13 Feb, 2024", customer: "Esther Howard", payment: "Success", total: "$22.00", delivery: "N/A", items: "3 items", fulfillment: "Fulfilled" },
+    { order: "#6", date: "15 Feb, 2024", customer: "Jenny Wilson", payment: "Pending", total: "$25.00", delivery: "N/A", items: "1 items", fulfillment: "Unfulfilled" },
+    { order: "#7", date: "11 Feb, 2024", customer: "Wade Warren", payment: "Pending", total: "$20.00", delivery: "N/A", items: "2 items", fulfillment: "Unfulfilled" },
+    { order: "#8", date: "13 Feb, 2024", customer: "Esther Howard", payment: "Success", total: "$22.00", delivery: "N/A", items: "3 items", fulfillment: "Fulfilled" },
+    { order: "#9", date: "15 Feb, 2024", customer: "Jenny Wilson", payment: "Pending", total: "$25.00", delivery: "N/A", items: "1 items", fulfillment: "Unfulfilled" },
+    { order: "#10", date: "11 Feb, 2024", customer: "Wade Warren", payment: "Pending", total: "$20.00", delivery: "N/A", items: "2 items", fulfillment: "Unfulfilled" },
+    { order: "#11", date: "13 Feb, 2024", customer: "Esther Howard", payment: "Success", total: "$22.00", delivery: "N/A", items: "3 items", fulfillment: "Fulfilled" },
+    { order: "#12", date: "15 Feb, 2024", customer: "Jenny Wilson", payment: "Pending", total: "$25.00", delivery: "N/A", items: "1 items", fulfillment: "Unfulfilled" },
 ];
 
   return (
@@ -113,16 +127,21 @@ const Dashboard = () => {
           </div>
         ))}
       </div>
-      <div className="p-6 bg-white shadow-md rounded-lg mt-14">
-        <div className="flex justify-between items-center mb-4">
-          <Input placeholder="Search orders..." prefix={<SearchOutlined />} style={{ width: 300 }} />
-        </div>
+      <div className=" mt-14">
+      <Search onSearch={handleSearch} placeholder="Tìm kiếm " />
+      </div>
+    
+      <div className="p-6 bg-white shadow-md rounded-lg mt-4">
+       
         <Table 
           columns={columns} 
           dataSource={data} 
           rowKey="order"
           pagination={{
-            pageSize: 10, // Hiển thị 10 item mỗi trang
+            current: currentPage,  
+            pageSize: 10, 
+            total: data.length,  
+            onChange: handleChangePage,  
           }}
         />
       </div>
