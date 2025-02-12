@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FaHome, FaFire, FaUser, FaHistory, FaVideo, FaThumbsUp } from 'react-icons/fa';
+import logo from '../../assets/Elecee_logo.jpg';
 
 const menuItems = [
-  { label: 'Home', icon: <FaHome />, key: 'home', path: '/' },
-  { label: 'Trending', icon: <FaFire />, key: 'trending', path: '/trending' },
-  { label: 'Subscriptions', icon: <FaUser />, key: 'subscriptions', path: '/subscriptions' },
-  { label: 'Library', icon: <FaVideo />, key: 'library', path: '/library' },
+  { label: 'Dashboard', icon: <FaHome />, key: 'home', path: '/' },
+  { label: 'Account', icon: <FaFire />, key: 'trending', path: '/account' },
+  { label: 'Product', icon: <FaUser />, key: 'subscriptions', path: '/products' },
+  { label: 'Category', icon: <FaVideo />, key: 'library', path: '/categories' },
   { label: 'History', icon: <FaHistory />, key: 'history', path: '/history' },
   { label: 'Liked Videos', icon: <FaThumbsUp />, key: 'likedVideos', path: '/liked-videos' }
 ];
