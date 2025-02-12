@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { CheckCircleIcon, ShoppingBagIcon, UserIcon } from "@heroicons/react/24/solid";
 import { Table, Tag } from "antd";
-import Search from '../../components/generic/home/search/search'; 
+import Search from '../../components/generic/home/search/Search'; 
 
 
 const Dashboard = () => {
   const [currentPage, setCurrentPage] = useState(1); 
-  const [searchTerm, setSearchTerm] = useState('');
+  const [, setSearchTerm] = useState('');
   const handleSearch = (term: string) => {
     setSearchTerm(term);
     console.log("Tìm kiếm với từ khóa: ", term);

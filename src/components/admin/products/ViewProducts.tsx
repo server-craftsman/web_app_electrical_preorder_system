@@ -1,4 +1,5 @@
-import { Table } from 'antd';
+import { EyeOutlined } from '@ant-design/icons';
+import { Button, Table } from 'antd';
 
 const ViewProducts = () => {
     const columns = [
@@ -32,6 +33,13 @@ const ViewProducts = () => {
             dataIndex: 'category',
             key: 'category',
         },
+        {
+            title: 'Action',
+            key: 'action',
+            render: () => (
+                <Button className='bg-amber-500' icon={<EyeOutlined />}></Button>
+            ),
+        }
     ];
 
     const data = [

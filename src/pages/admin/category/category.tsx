@@ -18,8 +18,8 @@ const Category = () => {
     <div>
       <div className='flex justify-between mb-4'>
       <Search onSearch={(searchTerm) => console.log(searchTerm)} />
-      <Button onClick={handleCreateCategory} className='h-10 bg-black text-white'>
-        Create Category
+      <Button onClick={handleCreateCategory} className='h-11 bg-black text-white'>
+        Create
       </Button>
       </div>
       <ViewCategory />

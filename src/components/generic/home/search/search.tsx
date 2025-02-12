@@ -1,48 +1,47 @@
 import React, { useState, useMemo } from 'react';
 import { SearchOutlined } from '@ant-design/icons';
+
 interface SearchProps {
-    onSearch: (searchTerm: string) => void;
-    placeholder?: string;
+  onSearch: (searchTerm: string) => void;
+  placeholder?: string;
 }
-const Search: React.FC<SearchProps> = ({onSearch ,placeholder = "Search..."}) => {
-    const [searchTerm, setSearchTerm] = useState('');
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setSearchTerm(e.target.value);
-      };
+const Search: React.FC<SearchProps> = ({ onSearch, placeholder = "Search..." }) => {
+  const [searchTerm, setSearchTerm] = useState('');
 
-    const handleSearchSubmit = () => {
-        onSearch(searchTerm);
-    }
-    const memoizedPlaceholder = useMemo(() => `🔍 ${placeholder}`, [placeholder]);
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+  };
 
-    return (
-        <div>
-            <input
-                type="text"
-                placeholder={memoizedPlaceholder}
-                onChange={handleInputChange}
-                value={searchTerm}
-                className="w-64 rounded-l-lg border-2 border-gray-300 bg-white px-4 py-2 text-gray-700 focus:border-[#1a237e] focus:outline-none"
-                style={{
-                  boxShadow: "0 2px 4px rgba(0,0,0,0.05)",
-                  transition: "all 0.3s ease",
-                  height: "40px"
-                }}
-            />
-            <button
-                onClick={handleSearchSubmit}
-                className="px-4 py-2 bg-[#1a237e] text-white rounded-r-lg"
-                style={{
-                  boxShadow: "0 2px 4px rgba(0,0,0,0.05)",
-                  transition: "all 0.3s ease",
-                  height: "40px"
-                }}
-            >
-                <SearchOutlined className="text-xl" />
-            </button>
-        </div>
-    );
+  const handleSearchSubmit = () => {
+    onSearch(searchTerm);
+  };
+
+  const memoizedPlaceholder = useMemo(() => placeholder, [placeholder]);
+
+  return (
+    <div className="flex items-center">
+      <input
+        type="text"
+        placeholder={memoizedPlaceholder}
+        onChange={handleInputChange}
+        value={searchTerm}
+        className="w-64 h-12 rounded-l-full border-2 border-[#db4040] bg-transparent px-6 text-gray-700 focus:outline-none focus:border-[#1a237e] transition-all"
+        style={{
+          boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+        }}
+      />
+      <button
+        onClick={handleSearchSubmit}
+        className="h-12 px-4 bg-red-500 text-white rounded-r-full flex items-center justify-center"
+        style={{
+          boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+        }}
+      >
+        <SearchOutlined className="text-xl" />
+      </button>
+    </div>
+  );
 };
 
 export default Search;

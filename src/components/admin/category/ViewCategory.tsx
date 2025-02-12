@@ -1,5 +1,5 @@
 import { Button, Table } from 'antd'
-
+import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 const ViewCategory = () => {
     const columns = [
         {
@@ -17,8 +17,8 @@ const ViewCategory = () => {
             key: 'action',
             render: () => (
                 <span className='flex space-x-2'>
-                    <Button className='bg-blue-500 text-white'>Edit</Button>
-                    <Button className='bg-red-500 text-white'>Delete</Button>
+                    <Button className='bg-blue-500 text-white' icon={<EditOutlined />}></Button>
+                    <Button className='bg-red-500 text-white' icon={<DeleteOutlined />}></Button>
                 </span>
             ),
         }

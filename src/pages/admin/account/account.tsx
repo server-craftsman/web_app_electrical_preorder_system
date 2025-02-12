@@ -1,5 +1,5 @@
 import { Button } from 'antd';
-import Search from '../../../components/generic/home/search/search';
+import Search from '../../../components/generic/home/search/Search';
 import ViewAccount from '../../../components/admin/account/viewaccount'
 const Account = () => {
   return (
