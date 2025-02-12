@@ -131,7 +131,7 @@ const AdminNavbar: React.FC = () => {
                 alt="logo"
                 className="w-10 h-10 rounded-full object-cover mr-2"
               />
-              Elecee
+              <h1 className='hover:text-red-500'>Elecee</h1>
             </div>
           )}
         </div>
