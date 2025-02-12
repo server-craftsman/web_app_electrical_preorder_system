@@ -1,6 +1,6 @@
 import { Pageable } from "../../models/api/interceptor/pageable.model";
 
-export interface ResponseSuccess<T> {
+export interface ResponseSuccessForList<T> {
   message: string;
   data: {
     content: T;
@@ -8,3 +8,7 @@ export interface ResponseSuccess<T> {
   };
 }
 
+export interface formatResponseSuccess<T> {
+  message: string;
+  data: T;
+}
