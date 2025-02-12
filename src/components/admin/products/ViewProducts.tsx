@@ -37,7 +37,7 @@ const ViewProducts = () => {
             title: 'Action',
             key: 'action',
             render: () => (
-                <Button className='bg-amber-500' icon={<EyeOutlined />}></Button>
+                <Button className='bg-red-500 text-white' icon={<EyeOutlined />}></Button>
             ),
         }
     ];
