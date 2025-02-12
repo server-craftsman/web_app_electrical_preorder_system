@@ -8,6 +8,8 @@ const  AdminLayout = lazy (() => import('../../layout/admin/admin.layout'));
 const Login = lazy(() => import('../../pages/login/login'));
 const Register = lazy(() => import('../../pages/register/register'));
 const Home = lazy(() => import('../../pages/home/home'));
+const Dashboard = lazy(() => import('../../pages/dashboard/dashboard'));
+
 //======================================================
 //export public sub paths
 
@@ -42,7 +44,7 @@ export const publicSubPaths: Record<string, RouteObject[]> = {
       element: <AdminLayout />,
       children: [
         {
-          element: <h1>dashboard</h1>,
+          element: <Dashboard/>,
           path: ROUTER_URL.ADMIN.BASE,
         },
         {
