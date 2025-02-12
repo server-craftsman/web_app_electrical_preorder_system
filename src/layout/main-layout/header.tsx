@@ -2,7 +2,6 @@ import { Link } from 'react-router-dom';
 import logo1 from '../../assets/Elecee_logo.jpg';
 import { ROUTER_URL } from '../../const/router.path';
 import { useState, useEffect } from 'react';
-import Search from '../../components/generic/home/search/search';
 
 export const Header = () => {
   const [showSearch, setShowSearch] = useState(false);
@@ -131,7 +130,6 @@ export const Header = () => {
               />
             </svg>
           </button>
-          <Search />
         </div>
       )}
     </>
