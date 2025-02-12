@@ -21,3 +21,20 @@ export const formatCurrency = (value: number) => {
     return value.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
   };
 
+export const formatDate = (date: Date) => {
+    return date.toLocaleDateString('vi-VN', { year: 'numeric', month: '2-digit', day: '2-digit' });
+  };
+
+export const formatTime = (date: Date) => {
+    return date.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+  };
+
+export const formatDateTime = (date: Date) => {
+    return formatDate(date) + ' ' + formatTime(date);
+  };
+
+export const formatDateTimeWithTimezone = (date: Date) => {
+    return formatDateTime(date) + ' ' + date.getTimezoneOffset();
+  };
+
+
