@@ -4,6 +4,10 @@ export const ROUTER_URL = {
   UNAUTHORIZED: '/unauthorized',
   ADMIN: {
     BASE: '/admin',
+    HISTORY: '/admin/history',
+    ACCOUNT: '/admin/account',
+    PRODUCT: '/admin/product',
+    CATEGORY: '/admin/categories',
   },
   INSTRUCTOR: {
     BASE: '/instructor',

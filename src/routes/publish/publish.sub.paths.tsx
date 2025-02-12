@@ -42,9 +42,25 @@ export const publicSubPaths: Record<string, RouteObject[]> = {
       element: <AdminLayout />,
       children: [
         {
-          element: <h1>Khoa</h1>,
+          element: <h1>dashboard</h1>,
           path: ROUTER_URL.ADMIN.BASE,
         },
+        {
+          element: <h1>Account</h1>,
+          path: ROUTER_URL.ADMIN.ACCOUNT,
+        },
+        {
+          element: <h1>Product</h1>,
+          path: ROUTER_URL.ADMIN.PRODUCT,
+        },
+        {
+          element: <h1>Category</h1>,
+          path: ROUTER_URL.ADMIN.CATEGORY,
+        },
+        {
+          element: <h1>History</h1>,
+          path: ROUTER_URL.ADMIN.HISTORY,
+        }
       ]
     }
   ]
