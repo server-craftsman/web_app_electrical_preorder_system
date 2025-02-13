@@ -1,7 +1,7 @@
 import { Carousel } from 'antd';
 import products from '../../../data/product.json';
 
-const cover = () => {
+const Cover = () => {
   // Sort products by quantity sold in descending order and take the top 4
   const topSellingProducts = products
     .sort((a, b) => b.quantity_sold - a.quantity_sold)
@@ -37,4 +37,4 @@ const cover = () => {
   );
 };
 
-export default cover;
+export default Cover;
