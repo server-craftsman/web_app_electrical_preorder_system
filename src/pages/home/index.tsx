@@ -1,4 +1,4 @@
-import Cover from '../../components/generic/home/Cover';
+import Cover from '../../components/generic/home/cover';
 import ProductList from '../../components/generic/home/product/ProductList';
 
 const home = () => {

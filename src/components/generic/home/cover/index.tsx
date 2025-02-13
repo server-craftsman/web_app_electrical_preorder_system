@@ -1,5 +1,5 @@
 import { Carousel } from 'antd';
-import products from '../../../data/product.json';
+import products from '../../../../data/product.json';
 
 const Cover = () => {
   // Sort products by quantity sold in descending order and take the top 4
