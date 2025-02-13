@@ -6,4 +6,7 @@ export const API_PATH = {
   PRODUCT: {
     GET_ALL: '/products',
   },
+  CATEGORY: {
+    BASE: '/categories',
+  },
 };

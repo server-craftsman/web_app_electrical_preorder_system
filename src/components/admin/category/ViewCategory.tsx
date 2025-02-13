@@ -1,10 +1,28 @@
 import { Table } from 'antd';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Pagination from '../../pagination';
 import { CustomEditIcon, CustomDeleteIcon } from './Icons';
+import { CategoryService } from '../../../services/category/category.service';
+import { GetAllCategoryResponseModel } from '../../../models/api/response/category.res.model';
 
 const ViewCategory = () => {
   const [currentPage, setCurrentPage] = useState(1);
+  const [categories, setCategories] = useState<GetAllCategoryResponseModel[]>([]);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await CategoryService.getAll({});
+        if (Array.isArray(response.data?.data)) {
+          setCategories(response.data.data);
+        }
+      } catch (error) {
+        console.error('Failed to fetch categories:', error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   const columns = [
     {
@@ -34,30 +52,16 @@ const ViewCategory = () => {
     // Add more columns as needed
   ];
 
-  const data = [
-    {
-      key: '1',
-      name: 'Electronics',
-      description: 'Devices and gadgets',
-    },
-    {
-      key: '2',
-      name: 'Furniture',
-      description: 'Home and office furniture',
-    },
-    // Add more data as needed
-  ];
-
   return (
     <div>
       <Table
         columns={columns}
-        dataSource={data}
+        dataSource={categories}
         pagination={false}
         footer={() => (
           <Pagination
             currentPage={currentPage}
-            totalPages={Math.ceil(data.length / 10)}
+            totalPages={Math.ceil(categories.length / 10)}
             onPageChange={setCurrentPage}
           />
         )}
