@@ -1,0 +1,84 @@
+{
+  "overview": [
+    {
+      "order": "#1",
+      "date": "11 Tháng 2, 2024",
+      "customer": "Nguyễn Văn A",
+      "payment": "Đang chờ",
+      "total": "20000",
+      "delivery": "N/A",
+      "items": "2 sản phẩm",
+      "fulfillment": "Chưa hoàn thành"
+    },
+    {
+      "order": "#2",
+      "date": "13 Tháng 2, 2024",
+      "customer": "Nguyễn Văn B",
+      "payment": "Thành công",
+      "total": "22000",
+      "delivery": "N/A",
+      "items": "3 sản phẩm",
+      "fulfillment": "Hoàn thành"
+    },
+    {
+      "order": "#3",
+      "date": "14 Tháng 2, 2024",
+      "customer": "Nguyễn Văn C",
+      "payment": "Đang chờ",
+      "total": "24000",
+      "delivery": "N/A",
+      "items": "4 sản phẩm",
+      "fulfillment": "Chưa hoàn thành"
+    },
+    {
+      "order": "#4",
+      "date": "15 Tháng 2, 2024",
+      "customer": "Nguyễn Văn D",
+      "payment": "Thành công",
+      "total": "26000",
+      "delivery": "N/A",
+      "items": "5 sản phẩm",
+      "fulfillment": "Hoàn thành"
+    },
+    {
+      "order": "#5",
+      "date": "16 Tháng 2, 2024",
+      "customer": "Nguyễn Văn E",
+      "payment": "Thành công",
+      "total": "28000",
+      "delivery": "N/A",
+      "items": "6 sản phẩm",
+      "fulfillment": "Hoàn thành"
+    },
+    {
+      "order": "#6",
+      "date": "17 Tháng 2, 2024",
+      "customer": "Nguyễn Văn F",
+      "payment": "Đang chờ",
+      "total": "30000",
+      "delivery": "N/A",
+      "items": "7 sản phẩm",
+      "fulfillment": "Chưa hoàn thành"
+    },
+    {
+      "order": "#7",
+      "date": "18 Tháng 2, 2024",
+      "customer": "Nguyễn Văn G",
+      "payment": "Thành công",
+      "total": "32000",
+      "delivery": "N/A",
+      "items": "8 sản phẩm",
+      "fulfillment": "Hoàn thành"
+    },
+    {
+      "order": "#8",
+      "date": "19 Tháng 2, 2024",
+      "customer": "Nguyễn Văn H",
+      "payment": "Đang chờ",
+      "total": "34000",
+      "delivery": "N/A",
+      "items": "9 sản phẩm",
+      "fulfillment": "Chưa hoàn thành"
+    }
+  ]
+}

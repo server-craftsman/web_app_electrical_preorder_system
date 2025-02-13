@@ -1,49 +1,69 @@
-import { Button, Table } from 'antd'
-import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
+import { Table } from 'antd';
+import { useState } from 'react';
+import Pagination from '../../pagination';
+import { CustomEditIcon, CustomDeleteIcon } from './Icons';
+
 const ViewCategory = () => {
-    const columns = [
-        {
-            title: 'Category Name',
-            dataIndex: 'name',
-            key: 'name',
-        },
-        {
-            title: 'Description',
-            dataIndex: 'description',
-            key: 'description',
-        },
-        {
-            title: 'Action',
-            key: 'action',
-            render: () => (
-                <span className='flex space-x-2'>
-                    <Button className='bg-blue-500 text-white' icon={<EditOutlined />}></Button>
-                    <Button className='bg-red-500 text-white' icon={<DeleteOutlined />}></Button>
-                </span>
-            ),
-        }
-        // Add more columns as needed
-    ]
+  const [currentPage, setCurrentPage] = useState(1);
 
-    const data = [
-        {
-            key: '1',
-            name: 'Electronics',
-            description: 'Devices and gadgets',
-        },
-        {
-            key: '2',
-            name: 'Furniture',
-            description: 'Home and office furniture',
-        },
-        // Add more data as needed
-    ]
+  const columns = [
+    {
+      title: 'Category Name',
+      dataIndex: 'name',
+      key: 'name',
+    },
+    {
+      title: 'Description',
+      dataIndex: 'description',
+      key: 'description',
+    },
+    {
+      title: 'Hành động',
+      key: 'action',
+      render: () => (
+        <span className="flex space-x-2">
+          <button className="bg-blue-600 text-white p-2 rounded-full shadow-lg hover:bg-blue-700">
+            <CustomEditIcon />
+          </button>
+          <button className="bg-red-600 text-white p-2 rounded-full shadow-lg hover:bg-red-700">
+            <CustomDeleteIcon />
+          </button>
+        </span>
+      ),
+    },
+    // Add more columns as needed
+  ];
 
-    return (
-        <div>
-            <Table columns={columns} dataSource={data} />
-        </div>
-    )
-}
+  const data = [
+    {
+      key: '1',
+      name: 'Electronics',
+      description: 'Devices and gadgets',
+    },
+    {
+      key: '2',
+      name: 'Furniture',
+      description: 'Home and office furniture',
+    },
+    // Add more data as needed
+  ];
 
-export default ViewCategory
+  return (
+    <div>
+      <Table
+        columns={columns}
+        dataSource={data}
+        pagination={false}
+        footer={() => (
+          <Pagination
+            currentPage={currentPage}
+            totalPages={Math.ceil(data.length / 10)}
+            onPageChange={setCurrentPage}
+          />
+        )}
+      />
+    </div>
+  );
+};
+
+export default ViewCategory;

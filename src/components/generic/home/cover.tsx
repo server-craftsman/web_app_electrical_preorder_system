@@ -26,7 +26,9 @@ const cover = () => {
             <div className="absolute inset-0 bg-black bg-opacity-50 text-white flex flex-col justify-center items-center p-4">
               <h2 className="text-2xl font-bold">{product.name}</h2>
               <p className="text-lg">{product.description}</p>
-              <span className="text-lg font-bold mt-2">Giá chỉ từ {product.price_vnd} đ</span>
+              <span className="text-lg font-bold mt-2">
+                Giá chỉ từ {product.price_vnd} đ
+              </span>
             </div>
           </div>
         ))}

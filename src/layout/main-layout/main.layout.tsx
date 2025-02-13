@@ -29,9 +29,7 @@ export const MainLayout = () => {
           </motion.div> */}
 
           <div className="flex-1 min-w-0 max-w-[1200px] mx-auto">
-            <div className="bg-white rounded-xl shadow-lg">
-              <Outlet />
-            </div>
+            <Outlet />
           </div>
 
           {/* <motion.div

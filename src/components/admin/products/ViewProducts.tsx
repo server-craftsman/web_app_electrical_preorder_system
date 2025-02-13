@@ -1,65 +1,100 @@
-import { EyeOutlined } from '@ant-design/icons';
-import { Button, Table } from 'antd';
+import { Table } from 'antd';
+import Pagination from '../../pagination';
+import { useState } from 'react';
+
+const CustomEyeIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    strokeWidth={1.5}
+    stroke="currentColor"
+    className="w-4 h-4"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M12 4.5c-4.97 0-9 3.582-9 8s4.03 8 9 8 9-3.582 9-8-4.03-8-9-8zm0 14c-3.866 0-7-2.686-7-6s3.134-6 7-6 7 2.686 7 6-3.134 6-7 6zm0-10.5a4.5 4.5 0 1 0 0 9 4.5 4.5 0 0 0 0-9z"
+    />
+  </svg>
+);
 
 const ViewProducts = () => {
-    const columns = [
-        {
-            title: 'Product Code',
-            dataIndex: 'productCode',
-            key: 'productCode',
-        },
-        {
-            title: 'Name',
-            dataIndex: 'name',
-            key: 'name',
-        },
-        {
-            title: 'Description',
-            dataIndex: 'description',
-            key: 'description',
-        },
-        {
-            title: 'Quantity',
-            dataIndex: 'quantity',
-            key: 'quantity',
-        },
-        {
-            title: 'Price',
-            dataIndex: 'price',
-            key: 'price',
-        },
-        {
-            title: 'Category',
-            dataIndex: 'category',
-            key: 'category',
-        },
-        {
-            title: 'Action',
-            key: 'action',
-            render: () => (
-                <Button className='bg-red-500 text-white' icon={<EyeOutlined />}></Button>
-            ),
-        }
-    ];
+  const [currentPage, setCurrentPage] = useState(1);
 
-    const data = [
-        {
-            key: '1',
-            productCode: 'P001',
-            name: 'Product 1',
-            description: 'Description of Product 1',
-            quantity: 10,
-            price: 100,
-            category: 'Category 1',
-        },
-        // Add more product data here
-    ];
+  const columns = [
+    {
+      title: 'Mã sản phẩm',
+      dataIndex: 'productCode',
+      key: 'productCode',
+    },
+    {
+      title: 'Tên sản phẩm',
+      dataIndex: 'name',
+      key: 'name',
+    },
+    {
+      title: 'Mô tả',
+      dataIndex: 'description',
+      key: 'description',
+    },
+    {
+      title: 'Số lượng',
+      dataIndex: 'quantity',
+      key: 'quantity',
+    },
+    {
+      title: 'Giá',
+      dataIndex: 'price',
+      key: 'price',
+    },
+    {
+      title: 'Danh mục',
+      dataIndex: 'category',
+      key: 'category',
+    },
+    {
+      title: 'Hành động',
+      key: 'action',
+      render: () => (
+        <span className="flex space-x-2">
+          <button className="bg-blue-600 text-white p-2 rounded-full shadow-lg hover:bg-blue-700">
+            <CustomEyeIcon />
+          </button>
+        </span>
+      ),
+    },
+  ];
 
-    return (
-        <div>
-            <Table columns={columns} dataSource={data} />
-        </div>
-    );
+  const data = [
+    {
+      key: '1',
+      productCode: 'P001',
+      name: 'Product 1',
+      description: 'Description of Product 1',
+      quantity: 10,
+      price: 100,
+      category: 'Category 1',
+    },
+    // Add more product data here
+  ];
+
+  return (
+    <div>
+      <Table
+        columns={columns}
+        dataSource={data}
+        pagination={false}
+        footer={() => (
+          <Pagination
+            currentPage={currentPage}
+            totalPages={Math.ceil(data.length / 10)}
+            onPageChange={setCurrentPage}
+          />
+        )}
+      />
+    </div>
+  );
 };
 
 export default ViewProducts;

@@ -4,7 +4,7 @@ import logo from '../../assets/Elecee_logo.jpg';
 
 const menuItems = [
   {
-    label: 'Dashboard',
+    label: 'Bảng điều khiển',
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -25,7 +25,7 @@ const menuItems = [
     path: '/admin',
   },
   {
-    label: 'Account',
+    label: 'Tài khoản',
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -46,7 +46,7 @@ const menuItems = [
     path: '/admin/account',
   },
   {
-    label: 'Product',
+    label: 'Sản phẩm',
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -67,7 +67,7 @@ const menuItems = [
     path: '/admin/product',
   },
   {
-    label: 'Category',
+    label: 'Danh mục',
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -88,7 +88,7 @@ const menuItems = [
     path: '/admin/categories',
   },
   {
-    label: 'History',
+    label: 'Lịch sử',
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -116,30 +116,30 @@ const AdminNavbar: React.FC = () => {
 
   return (
     <div
-      className={`h-auto flex ${collapsed ? 'w-20' : 'w-[160px]'} transition-all bg-gray-800`}
+      className={`h-auto flex ${collapsed ? 'w-20' : 'w-[200px]'} transition-all bg-gray-900`}
     >
-      <div className="flex flex-col items-center p-4 w-[150px] relative">
+      <div className="flex flex-col items-center p-4 w-full relative">
         <div className="text-white text-lg font-bold mb-4">
-          {collapsed ? (
-            <Link to="/">
-              <img src={logo} alt="logo" className="w-10 h-10 rounded-full" />
-            </Link>
-          ) : (
-            <div className="flex items-center justify-center">
-              <img
-                src={logo}
-                alt="logo"
-                className="w-10 h-10 rounded-full object-cover mr-2"
-              />
-              <h1 className='hover:text-red-500'>Elecee</h1>
-            </div>
-          )}
+          <Link to="/">
+            {collapsed ? (
+              <img src={logo} alt="logo" className="w-12 h-12 rounded-full" />
+            ) : (
+              <div className="flex items-center justify-center">
+                <img
+                  src={logo}
+                  alt="logo"
+                  className="w-12 h-12 rounded-full object-cover mr-2"
+                />
+                <h1 className="hover:text-red-500">Elecee</h1>
+              </div>
+            )}
+          </Link>
         </div>
-        <div className="flex flex-col space-y-4 w-full">
+        <div className="flex flex-col space-y-2 w-full">
           {menuItems.map((item) => (
             <Link key={item.key} to={item.path}>
               <button
-                className={`text-white flex items-center space-x-2 hover:bg-gray-700 p-2 rounded-md ${selectedItem === item.key ? 'bg-gray-700' : ''}`}
+                className={`text-white flex items-center justify-start space-x-3 hover:bg-gray-700 p-3 rounded-md w-full ${selectedItem === item.key ? 'bg-gray-700' : ''}`}
                 onClick={() => setSelectedItem(item.key)}
               >
                 {item.icon}

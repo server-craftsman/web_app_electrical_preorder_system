@@ -11,20 +11,17 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-
   const [role, setRole] = useState<UserRole | null>(() => {
-    const storedRole = localStorage.getItem("role");
+    const storedRole = localStorage.getItem('role');
     return storedRole as UserRole | null;
   });
 
   return (
     <AuthContext.Provider
-      value={
-        {
-          role,
-          setRole,
-        }
-      }
+      value={{
+        role,
+        setRole,
+      }}
     >
       {children}
     </AuthContext.Provider>

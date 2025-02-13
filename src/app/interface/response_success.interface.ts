@@ -1,4 +1,4 @@
-import { Pageable } from "../../models/api/interceptor/pageable.model";
+import { Pageable } from '../../models/api/interceptor/pageable.model';
 
 export interface ResponseSuccessForList<T> {
   message: string;
