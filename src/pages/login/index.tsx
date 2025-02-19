@@ -1,26 +1,23 @@
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import {  useState } from 'react';
 import LOGO from '../../assets/Elecee_logo.jpg';
-import { GoogleOAuthProvider } from '@react-oauth/google';
-import { CLIENT_ID } from '../../const/authentication';
-import GoogleModal from '../../components/google/google.model';
 import Lottie from 'lottie-react';
 import orderAnimation from '../../assets/orderanimation.json';
 import { ROUTER_URL } from '../../const/router.path';
 import { Divider } from 'antd';
+import { useEffect } from 'react';
+import { useAuth } from '../../contexts/AuthContexts';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-
-  const onLoginSuccess = (token: string, googleId: string) => {
-    console.log('Login successful', token, googleId);
-  };
-
-  const onLoginError = (error: string) => {
-    console.error('Login error', error);
-  };
+  const { socialLogin } = useAuth();
+  useEffect(() => {
+    // Check if there is a code in the URL after redirection
+    
+   
+  }, []);
 
   return (
     <div className="flex items-center justify-center w-full h-screen bg-white relative">
@@ -138,13 +135,14 @@ const Login = () => {
           </div>
 
           <div className="flex-grow mt-6">
-            <GoogleOAuthProvider clientId={CLIENT_ID}>
-              <GoogleModal
-                onLoginSuccess={onLoginSuccess}
-                onLoginError={onLoginError}
-                context="login"
-              />
-            </GoogleOAuthProvider>
+            <button
+              className="btn-custom"
+              onClick={() => {
+                socialLogin({ login_type: 'google' });
+              }}
+            >
+              Đăng nhập bằng Google
+            </button>
           </div>
 
           <div className="w-full flex items-center justify-center mt-6">

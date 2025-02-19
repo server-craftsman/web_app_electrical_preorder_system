@@ -9,11 +9,11 @@ export const ROUTER_URL = {
     PRODUCT: '/admin/product',
     CATEGORY: '/admin/categories',
   },
-  INSTRUCTOR: {
-    BASE: '/instructor',
+  STAFF: {
+    BASE: '/staff',
   },
-  STUDENT: {
-    BASE: '/student',
+  CUSTOMER: {
+    BASE: '/customer',
   },
   COMMON: {
     HOME: '/',

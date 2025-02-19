@@ -4,13 +4,12 @@ import axios, {
   InternalAxiosRequestConfig,
 } from 'axios';
 import { ApiRequestModel } from '../../models/api/interceptor/api.req.model';
-import { storage, upload } from '../../utils';
 import { DOMAIN_API, ROUTER_URL } from '../../const';
 import { store } from '../../app/redux/store';
 import { toggleLoading } from '../../app/redux/loading.slice';
 import { HTTP_STATUS } from '../../app/enums';
 import { HttpException } from '../../app/exceptions';
-import { helper } from '../../utils';
+import { helper, storage, upload } from '../../utils';
 
 export const axiosInstance = axios.create({
   baseURL: DOMAIN_API,
@@ -22,7 +21,7 @@ export const axiosInstance = axios.create({
 });
 
 export const BaseService = {
-  get<T = any>({
+  get<T = Record<string, unknown>>({
     url,
     isLoading = true,
     payload,
@@ -41,7 +40,7 @@ export const BaseService = {
         if (toggleLoading) toggleLoading(false);
       });
   },
-  post<T = any>({
+  post<T = Record<string, unknown>>({
     url,
     isLoading = true,
     payload,
@@ -57,7 +56,7 @@ export const BaseService = {
         if (toggleLoading) toggleLoading(false);
       });
   },
-  put<T = any>({
+  put<T = Record<string, unknown>>({
     url,
     isLoading = true,
     payload,
@@ -75,7 +74,7 @@ export const BaseService = {
         if (toggleLoading) toggleLoading(false);
       });
   },
-  remove<T = any>({
+  remove<T = Record<string, unknown>>({
     url,
     isLoading = true,
     payload,
@@ -94,7 +93,7 @@ export const BaseService = {
         if (toggleLoading) toggleLoading(false);
       });
   },
-  getById<T = any>({
+  getById<T = Record<string, unknown>>({
     url,
     isLoading = true,
     payload,
@@ -147,16 +146,9 @@ export interface PromiseState<T = unknown> extends AxiosResponse<T> {
 
 axiosInstance.interceptors.request.use(
   (config: AxiosRequestConfig) => {
-    const token = localStorage.getItem('token');
-    const userInfo = localStorage.getItem('userInfo');
+    const token = storage.getItemInLocalStorage('token');
     if (!config.headers) config.headers = {};
-    if (token) {
-      config.headers['Authorization'] = `Bearer ${token}`;
-    }
-    if (userInfo) {
-      const parsedUserInfo = JSON.parse(userInfo);
-      config.headers['User-Id'] = parsedUserInfo._id; // debug add user id
-    }
+    if (token) config.headers['Authorization'] = `Bearer ${token}`;
     store.dispatch(toggleLoading(true)); // Show loading
     return config as InternalAxiosRequestConfig;
   },

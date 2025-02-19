@@ -4,19 +4,19 @@ import { formatResponseSuccess } from './../../app/interface/response_success.in
 import { GetAllCategoryResponseModel } from '../../models/api/response/category.res.model';
 
 export const CategoryService = {
-  getAll(params: any) {
+  getAll(params: Record<string, unknown>) {
     return BaseService.get<formatResponseSuccess<GetAllCategoryResponseModel>>({
       url: API_PATH.CATEGORY.BASE,
       payload: params,
     });
   },
-  create(params: any) {
+  create(params: Record<string, unknown>) {
     return BaseService.post<formatResponseSuccess<GetAllCategoryResponseModel>>({
       url: API_PATH.CATEGORY.BASE,
       payload: params,
     });
   },
-  update(params: any) {
+  update(params: Record<string, unknown>) {
     return BaseService.put<formatResponseSuccess<GetAllCategoryResponseModel>>({
       url: API_PATH.CATEGORY.BASE,
       payload: params,

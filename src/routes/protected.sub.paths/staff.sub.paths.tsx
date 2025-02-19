@@ -1,19 +1,19 @@
 import { ROUTER_URL } from '../../const/router.path';
 import { RouteObject } from 'react-router-dom';
 
-//import student pages
+// Import staff pages
 
 //======================================================
 
-//export student sub paths
-export const studentSubPaths: Record<string, RouteObject[]> = {
-  [ROUTER_URL.STUDENT.BASE]: [
+//export staff sub paths
+export const staffSubPaths: Record<string, RouteObject[]> = {
+  [ROUTER_URL.STAFF.BASE]: [
     {
       index: true,
-      element: <h1>Student</h1>,
+      element: <h1>Staff</h1>,
     },
     {
-      path: ROUTER_URL.STUDENT.BASE,
+      path: ROUTER_URL.STAFF.BASE,
       element: <h1>Courses</h1>,
     },
   ],

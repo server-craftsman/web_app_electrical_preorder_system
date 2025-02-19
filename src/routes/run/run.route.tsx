@@ -6,7 +6,7 @@ import { useAuth } from '../../contexts/AuthContexts';
 
 // Import router path
 import { ROUTER_URL } from '../../const/router.path';
-import { UserRole } from '../../models/modules/User';
+import { UserRole } from '../../app/enums/user.role';
 
 // Import guard routes
 import GuardProtectedRoute from '../protected/guard.protected.route';
@@ -18,20 +18,20 @@ const AdminLayout = lazy(() => import('../../layout/admin/admin.layout'));
 // Import sub paths
 import { adminSubPaths } from '../protected.sub.paths/admin.sub.paths';
 import { publicSubPaths } from '../publish/publish.sub.paths';
-import { instructorSubPaths } from '../protected.sub.paths/instructor.sub.paths';
-import { studentSubPaths } from '../protected.sub.paths/student.sub.paths';
+import { staffSubPaths } from '../protected.sub.paths/staff.sub.paths';
+import { customerSubPaths } from '../protected.sub.paths/customer.sub.paths';
 
 const RunRoutes = (): JSX.Element => {
   const { role } = useAuth();
 
   const getDefaultPath = (role: string) => {
     switch (role) {
-      case 'admin':
+      case UserRole.ADMIN:
         return ROUTER_URL.ADMIN.BASE;
-      case 'instructor':
-        return ROUTER_URL.INSTRUCTOR.BASE;
-      case 'student':
-        return ROUTER_URL.STUDENT.BASE;
+      case UserRole.CUSTOMER:
+        return ROUTER_URL.COMMON.HOME ;
+      case UserRole.STAFF:
+        return ROUTER_URL.COMMON.HOME;
       default:
         return ROUTER_URL.COMMON.HOME;
     }
@@ -84,17 +84,17 @@ const RunRoutes = (): JSX.Element => {
         </Route>
 
         <Route
-          path={ROUTER_URL.INSTRUCTOR.BASE}
+          path={ROUTER_URL.COMMON.HOME}
           element={
             <GuardProtectedRoute
               component={<AdminLayout />}
               userRole={currentRole}
-              allowedRoles={['instructor']}
+              allowedRoles={[UserRole.CUSTOMER]}
               onAccessDenied={handleAccessDenied}
             />
           }
         >
-          {instructorSubPaths[ROUTER_URL.INSTRUCTOR.BASE]?.map((route) => (
+          {staffSubPaths[ROUTER_URL.STAFF.BASE]?.map((route) => (
             <Route
               key={route.path || 'index'}
               index={route.index}
@@ -105,17 +105,17 @@ const RunRoutes = (): JSX.Element => {
         </Route>
 
         <Route
-          path={ROUTER_URL.STUDENT.BASE}
+          path={ROUTER_URL.CUSTOMER.BASE}
           element={
             <GuardProtectedRoute
               component={<AdminLayout />}
               userRole={currentRole}
-              allowedRoles={['student']}
+              allowedRoles={[UserRole.CUSTOMER]}
               onAccessDenied={handleAccessDenied}
             />
           }
         >
-          {studentSubPaths[ROUTER_URL.STUDENT.BASE]?.map((route) => (
+          {customerSubPaths[ROUTER_URL.CUSTOMER.BASE]?.map((route) => (
             <Route
               key={route.path || 'index'}
               index={route.index}

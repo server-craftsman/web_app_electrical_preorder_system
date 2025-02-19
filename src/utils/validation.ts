@@ -1,5 +1,5 @@
 export const checkURL = (url: string) => {
-  return /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/.test(
+  return /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/.test(
     url
   );
 };
@@ -24,11 +24,11 @@ export const validateAddress = (address: string) => {
   return /^[a-zA-Z\s]+$/.test(address);
 };
 
-export const isEmptyObject = (obj: any) => {
+export const isEmptyObject = (obj: Record<string, unknown>) => {
   return Object.keys(obj).length === 0;
 };
 
-export const isEmptyArray = (arr: any[]) => {
+export const isEmptyArray = (arr: Record<string, unknown>[]) => {
   return arr.length === 0;
 };
 
