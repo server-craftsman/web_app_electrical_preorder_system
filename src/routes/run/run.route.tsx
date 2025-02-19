@@ -1,9 +1,8 @@
 import { Route, Routes } from 'react-router-dom';
 import { lazy, useEffect } from 'react';
-
+import { getUserInfo } from '../../utils/storage';
 //import context
 import { useAuth } from '../../contexts/AuthContexts';
-
 // Import router path
 import { ROUTER_URL } from '../../const/router.path';
 import { UserRole } from '../../app/enums/user.role';
@@ -14,31 +13,38 @@ import GuardPublicRoute from '../publish/guard.publish.route';
 
 // Import layout
 const AdminLayout = lazy(() => import('../../layout/admin/admin.layout'));
-
+const CustomerLayout = lazy(() => import('../../layout/customer/customer_layout'));
+const StaffLayout = lazy(() => import('../../layout/staff/staff_layout'));
 // Import sub paths
 import { adminSubPaths } from '../protected.sub.paths/admin.sub.paths';
 import { publicSubPaths } from '../publish/publish.sub.paths';
 import { staffSubPaths } from '../protected.sub.paths/staff.sub.paths';
 import { customerSubPaths } from '../protected.sub.paths/customer.sub.paths';
 
+//import respone userInfo
+import { userInfo } from '../../models/api/response/auth.res.model';
+
 const RunRoutes = (): JSX.Element => {
   const { role } = useAuth();
+  console.log('Role:', role);
 
   const getDefaultPath = (role: string) => {
     switch (role) {
       case UserRole.ADMIN:
         return ROUTER_URL.ADMIN.BASE;
       case UserRole.CUSTOMER:
-        return ROUTER_URL.COMMON.HOME ;
+        return ROUTER_URL.CUSTOMER.BASE;
       case UserRole.STAFF:
-        return ROUTER_URL.COMMON.HOME;
+        return ROUTER_URL.STAFF.BASE;
       default:
         return ROUTER_URL.COMMON.HOME;
     }
   };
 
   useEffect(() => {
-    const currentRole = role || (localStorage.getItem('role') as UserRole);
+    const userInfo = getUserInfo() as userInfo;
+    const currentRole = role || (userInfo?.role as UserRole);
+    
     if (currentRole && window.location.pathname === '/') {
       const defaultPath = getDefaultPath(currentRole);
       window.location.href = defaultPath;
@@ -46,18 +52,15 @@ const RunRoutes = (): JSX.Element => {
   }, [role]);
 
   const renderProtectedRoutes = () => {
-    const currentRole = role || (localStorage.getItem('role') as UserRole);
-    // console.log("Rendering protected routes with role:", currentRole);
-
-    if (!currentRole) {
-      // console.log("No role found, protected routes will not render");
-      return null;
-    }
+    const currentRole = role || (getUserInfo()?.role as UserRole);
 
     const handleAccessDenied = () => {
-      // console.error("Access denied for role:", currentRole);
-      const defaultPath = getDefaultPath(currentRole);
-      window.location.href = defaultPath;
+      if (currentRole) {
+        const defaultPath = getDefaultPath(currentRole);
+        window.location.href = defaultPath;
+      } else {
+        window.location.href = ROUTER_URL.COMMON.HOME;
+      }
     };
 
     return (
@@ -84,12 +87,12 @@ const RunRoutes = (): JSX.Element => {
         </Route>
 
         <Route
-          path={ROUTER_URL.COMMON.HOME}
+          path={ROUTER_URL.STAFF.BASE}
           element={
             <GuardProtectedRoute
-              component={<AdminLayout />}
+              component={<StaffLayout />}
               userRole={currentRole}
-              allowedRoles={[UserRole.CUSTOMER]}
+              allowedRoles={[UserRole.STAFF]}
               onAccessDenied={handleAccessDenied}
             />
           }
@@ -98,7 +101,7 @@ const RunRoutes = (): JSX.Element => {
             <Route
               key={route.path || 'index'}
               index={route.index}
-              path={!route.index ? route.path : undefined}
+              path={!route.index ? route.path?.replace('/staff/', '') : undefined}
               element={route.element}
             />
           ))}
@@ -108,7 +111,7 @@ const RunRoutes = (): JSX.Element => {
           path={ROUTER_URL.CUSTOMER.BASE}
           element={
             <GuardProtectedRoute
-              component={<AdminLayout />}
+              component={<CustomerLayout />}
               userRole={currentRole}
               allowedRoles={[UserRole.CUSTOMER]}
               onAccessDenied={handleAccessDenied}
@@ -119,7 +122,7 @@ const RunRoutes = (): JSX.Element => {
             <Route
               key={route.path || 'index'}
               index={route.index}
-              path={!route.index ? route.path : undefined}
+              path={!route.index ? route.path?.replace('/customer/', '') : undefined}
               element={route.element}
             />
           ))}
@@ -130,34 +133,18 @@ const RunRoutes = (): JSX.Element => {
 
   return (
     <Routes>
-      {/* Public Routes */}
-      {Object.entries(publicSubPaths).map(([key, routes]) =>
-        routes.map((route) => (
-          <Route
-            key={route.path || 'index'}
-            path={route.path}
-            element={
-              key === ROUTER_URL.COMMON.HOME ? (
-                <GuardPublicRoute component={route.element} />
-              ) : (
-                route.element
-              )
-            }
-          >
-            {route.children?.map((childRoute) => (
-              <Route
-                key={childRoute.path}
-                path={childRoute.path}
-                element={childRoute.element}
-              />
-            ))}
-          </Route>
-        ))
-      )}
+    {/* Public Routes */}
+    {Object.entries(publicSubPaths).map(([key, routes]) =>
+      routes.map((route) => (
+        <Route key={route.path || "index"} path={route.path} element={key === ROUTER_URL.COMMON.HOME ? <GuardPublicRoute component={route.element} /> : route.element}>
+          {route.children?.map((childRoute) => <Route key={childRoute.path} path={childRoute.path} element={childRoute.element} />)}
+        </Route>
+      ))
+    )}
 
-      {/* Protected Routes */}
-      {renderProtectedRoutes()}
-    </Routes>
+    {/* Protected Routes */}
+    {renderProtectedRoutes()}
+  </Routes>
   );
 };
 

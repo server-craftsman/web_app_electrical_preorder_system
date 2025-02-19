@@ -1,46 +1,111 @@
-import { createContext, useContext, ReactNode, useState } from 'react';
+import { createContext, useContext, ReactNode, useState, useEffect } from 'react';
 import { HTTP_STATUS } from '../app/enums';
 import { HttpException } from '../app/exceptions';
-import { UserRole } from '../models/modules/User';
-import { queryParams, socialLoginCallbackParams } from '../models/api/request/auth.req.model';
+import { socialLoginCallbackParams } from '../models/api/request/auth.req.model';
+import { userInfo } from '../models/api/response/auth.res.model';
 import { AuthService } from '../services/auth/auth.service';
 import { storage } from '../utils';
+import { useNavigate } from 'react-router-dom';
+import { ROUTER_URL } from '../const/router.path';
+import { UserRole } from '../app/enums';
 
 interface AuthContextType {
   role: UserRole | null;
   setRole: (role: UserRole | null) => void;
-  socialLogin: (params: queryParams) => void;
+  decodeAccessToken: (token: string) => any;
   socialLoginCallback: (params: socialLoginCallbackParams) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const AuthProvider = ({ children }: { children: ReactNode }) => {
+// Function to decode JWT token and extract payload
 
+export const AuthProvider = ({ children }: { children: ReactNode }) => {
+  const navigate = useNavigate();
   const [role, setRole] = useState<UserRole | null>(() => {
-    const storedRole = storage.getUserInfoByAccessToken('role', 'token');
-    return storedRole as UserRole | null;
+    const storedUserInfo = storage.getUserInfo();
+    return storedUserInfo?.role as UserRole | null;
   });
 
-  const socialLogin = async (params: queryParams) => {
+  const [isRoleSet, setIsRoleSet] = useState(false);
+
+  useEffect(() => {
+    if (role) {
+      storage.setUserInfo({ ...storage.getUserInfo(), role: role });
+    } else {
+      storage.clearLocalStorage();
+    }
+    setIsRoleSet(true);
+  }, [role]);
+
+  useEffect(() => {
+    if (isRoleSet) {
+      const params: socialLoginCallbackParams = { login_type: 'google', code: '' };
+      socialLoginCallback(params);
+    }
+  }, [isRoleSet]);
+
+  const decodeAccessToken = (token: string) => {
     try {
-      const response = await AuthService.socialLogin(params);
-      const token = response.data?.token as string;
-      storage.setToken(token); // Assuming you have a method to store token
-      const userInfo = await fetchUserInfo(token);
-      setRole(userInfo?.role || null);
+      const base64Url = token.split('.')[1];
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      const jsonPayload = decodeURIComponent(
+        atob(base64)
+          .split('')
+          .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+          .join('')
+      );
+      return JSON.parse(jsonPayload);
     } catch (error) {
-      console.error('Social login failed', error);
+      console.error('Failed to decode access token', error);
+      return null;
     }
   };
 
-  const fetchUserInfo = async (token: string) => {
-    // TODO: Implement user info fetch
-    return { role: UserRole.CUSTOMER, token: token };
+  const socialLoginCallback = async (params: socialLoginCallbackParams) => {
+    try {
+      const urlParams = new URLSearchParams(window.location.search);
+      const code = urlParams.get('code');
+      if (!code) {
+        console.warn('Authorization code not found in URL. Please try logging in again.');
+        return;
+      }
+      params.code = code;
+
+      const response = await AuthService.socialLoginCallback(params);
+
+      if (response.status !== 200 || !response.data) {
+        throw new Error(`Unexpected response structure or status: ${response.status}`);
+      }
+
+      const accessToken = response.data?.accessToken;
+      if (accessToken) {
+        storage.setToken(accessToken);
+        const userInfo = decodeAccessToken(accessToken);
+        if (userInfo) {
+          storage.setUserInfo(userInfo as userInfo);
+          setRole(userInfo.role as UserRole);
+          navigate(getDefaultPath(userInfo.role as UserRole));
+        }
+      } else {
+        throw new Error('Access token not found in response');
+      }
+    } catch (error) {
+      console.error('Social login callback failed', error);
+    }
   };
 
-  const socialLoginCallback = async (params: socialLoginCallbackParams) => {
-    AuthService.socialLoginCallback(params);
+  const getDefaultPath = (role: UserRole) => {
+    switch (role) {
+      case UserRole.ADMIN:
+        return ROUTER_URL.ADMIN.BASE;
+      case UserRole.CUSTOMER:
+        return ROUTER_URL.CUSTOMER.BASE;
+      case UserRole.STAFF:
+        return ROUTER_URL.STAFF.BASE;
+      default:
+        return ROUTER_URL.COMMON.HOME;
+    }
   };
 
   return (
@@ -48,7 +113,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       value={{
         role,
         setRole,
-        socialLogin,
+        decodeAccessToken,
         socialLoginCallback,
       }}
     >

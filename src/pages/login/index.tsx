@@ -7,17 +7,34 @@ import { ROUTER_URL } from '../../const/router.path';
 import { Divider } from 'antd';
 import { useEffect } from 'react';
 import { useAuth } from '../../contexts/AuthContexts';
+import { AuthService } from '../../services/auth/auth.service';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const { socialLogin } = useAuth();
+  const { socialLoginCallback } = useAuth();
+
   useEffect(() => {
-    // Check if there is a code in the URL after redirection
-    
-   
+    const urlParams = new URLSearchParams(window.location.search);
+    const code = urlParams.get('code');
+    if (code) {
+      socialLoginCallback({ login_type: 'google', code });
+    }
   }, []);
+
+  const socialLogin = async () => {
+    try {
+      const response = await AuthService.socialLogin({ login_type: 'google' });
+      if (response.data) {
+        window.location.href = response.data as unknown as string;
+      } else {
+        console.error('Failed to initiate social login');
+      }
+    } catch (error) {
+      console.error('Error during social login initiation', error);
+    }
+  }
 
   return (
     <div className="flex items-center justify-center w-full h-screen bg-white relative">
@@ -138,7 +155,7 @@ const Login = () => {
             <button
               className="btn-custom"
               onClick={() => {
-                socialLogin({ login_type: 'google' });
+                socialLogin();
               }}
             >
               Đăng nhập bằng Google

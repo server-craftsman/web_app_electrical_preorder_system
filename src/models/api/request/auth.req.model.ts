@@ -1,8 +1,8 @@
 export interface queryParams {
-    login_type: 'google',
+    login_type: string,
 };
 
 export interface socialLoginCallbackParams {
-    login_type: 'google',
+    login_type: string,
     code: string,
 };

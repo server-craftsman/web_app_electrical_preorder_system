@@ -7,17 +7,20 @@ export const removeItemInLocalStorage = (key: string) =>
 
 export const clearLocalStorage = () => localStorage.clear();
 
+export const setUserInfo = (userInfo: any) => {
+  localStorage.setItem('userInfo', JSON.stringify(userInfo));
+};
 
-export const getUserInfoByAccessToken = (key: string, accessToken: string) => {
-  const item = localStorage.getItem(accessToken);
-  return item ? JSON.parse(item)[key] : null;
+export const getUserInfo = () => {
+  const item = localStorage.getItem('userInfo');
+  return item ? JSON.parse(item) : null;
 };
 
 
 export const setToken = (token: string) => {
-  localStorage.setItem('token', token);
+  localStorage.setItem('accessToken', token);
 };
 
 export const getToken = () => {
-  return localStorage.getItem('token');
+  return localStorage.getItem('accessToken');
 };
