@@ -13,7 +13,7 @@ dist-ssr
 *.local
 .env
 tsconfig.app.tsbuildinfo
-
+tsconfig.node.tsbuildinfo
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
