@@ -4,11 +4,13 @@ import { ROUTER_URL } from '../../const/router.path';
 import { RouteObject } from 'react-router-dom';
 //import admin page
 const AdminLayout = lazy(() => import('../../layout/admin/admin.layout'));
-const Dashboard = lazy(() => import('../../pages/admin/overview'));
-const Account = lazy(() => import('../../pages/admin/account'));
-const AdminProduct = lazy(() => import('../../pages/admin/products'));
-const AdminCategory = lazy(() => import('../../pages/admin/category'));
-const StageHistory = lazy(() => import('../../pages/admin/stage_history'));
+const Dashboard = lazy(() => import('../../pages/admin/overview/index'));
+const Account = lazy(() => import('../../pages/admin/account/index'));
+const AdminProduct = lazy(() => import('../../pages/admin/products/index'));
+const AdminCategory = lazy(() => import('../../pages/admin/category/index'));
+const StageHistory = lazy(
+  () => import('../../pages/admin/stage_history/index')
+);
 //======================================================
 
 //export admin sub paths

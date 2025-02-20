@@ -5,6 +5,7 @@ import {
   useState,
   useEffect,
 } from 'react';
+import { jwtDecode } from 'jwt-decode';
 import { HttpException } from '../app/exceptions';
 import {
   loginParams,
@@ -16,20 +17,21 @@ import { storage } from '../utils';
 import { useNavigate } from 'react-router-dom';
 import { ROUTER_URL } from '../const/router.path';
 import { UserRole, HTTP_STATUS } from '../app/enums';
+import { AuthContextType } from '../app/interface/auth.context.interface';
+import { JwtPayload } from 'jwt-decode';
 
-interface AuthContextType {
-  role: UserRole | null;
-  setRole: (role: UserRole | null) => void;
-  decodeAccessToken: (token: string) => any;
-  socialLoginCallback: (params: socialLoginCallbackParams) => void;
-  login: (params: loginParams) => void;
-  logout: () => void;
-  getCurrentUser: () => userInfo | null;
+interface DecodedToken extends JwtPayload {
+  role: UserRole;
+  sub: string;
+  iss: string;
+  provider: string;
+  fullName: string;
+  iat: number;
+  exp: number;
+  jti: string;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
-
-// Function to decode JWT token and extract payload
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const navigate = useNavigate();
@@ -73,22 +75,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const decodeAccessToken = (token: string) => {
-    try {
-      const base64Url = token.split('.')[1];
-      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-      const jsonPayload = decodeURIComponent(
-        atob(base64)
-          .split('')
-          .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
-          .join('')
-      );
-      return JSON.parse(jsonPayload);
-    } catch (error) {
-      throw new HttpException(
-        'Failed to decode access token',
-        HTTP_STATUS.INTERNAL_SERVER_ERROR
-      );
-    }
+    return jwtDecode<DecodedToken>(token);
   };
 
   const socialLoginCallback = async (params: socialLoginCallbackParams) => {

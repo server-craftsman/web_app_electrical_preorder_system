@@ -2,5 +2,6 @@
   "plugins": ["prettier-plugin-tailwindcss"],
   "tailwindConfig": "./tailwind.config.js",
   "trailingComma": "none",
-  "printWidth": 600
+  "printWidth": 1200,
+  "tabWidth": 2
 }

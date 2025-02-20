@@ -1,5 +1,5 @@
 import { Route, Routes, useNavigate } from 'react-router-dom';
-import { lazy, useEffect } from 'react';
+import { lazy, useEffect, useRef } from 'react';
 import { getUserInfo } from '../../utils/storage';
 //import context
 import { useAuth } from '../../contexts/AuthContexts';
@@ -63,15 +63,26 @@ const RunRoutes = (): JSX.Element => {
   const renderProtectedRoutes = () => {
     const currentRole = role || (getUserInfo()?.role as UserRole);
 
+    // Use a ref to store the navigation path
+    const navigatePathRef = useRef<string | null>(null);
+
     const handleAccessDenied = () => {
       if (currentRole) {
         const defaultPath = getDefaultPath(currentRole);
         console.log('Default Path:', defaultPath);
-        navigate(defaultPath);
+        navigatePathRef.current = defaultPath;
       } else {
-        navigate(ROUTER_URL.LOGIN);
+        navigatePathRef.current = ROUTER_URL.LOGIN;
       }
     };
+
+    // Use useEffect to perform navigation after rendering
+    useEffect(() => {
+      if (navigatePathRef.current) {
+        navigate(navigatePathRef.current);
+        navigatePathRef.current = null; // Reset the ref after navigation
+      }
+    }, [navigatePathRef.current]);
 
     return (
       <>
