@@ -6,6 +6,7 @@ import Search from '../../../components/search';
 const Category = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const createCategoryRef = useRef<{ handleOpenModal: () => void } | null>(null);
+  const [refreshCategories, setRefreshCategories] = useState(false); // state to trigger refresh
 
   const handleCreateCategory = () => {
     setIsModalVisible(true);
@@ -18,6 +19,11 @@ const Category = () => {
     setIsModalVisible(false);
   };
 
+  // Trigger refresh of categories
+  const handleCategoryCreated = () => {
+    setRefreshCategories(prev => !prev); // toggle to trigger useEffect in ViewCategory
+  };
+
   return (
     <div>
       <div className="flex justify-between mb-4">
@@ -26,14 +32,14 @@ const Category = () => {
           Tạo danh mục
         </button>
       </div>
-      <ViewCategory />
+      <ViewCategory  refresh={refreshCategories}/>
       <Modal
         title="Tạo danh mục"
         open={isModalVisible}
         onCancel={handleCancel}
         footer={null}
       >
-        <CreateCategory />
+        <CreateCategory onCategoryCreated={handleCategoryCreated} />
       </Modal>
     </div>
   );

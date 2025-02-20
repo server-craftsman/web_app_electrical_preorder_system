@@ -4,7 +4,11 @@ import { Form, Input } from 'antd';
 import { GetAllCategoryResponseModel } from '../../../models/api/response/category.res.model';
 import { CategoryService } from '../../../services/category/category.service';
 
-const CreateCategory = forwardRef((_props, ref) => {
+interface CreateCategoryProps {
+  onCategoryCreated: () => void;
+}
+
+const CreateCategory = forwardRef<CreateCategoryProps, CreateCategoryProps>(({ onCategoryCreated }, ref) => {
   const [form] = useForm();
   const [_isOpen, setOpen] = useState(false)
   const [categories, setCategories] = useState<GetAllCategoryResponseModel[]>(
@@ -47,6 +51,8 @@ const CreateCategory = forwardRef((_props, ref) => {
     }
 
     setCategories([...categories, resolvedCategory]);
+    form.resetFields();
+    onCategoryCreated();
     setOpen(false);
   } catch (error) {
     console.error("Error creating category:", error);
@@ -61,7 +67,8 @@ const CreateCategory = forwardRef((_props, ref) => {
   };
 
   useImperativeHandle(ref, () => ({
-    handleOpenModal
+    handleOpenModal,
+    onCategoryCreated
   }));
 
   return (
