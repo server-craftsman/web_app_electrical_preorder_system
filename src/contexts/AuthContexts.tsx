@@ -1,19 +1,19 @@
 import { createContext, useContext, ReactNode, useState, useEffect } from 'react';
-import { HTTP_STATUS } from '../app/enums';
 import { HttpException } from '../app/exceptions';
-import { socialLoginCallbackParams } from '../models/api/request/auth.req.model';
+import { loginParams, socialLoginCallbackParams } from '../models/api/request/auth.req.model';
 import { userInfo } from '../models/api/response/auth.res.model';
 import { AuthService } from '../services/auth/auth.service';
 import { storage } from '../utils';
 import { useNavigate } from 'react-router-dom';
 import { ROUTER_URL } from '../const/router.path';
-import { UserRole } from '../app/enums';
+import { UserRole, HTTP_STATUS } from '../app/enums';
 
 interface AuthContextType {
   role: UserRole | null;
   setRole: (role: UserRole | null) => void;
   decodeAccessToken: (token: string) => any;
   socialLoginCallback: (params: socialLoginCallbackParams) => void;
+  login: (params: loginParams) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -45,6 +45,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [isRoleSet]);
 
+  const getDefaultPath = (role: UserRole) => {
+    switch (role) {
+      case UserRole.ADMIN:
+        return ROUTER_URL.ADMIN.BASE;
+      case UserRole.CUSTOMER:
+        return ROUTER_URL.CUSTOMER.BASE;
+      case UserRole.STAFF:
+        return ROUTER_URL.STAFF.BASE;
+      default:
+        return ROUTER_URL.COMMON.HOME;
+    }
+  };
+  
   const decodeAccessToken = (token: string) => {
     try {
       const base64Url = token.split('.')[1];
@@ -57,8 +70,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       );
       return JSON.parse(jsonPayload);
     } catch (error) {
-      console.error('Failed to decode access token', error);
-      return null;
+      throw new HttpException(
+        'Failed to decode access token',
+        HTTP_STATUS.INTERNAL_SERVER_ERROR
+      );
     }
   };
 
@@ -74,21 +89,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
       const response = await AuthService.socialLoginCallback(params);
 
-      if (response.status !== 200 || !response.data) {
-        throw new Error(`Unexpected response structure or status: ${response.status}`);
+      if (response.status !== HTTP_STATUS.OK || !response.data) {
+        throw new HttpException(
+          `Unexpected response structure or status: ${response.status}`,
+          HTTP_STATUS.INTERNAL_SERVER_ERROR
+        );
       }
 
       const accessToken = response.data?.accessToken;
       if (accessToken) {
         storage.setToken(accessToken);
         const userInfo = decodeAccessToken(accessToken);
-        // if (userInfo) {
-        //   storage.setUserInfo(userInfo as userInfo);
-        //   setRole(userInfo.role as UserRole);
-        //   if (window.location.pathname === '/') {
-        //     navigate(getDefaultPath(userInfo.role as UserRole));
-        //   }
-        // }
         if (userInfo) {
           storage.setUserInfo(userInfo as userInfo);
           setRole(userInfo.role as UserRole);
@@ -96,23 +107,44 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         }
         
       } else {
-        throw new Error('Access token not found in response');
+        throw new HttpException(
+          'Access token not found in response',
+          HTTP_STATUS.INTERNAL_SERVER_ERROR
+        );
       }
     } catch (error) {
-      console.error('Social login callback failed', error);
+      throw new HttpException(
+        'Social login callback failed',
+        HTTP_STATUS.INTERNAL_SERVER_ERROR
+      );
     }
   };
 
-  const getDefaultPath = (role: UserRole) => {
-    switch (role) {
-      case UserRole.ADMIN:
-        return ROUTER_URL.ADMIN.BASE;
-      case UserRole.CUSTOMER:
-        return ROUTER_URL.CUSTOMER.BASE;
-      case UserRole.STAFF:
-        return ROUTER_URL.STAFF.BASE;
-      default:
-        return ROUTER_URL.COMMON.HOME;
+  const login = async (params: loginParams) => {
+    try {
+      params.googleAccountId = '';
+      params.fullName = '';
+
+      const response = await AuthService.login(params);
+      if (response.status !== HTTP_STATUS.OK || !response.data) {
+        throw new HttpException(
+          `Unexpected response structure or status: ${response.status}`,
+          HTTP_STATUS.INTERNAL_SERVER_ERROR
+        );
+      }
+      const accessToken = response.data?.accessToken;
+      if (accessToken) {
+        storage.setToken(accessToken);
+        const userInfo = decodeAccessToken(accessToken);
+        storage.setUserInfo(userInfo as userInfo);
+        setRole(userInfo.role as UserRole);
+        navigate(getDefaultPath(userInfo.role as UserRole));
+      }
+    } catch (error) {
+      throw new HttpException(
+        'Login failed',
+        HTTP_STATUS.INTERNAL_SERVER_ERROR
+      );
     }
   };
 
@@ -123,6 +155,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setRole,
         decodeAccessToken,
         socialLoginCallback,
+        login,
       }}
     >
       {children}

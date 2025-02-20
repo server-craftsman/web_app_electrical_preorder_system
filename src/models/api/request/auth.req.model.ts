@@ -6,3 +6,10 @@ export interface socialLoginCallbackParams {
     login_type: string,
     code: string,
 };
+
+export interface loginParams {
+    username: string,
+    password: string,
+    googleAccountId?: string,
+    fullName?: string,
+};

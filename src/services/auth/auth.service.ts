@@ -1,6 +1,7 @@
 import { BaseService } from '../config/base.service';
 import { API_PATH } from '../../const';
-import { queryParams, socialLoginCallbackParams } from './../../models/api/request/auth.req.model';
+// import { formatResponseSuccess } from '../../app/interface/response_success.interface';
+import { loginParams, queryParams, socialLoginCallbackParams } from './../../models/api/request/auth.req.model';
 import { socialLoginCallbackResponse } from './../../models/api/response/auth.res.model';
 
 export const AuthService = {
@@ -16,6 +17,12 @@ export const AuthService = {
         const url = `${API_PATH.AUTH.SOCIAL_LOGIN_CALLBACK}?${queryString}`;
         return BaseService.get<socialLoginCallbackResponse>({
             url: url,
+        });
+    },
+    login(params: loginParams) {
+        return BaseService.post<{ accessToken: string }>({
+            url: API_PATH.AUTH.LOGIN,
+            payload: params,
         });
     },
     
