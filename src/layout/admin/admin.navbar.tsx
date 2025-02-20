@@ -22,7 +22,7 @@ const menuItems = [
         />
       </svg>
     ),
-    key: 'home',
+    key: 'overview',
     path: ROUTER_URL.ADMIN.BASE,
   },
   {
@@ -43,7 +43,7 @@ const menuItems = [
         />
       </svg>
     ),
-    key: 'trending',
+    key: 'account',
     path: ROUTER_URL.ADMIN.ACCOUNT,
   },
   {
@@ -64,7 +64,7 @@ const menuItems = [
         />
       </svg>
     ),
-    key: 'subscriptions',
+    key: 'product',
     path: ROUTER_URL.ADMIN.PRODUCT,
   },
   {
@@ -85,7 +85,7 @@ const menuItems = [
         />
       </svg>
     ),
-    key: 'library',
+    key: 'category',
     path: ROUTER_URL.ADMIN.CATEGORY,
   },
   {

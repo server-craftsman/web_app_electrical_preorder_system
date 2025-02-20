@@ -16,34 +16,25 @@ const StageHistory = lazy(
 //export admin sub paths
 export const adminSubPaths: Record<string, RouteObject[]> = {
   [ROUTER_URL.ADMIN.BASE]: [
-    {
-      element: <AdminLayout />,
-      children: [
         {
           index: true,
           element: <Dashboard />,
         },
         {
-          index: false,
           element: <Account />,
           path: ROUTER_URL.ADMIN.ACCOUNT,
         },
         {
-          index: false,
           element: <AdminProduct />,
           path: ROUTER_URL.ADMIN.PRODUCT,
         },
         {
-          index: false,
           element: <AdminCategory />,
           path: ROUTER_URL.ADMIN.CATEGORY,
         },
         {
-          index: false,
           element: <StageHistory />,
           path: ROUTER_URL.ADMIN.HISTORY,
-        },
-      ],
     },
   ],
 };
