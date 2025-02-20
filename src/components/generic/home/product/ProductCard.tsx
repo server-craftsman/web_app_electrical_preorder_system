@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { GetAllCategoryResponseModel } from '../../../../models/api/response/product.res.model';
+import { GetAllProductResponseModel } from '../../../../models/api/response/product.res.model';
 import { formatCurrency } from '../../../../utils/helper';
 
 interface ProductCardProps {
-  product: GetAllCategoryResponseModel;
+  product: GetAllProductResponseModel;
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {

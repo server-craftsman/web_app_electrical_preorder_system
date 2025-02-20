@@ -17,7 +17,7 @@ const GuardProtectedRoute = ({
 }: GuardProtectedRouteProps) => {
   if (!allowedRoles.includes(userRole)) {
     onAccessDenied();
-    return <Navigate to={ROUTER_URL.UNAUTHORIZED} replace />;
+    return <Navigate to={ROUTER_URL.LOGIN} replace />;
   }
   return <div>{component}</div>;
 };

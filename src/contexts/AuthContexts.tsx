@@ -14,6 +14,8 @@ interface AuthContextType {
   decodeAccessToken: (token: string) => any;
   socialLoginCallback: (params: socialLoginCallbackParams) => void;
   login: (params: loginParams) => void;
+  logout: () => void;
+  getCurrentUser: () => userInfo | null;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -148,6 +150,20 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const logout = () => {
+    storage.clearLocalStorage();
+    storage.removeItemInLocalStorage('role');
+    storage.removeItemInLocalStorage('accessToken');
+    storage.removeItemInLocalStorage('userInfo');
+    setIsRoleSet(false);
+    setRole(null);
+    navigate(ROUTER_URL.LOGIN);
+  };
+
+  const getCurrentUser = () => {
+    return storage.getUserInfo();
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -156,6 +172,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         decodeAccessToken,
         socialLoginCallback,
         login,
+        logout,
+        getCurrentUser,
       }}
     >
       {children}

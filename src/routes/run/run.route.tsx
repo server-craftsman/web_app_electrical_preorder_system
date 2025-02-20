@@ -26,7 +26,6 @@ import { userInfo } from '../../models/api/response/auth.res.model';
 
 const RunRoutes = (): JSX.Element => {
   const { role } = useAuth();
-  console.log('Role:', role);
   const navigate = useNavigate();
   
   const getDefaultPath = (role: UserRole) => {
@@ -45,13 +44,12 @@ const RunRoutes = (): JSX.Element => {
   useEffect(() => {
     const userInfo = getUserInfo() as userInfo;
     const currentRole = role || (userInfo?.role as UserRole);
-    console.log('Current Role:', currentRole);
   
     // Chỉ chuyển hướng nếu role có giá trị và không ở trang public
     if (currentRole && window.location.pathname === '/' && !publicSubPaths[window.location.pathname]) {
       const defaultPath = getDefaultPath(currentRole);
       if (defaultPath !== ROUTER_URL.COMMON.HOME) {
-        window.location.href = defaultPath;
+        navigate(defaultPath);
       }
     }
   }, [role]);
@@ -65,9 +63,9 @@ const RunRoutes = (): JSX.Element => {
       if (currentRole) {
         const defaultPath = getDefaultPath(currentRole);
         console.log('Default Path:', defaultPath);
-        window.location.href = defaultPath;
+        navigate(defaultPath);
       } else {
-        window.location.href = ROUTER_URL.COMMON.HOME;
+        navigate(ROUTER_URL.LOGIN);
       }
     };
 
@@ -88,7 +86,7 @@ const RunRoutes = (): JSX.Element => {
             <Route
               key={route.path || 'index'}
               index={route.index}
-              path={route.path?.replace(ROUTER_URL.ADMIN.BASE, '')}
+              path={route.path}
               element={route.element}
             />
           ))}
@@ -109,7 +107,7 @@ const RunRoutes = (): JSX.Element => {
             <Route
               key={route.path || 'index'}
               index={route.index}
-              path={!route.index ? route.path?.replace(ROUTER_URL.STAFF.BASE, '') : undefined}
+              path={route.path}
               element={route.element}
             />
           ))}
@@ -130,7 +128,7 @@ const RunRoutes = (): JSX.Element => {
             <Route
               key={route.path || 'index'}
               index={route.index}
-              path={!route.index ? route.path?.replace(ROUTER_URL.CUSTOMER.BASE, '') : undefined}
+              path={route.path}
               element={route.element}
             />
           ))}

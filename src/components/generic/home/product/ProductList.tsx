@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import ProductCard from './ProductCard';
 import { ProductService } from '../../../../services/product/product.service';
-import { GetAllCategoryResponseModel } from '../../../../models/api/response/product.res.model';
+import { GetAllProductResponseModel } from '../../../../models/api/response/product.res.model';
 
 const ProductList: React.FC = () => {
-  const [products, setProducts] = useState<GetAllCategoryResponseModel[]>([]);
+  const [products, setProducts] = useState<GetAllProductResponseModel[]>([]);
 
   useEffect(() => {
     ProductService.getAll({})

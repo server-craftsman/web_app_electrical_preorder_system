@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../../assets/Elecee_logo.jpg';
+import { ROUTER_URL } from '../../const';
 
 const menuItems = [
   {
@@ -22,7 +23,7 @@ const menuItems = [
       </svg>
     ),
     key: 'home',
-    path: '/admin',
+    path: ROUTER_URL.ADMIN.BASE,
   },
   {
     label: 'Tài khoản',
@@ -43,7 +44,7 @@ const menuItems = [
       </svg>
     ),
     key: 'trending',
-    path: '/admin/account',
+    path: ROUTER_URL.ADMIN.ACCOUNT,
   },
   {
     label: 'Sản phẩm',
@@ -64,7 +65,7 @@ const menuItems = [
       </svg>
     ),
     key: 'subscriptions',
-    path: '/admin/product',
+    path: ROUTER_URL.ADMIN.PRODUCT,
   },
   {
     label: 'Danh mục',
@@ -85,7 +86,7 @@ const menuItems = [
       </svg>
     ),
     key: 'library',
-    path: '/admin/categories',
+    path: ROUTER_URL.ADMIN.CATEGORY,
   },
   {
     label: 'Lịch sử',
@@ -106,7 +107,7 @@ const menuItems = [
       </svg>
     ),
     key: 'history',
-    path: '/admin/history',
+    path: ROUTER_URL.ADMIN.HISTORY,
   },
 ];
 

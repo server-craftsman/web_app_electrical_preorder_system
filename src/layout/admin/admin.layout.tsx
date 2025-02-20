@@ -1,29 +1,17 @@
-import { Link, Outlet, useNavigate } from 'react-router-dom';
+import { Link, Outlet } from 'react-router-dom';
 import { Layout, Avatar, Dropdown } from 'antd';
 import AdminNavbar from './admin.navbar';
 import { Footer } from '../main-layout/footer';
 import { UserOutlined } from '@ant-design/icons';
-import { useState, useEffect } from 'react';
-
+import { useAuth } from '../../contexts/AuthContexts';
 const { Header, Content } = Layout;
 
 const AdminLayout = () => {
-  const [user, setUser] = useState<{ name: string; avatar: string } | null>(
-    null
-  );
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const mockUser = {
-      name: 'Nguyễn Văn A',
-      avatar: 'https://i.pravatar.cc/40',
-    };
-    setUser(mockUser);
-  }, []);
+  const { logout, getCurrentUser } = useAuth();
+  const user = getCurrentUser();
 
   const handleLogout = () => {
-    setUser(null);
-    navigate('/login');
+    logout();
   };
 
   const userMenu = {
@@ -51,11 +39,11 @@ const AdminLayout = () => {
                 <Dropdown menu={userMenu} placement="bottomRight" arrow={true}>
                   <div className="flex items-center gap-3 cursor-pointer">
                     <Avatar
-                      src={user.avatar}
+                      src={user.sub || 'https://i.pravatar.cc/40'}
                       icon={<UserOutlined />}
                       size="large"
                     />
-                    <span className="font-semibold text-lg">{user.name}</span>
+                    <span className="font-semibold text-lg">{user.fullName}</span>
                   </div>
                 </Dropdown>
               )}

@@ -8,7 +8,7 @@ export interface ImageProduct {
   altText: string;
 }
 
-export interface GetAllCategoryResponseModel {
+export interface GetAllProductResponseModel {
   id: string;
   productCode: string;
   name: string;
