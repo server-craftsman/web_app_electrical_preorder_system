@@ -82,11 +82,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       if (accessToken) {
         storage.setToken(accessToken);
         const userInfo = decodeAccessToken(accessToken);
+        // if (userInfo) {
+        //   storage.setUserInfo(userInfo as userInfo);
+        //   setRole(userInfo.role as UserRole);
+        //   if (window.location.pathname === '/') {
+        //     navigate(getDefaultPath(userInfo.role as UserRole));
+        //   }
+        // }
         if (userInfo) {
           storage.setUserInfo(userInfo as userInfo);
           setRole(userInfo.role as UserRole);
           navigate(getDefaultPath(userInfo.role as UserRole));
         }
+        
       } else {
         throw new Error('Access token not found in response');
       }

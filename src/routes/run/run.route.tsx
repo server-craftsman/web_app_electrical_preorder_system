@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import { lazy, useEffect } from 'react';
 import { getUserInfo } from '../../utils/storage';
 //import context
@@ -27,8 +27,9 @@ import { userInfo } from '../../models/api/response/auth.res.model';
 const RunRoutes = (): JSX.Element => {
   const { role } = useAuth();
   console.log('Role:', role);
-
-  const getDefaultPath = (role: string) => {
+  const navigate = useNavigate();
+  
+  const getDefaultPath = (role: UserRole) => {
     switch (role) {
       case UserRole.ADMIN:
         return ROUTER_URL.ADMIN.BASE;
@@ -44,12 +45,18 @@ const RunRoutes = (): JSX.Element => {
   useEffect(() => {
     const userInfo = getUserInfo() as userInfo;
     const currentRole = role || (userInfo?.role as UserRole);
-    
-    if (currentRole && window.location.pathname === '/') {
+    console.log('Current Role:', currentRole);
+  
+    // Chỉ chuyển hướng nếu role có giá trị và không ở trang public
+    if (currentRole && window.location.pathname === '/' && !publicSubPaths[window.location.pathname]) {
       const defaultPath = getDefaultPath(currentRole);
-      window.location.href = defaultPath;
+      if (defaultPath !== ROUTER_URL.COMMON.HOME) {
+        window.location.href = defaultPath;
+      }
     }
   }, [role]);
+  
+  
 
   const renderProtectedRoutes = () => {
     const currentRole = role || (getUserInfo()?.role as UserRole);
@@ -57,6 +64,7 @@ const RunRoutes = (): JSX.Element => {
     const handleAccessDenied = () => {
       if (currentRole) {
         const defaultPath = getDefaultPath(currentRole);
+        console.log('Default Path:', defaultPath);
         window.location.href = defaultPath;
       } else {
         window.location.href = ROUTER_URL.COMMON.HOME;
@@ -71,7 +79,7 @@ const RunRoutes = (): JSX.Element => {
             <GuardProtectedRoute
               component={<AdminLayout />}
               userRole={currentRole}
-              allowedRoles={['admin']}
+              allowedRoles={[UserRole.ADMIN]}
               onAccessDenied={handleAccessDenied}
             />
           }
@@ -79,8 +87,8 @@ const RunRoutes = (): JSX.Element => {
           {adminSubPaths[ROUTER_URL.ADMIN.BASE]?.map((route) => (
             <Route
               key={route.path || 'index'}
-              index={route.index} //loading index
-              path={route.path?.replace('/admin/', '')} // Remove /admin/ prefix
+              index={route.index}
+              path={route.path?.replace(ROUTER_URL.ADMIN.BASE, '')}
               element={route.element}
             />
           ))}
@@ -101,7 +109,7 @@ const RunRoutes = (): JSX.Element => {
             <Route
               key={route.path || 'index'}
               index={route.index}
-              path={!route.index ? route.path?.replace('/staff/', '') : undefined}
+              path={!route.index ? route.path?.replace(ROUTER_URL.STAFF.BASE, '') : undefined}
               element={route.element}
             />
           ))}
@@ -122,7 +130,7 @@ const RunRoutes = (): JSX.Element => {
             <Route
               key={route.path || 'index'}
               index={route.index}
-              path={!route.index ? route.path?.replace('/customer/', '') : undefined}
+              path={!route.index ? route.path?.replace(ROUTER_URL.CUSTOMER.BASE, '') : undefined}
               element={route.element}
             />
           ))}
@@ -133,18 +141,32 @@ const RunRoutes = (): JSX.Element => {
 
   return (
     <Routes>
-    {/* Public Routes */}
-    {Object.entries(publicSubPaths).map(([key, routes]) =>
-      routes.map((route) => (
-        <Route key={route.path || "index"} path={route.path} element={key === ROUTER_URL.COMMON.HOME ? <GuardPublicRoute component={route.element} /> : route.element}>
-          {route.children?.map((childRoute) => <Route key={childRoute.path} path={childRoute.path} element={childRoute.element} />)}
-        </Route>
-      ))
-    )}
+      {/* Public Routes */}
+      {Object.entries(publicSubPaths).map(([key, routes]) =>
+        routes.map((route, index) => (
+          <Route
+            key={`${route.path || 'index'}-${index}`}
+            path={route.path}
+            element={
+              key === ROUTER_URL.COMMON.HOME
+                ? <GuardPublicRoute component={route.element} />
+                : route.element
+            }
+          >
+            {route.children?.map((childRoute, childIndex) => (
+              <Route
+                key={`${childRoute.path}-${childIndex}`}
+                path={childRoute.path}
+                element={childRoute.element}
+              />
+            ))}
+          </Route>
+        ))
+      )}
 
-    {/* Protected Routes */}
-    {renderProtectedRoutes()}
-  </Routes>
+      {/* Protected Routes */}
+      {renderProtectedRoutes()}
+    </Routes>
   );
 };
 

@@ -16,9 +16,8 @@ export const publicSubPaths: Record<string, RouteObject[]> = {
       element: <MainLayout />, //main layout
       children: [
         {
-          index: true,
+          element: <Home />,
           path: ROUTER_URL.COMMON.HOME,
-          element: <Home />, // children
         },
       ],
     },

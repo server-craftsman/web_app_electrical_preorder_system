@@ -18,7 +18,7 @@ export const adminSubPaths: Record<string, RouteObject[]> = {
         {
           index: true,
           element: <Dashboard />,
-          path: ROUTER_URL.ADMIN.BASE,
+          // path: ROUTER_URL.ADMIN.BASE,
         },
         {
           element: <Account />,
