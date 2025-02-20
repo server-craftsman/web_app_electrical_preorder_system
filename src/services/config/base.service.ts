@@ -146,7 +146,7 @@ export interface PromiseState<T = unknown> extends AxiosResponse<T> {
 
 axiosInstance.interceptors.request.use(
   (config: AxiosRequestConfig) => {
-    const token = storage.getItemInLocalStorage('token');
+    const token = storage.getToken();
     if (!config.headers) config.headers = {};
     if (token) config.headers['Authorization'] = `Bearer ${token}`;
     store.dispatch(toggleLoading(true)); // Show loading
@@ -170,6 +170,7 @@ axiosInstance.interceptors.response.use(
       switch (response.status) {
         case HTTP_STATUS.UNAUTHORIZED:
           storage.clearLocalStorage();
+          storage.removeItemInLocalStorage('accessToken');
           setTimeout(() => {
             window.location.href = ROUTER_URL.LOGIN;
           }, 3000);
