@@ -3,7 +3,6 @@ import { lazy } from 'react';
 import { ROUTER_URL } from '../../const/router.path';
 import { RouteObject } from 'react-router-dom';
 //import admin page
-const AdminLayout = lazy(() => import('../../layout/admin/admin.layout'));
 const Dashboard = lazy(() => import('../../pages/admin/overview/index'));
 const Account = lazy(() => import('../../pages/admin/account/index'));
 const AdminProduct = lazy(() => import('../../pages/admin/products/index'));
