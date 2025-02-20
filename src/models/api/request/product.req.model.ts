@@ -5,4 +5,3 @@ export interface CreateProductRequestModel {
   quantity: number;
   categoryId: string;
 }
-

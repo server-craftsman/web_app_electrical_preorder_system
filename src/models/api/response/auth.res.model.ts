@@ -1,14 +1,14 @@
 export interface socialLoginCallbackResponse {
-    accessToken: string,
-};
+  accessToken: string;
+}
 
 export interface userInfo {
-    sub: string,
-    iss: string,
-    role: string,
-    provider: string,
-    fullName: string,
-    iat: number,
-    exp: number,
-    jti: string,
+  sub: string;
+  iss: string;
+  role: string;
+  provider: string;
+  fullName: string;
+  iat: number;
+  exp: number;
+  jti: string;
 }

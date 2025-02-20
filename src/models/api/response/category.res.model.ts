@@ -4,4 +4,5 @@ export interface GetAllCategoryResponseModel {
   createdAt: string;
   updatedAt: string;
   deleted: boolean;
-}[]
+}
+[];

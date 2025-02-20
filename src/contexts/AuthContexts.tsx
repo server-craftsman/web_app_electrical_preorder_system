@@ -1,6 +1,15 @@
-import { createContext, useContext, ReactNode, useState, useEffect } from 'react';
+import {
+  createContext,
+  useContext,
+  ReactNode,
+  useState,
+  useEffect,
+} from 'react';
 import { HttpException } from '../app/exceptions';
-import { loginParams, socialLoginCallbackParams } from '../models/api/request/auth.req.model';
+import {
+  loginParams,
+  socialLoginCallbackParams,
+} from '../models/api/request/auth.req.model';
 import { userInfo } from '../models/api/response/auth.res.model';
 import { AuthService } from '../services/auth/auth.service';
 import { storage } from '../utils';
@@ -42,7 +51,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     if (isRoleSet) {
-      const params: socialLoginCallbackParams = { login_type: 'google', code: '' };
+      const params: socialLoginCallbackParams = {
+        login_type: 'google',
+        code: '',
+      };
       socialLoginCallback(params);
     }
   }, [isRoleSet]);
@@ -59,7 +71,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         return ROUTER_URL.COMMON.HOME;
     }
   };
-  
+
   const decodeAccessToken = (token: string) => {
     try {
       const base64Url = token.split('.')[1];
@@ -84,7 +96,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       const urlParams = new URLSearchParams(window.location.search);
       const code = urlParams.get('code');
       if (!code) {
-        console.warn('Authorization code not found in URL. Please try logging in again.');
+        console.warn(
+          'Authorization code not found in URL. Please try logging in again.'
+        );
         return;
       }
       params.code = code;
@@ -107,7 +121,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           setRole(userInfo.role as UserRole);
           navigate(getDefaultPath(userInfo.role as UserRole));
         }
-        
       } else {
         throw new HttpException(
           'Access token not found in response',

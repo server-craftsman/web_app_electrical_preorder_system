@@ -13,7 +13,9 @@ import GuardPublicRoute from '../publish/guard.publish.route';
 
 // Import layout
 const AdminLayout = lazy(() => import('../../layout/admin/admin.layout'));
-const CustomerLayout = lazy(() => import('../../layout/customer/customer_layout'));
+const CustomerLayout = lazy(
+  () => import('../../layout/customer/customer_layout')
+);
 const StaffLayout = lazy(() => import('../../layout/staff/staff_layout'));
 // Import sub paths
 import { adminSubPaths } from '../protected.sub.paths/admin.sub.paths';
@@ -27,7 +29,7 @@ import { userInfo } from '../../models/api/response/auth.res.model';
 const RunRoutes = (): JSX.Element => {
   const { role } = useAuth();
   const navigate = useNavigate();
-  
+
   const getDefaultPath = (role: UserRole) => {
     switch (role) {
       case UserRole.ADMIN:
@@ -44,17 +46,19 @@ const RunRoutes = (): JSX.Element => {
   useEffect(() => {
     const userInfo = getUserInfo() as userInfo;
     const currentRole = role || (userInfo?.role as UserRole);
-  
+
     // Chỉ chuyển hướng nếu role có giá trị và không ở trang public
-    if (currentRole && window.location.pathname === '/' && !publicSubPaths[window.location.pathname]) {
+    if (
+      currentRole &&
+      window.location.pathname === '/' &&
+      !publicSubPaths[window.location.pathname]
+    ) {
       const defaultPath = getDefaultPath(currentRole);
       if (defaultPath !== ROUTER_URL.COMMON.HOME) {
         navigate(defaultPath);
       }
     }
   }, [role]);
-  
-  
 
   const renderProtectedRoutes = () => {
     const currentRole = role || (getUserInfo()?.role as UserRole);
@@ -146,9 +150,11 @@ const RunRoutes = (): JSX.Element => {
             key={`${route.path || 'index'}-${index}`}
             path={route.path}
             element={
-              key === ROUTER_URL.COMMON.HOME
-                ? <GuardPublicRoute component={route.element} />
-                : route.element
+              key === ROUTER_URL.COMMON.HOME ? (
+                <GuardPublicRoute component={route.element} />
+              ) : (
+                route.element
+              )
             }
           >
             {route.children?.map((childRoute, childIndex) => (

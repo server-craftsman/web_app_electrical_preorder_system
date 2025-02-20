@@ -34,5 +34,4 @@ export const publicSubPaths: Record<string, RouteObject[]> = {
       path: ROUTER_URL.REGISTER,
     },
   ],
-  
 };

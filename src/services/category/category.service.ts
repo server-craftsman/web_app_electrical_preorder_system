@@ -11,10 +11,12 @@ export const CategoryService = {
     });
   },
   create(params: Record<string, unknown>) {
-    return BaseService.post<formatResponseSuccess<GetAllCategoryResponseModel>>({
-      url: API_PATH.CATEGORY.BASE,
-      payload: params,
-    });
+    return BaseService.post<formatResponseSuccess<GetAllCategoryResponseModel>>(
+      {
+        url: API_PATH.CATEGORY.BASE,
+        payload: params,
+      }
+    );
   },
   update(params: Record<string, unknown>) {
     return BaseService.put<formatResponseSuccess<GetAllCategoryResponseModel>>({

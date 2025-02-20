@@ -5,11 +5,9 @@ import { GetAllProductResponseModel } from '../../models/api/response/product.re
 
 export const ProductService = {
   getAll(params: any) {
-    return BaseService.get<ResponseSuccessForList<GetAllProductResponseModel>>(
-      {
-        url: API_PATH.PRODUCT.GET_ALL,
-        payload: params,
-      }
-    );
+    return BaseService.get<ResponseSuccessForList<GetAllProductResponseModel>>({
+      url: API_PATH.PRODUCT.GET_ALL,
+      payload: params,
+    });
   },
 };

@@ -7,7 +7,9 @@ import { GetAllCategoryResponseModel } from '../../../models/api/response/catego
 
 const ViewCategory = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [categories, setCategories] = useState<GetAllCategoryResponseModel[]>([]);
+  const [categories, setCategories] = useState<GetAllCategoryResponseModel[]>(
+    []
+  );
 
   useEffect(() => {
     const fetchCategories = async () => {

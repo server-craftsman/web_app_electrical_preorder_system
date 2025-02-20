@@ -1,7 +1,5 @@
 export const checkURL = (url: string) => {
-  return /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/.test(
-    url
-  );
+  return /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/.test(url);
 };
 
 export const validateEmail = (email: string) => {

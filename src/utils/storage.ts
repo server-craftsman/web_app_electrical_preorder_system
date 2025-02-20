@@ -1,4 +1,3 @@
-
 // Example utility function for local storage
 export const getItemInLocalStorage = (key: string) => localStorage.getItem(key);
 
@@ -15,7 +14,6 @@ export const getUserInfo = () => {
   const item = localStorage.getItem('userInfo');
   return item ? JSON.parse(item) : null;
 };
-
 
 export const setToken = (token: string) => {
   localStorage.setItem('accessToken', token);

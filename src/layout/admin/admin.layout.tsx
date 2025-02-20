@@ -43,7 +43,9 @@ const AdminLayout = () => {
                       icon={<UserOutlined />}
                       size="large"
                     />
-                    <span className="font-semibold text-lg">{user.fullName}</span>
+                    <span className="font-semibold text-lg">
+                      {user.fullName}
+                    </span>
                   </div>
                 </Dropdown>
               )}
