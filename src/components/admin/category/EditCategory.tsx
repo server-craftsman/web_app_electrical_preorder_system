@@ -22,7 +22,7 @@ const EditCategory = ({ category }: EditCategoryProps) => {
     setIsLoading(true);
     try {
       const values = form.getFieldsValue();
-      const updatedCategory = await CategoryService.update(category.id, values);  // Assuming update API
+      const updatedCategory = await CategoryService.update(category.id ?? '', values);  // Ensure id is a string
       console.log('Updated category:', updatedCategory);
     } catch (error) {
       console.error('Failed to update category:', error);

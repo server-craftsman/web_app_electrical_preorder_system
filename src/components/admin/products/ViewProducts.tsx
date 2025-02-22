@@ -88,19 +88,6 @@ const ViewProducts = ({ refresh }: ViewProductProps) => {
     },
   ];
 
-  const data = [
-    {
-      key: '1',
-      productCode: 'P001',
-      name: 'Product 1',
-      description: 'Description of Product 1',
-      quantity: 10,
-      price: 100,
-      category: 'Category 1',
-    },
-    // Add more product data here
-  ];
-
   return (
     <div>
       <Table

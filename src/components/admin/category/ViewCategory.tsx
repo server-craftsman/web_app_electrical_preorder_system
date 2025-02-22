@@ -103,7 +103,7 @@ const ViewCategory = ({ refresh, searchTerm, refreshKey }: ViewCategoryProps) =>
             <CustomEditIcon />
           </button>
           <button 
-          onClick={() => handleDeleteCategory(record.id)} 
+          onClick={() => record.id && handleDeleteCategory(record.id)} 
           className="bg-red-600 text-white p-2 rounded-full shadow-lg hover:bg-red-700">
             <CustomDeleteIcon />
           </button>
