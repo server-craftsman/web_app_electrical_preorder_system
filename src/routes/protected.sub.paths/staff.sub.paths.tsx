@@ -1,6 +1,5 @@
 import { ROUTER_URL } from '../../const/router.path';
 import { RouteObject } from 'react-router-dom';
-import { lazy } from 'react';
 
 // Import staff pages
 
