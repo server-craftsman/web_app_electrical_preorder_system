@@ -5,6 +5,7 @@ import loadingReducer from './loading.slice';
 export const store = configureStore({
   reducer: {
     loading: loadingReducer,
+    
   },
 });
 

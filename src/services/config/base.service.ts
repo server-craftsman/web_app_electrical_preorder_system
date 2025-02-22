@@ -197,7 +197,7 @@ axiosInstance.interceptors.request.use(
     return config as InternalAxiosRequestConfig;
   },
   (err) => {
-    setTimeout(() => store.dispatch(toggleLoading(false)), 2000); // Hide loading with delay
+    setTimeout(() => store.dispatch(toggleLoading(false)), 5000); // Hide loading with delay
     return handleErrorByToast(err);
   }
 );

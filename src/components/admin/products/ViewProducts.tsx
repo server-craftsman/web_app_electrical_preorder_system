@@ -25,24 +25,25 @@ const CustomEyeIcon = () => (
   </svg>
 );
 
-const ViewProducts = ({refresh}: ViewProductProps) => {
+const ViewProducts = ({ refresh }: ViewProductProps) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [products, setProducts] = useState<GetAllProductResponseModel[]>([]);
 
-  const fetchCategories = async () => {
-        try {
-          const response = await ProductService.getAll({});
-          if (Array.isArray(response.data?.data?.content)) {
-            setProducts(response.data.data.content);
-          }
-        } catch (error) {
-          console.error('Failed to fetch categories:', error);
-        }
-      };
-  
-    useEffect(() => {
-      fetchCategories();
-    }, [refresh]);
+  const fetchProducts = async () => {
+    try {
+      const response = await ProductService.getAll({});
+      if (Array.isArray(response.data?.data?.content)) {
+        setProducts(response.data.data.content);
+      }
+    } catch (error) {
+      console.error('Failed to fetch products:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchProducts();
+  }, [refresh]);
+
   const columns = [
     {
       title: 'Mã sản phẩm',
@@ -109,7 +110,7 @@ const ViewProducts = ({refresh}: ViewProductProps) => {
         footer={() => (
           <Pagination
             currentPage={currentPage}
-            totalPages={Math.ceil(data.length / 10)}
+            totalPages={Math.ceil(products.length / 10)}
             onPageChange={setCurrentPage}
           />
         )}

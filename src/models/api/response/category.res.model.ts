@@ -1,8 +1,8 @@
 export interface GetAllCategoryResponseModel {
-  id: string;
+  id: string | null;
   name: string;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: string | null;
+  updatedAt: string | null;
   deleted: boolean;
 }
 [];

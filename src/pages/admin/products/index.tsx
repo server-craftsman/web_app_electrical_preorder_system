@@ -2,10 +2,11 @@ import { useState, useRef } from 'react';
 import Search from '../../../components/search';
 import ViewProducts from '../../../components/admin/products/ViewProducts';
 import CreateProducts from '../../../components/admin/products/CreateProducts';
+
 const Products = () => {
   const [, setIsModalVisible] = useState(false);
   const createProductRef = useRef<{ handleOpenModal: () => void } | null>(null);
-  const [refreshCategories] = useState(false); // state to trigger refresh
+  const [refreshCategories, setRefreshCategories] = useState(false); // state to trigger refresh
 
   const handleCreateProduct = () => {
     setIsModalVisible(true);
@@ -14,9 +15,9 @@ const Products = () => {
     }
   };
 
-  // const handleCategoryCreated = () => {
-  //   setRefreshCategories(prev => !prev); // toggle to trigger useEffect in ViewCategory
-  // };
+  const handleProductCreated = () => {
+    setRefreshCategories(prev => !prev); // toggle to trigger useEffect in ViewProducts
+  };
 
   return (
     <div>
@@ -28,7 +29,7 @@ const Products = () => {
       </div>
       <ViewProducts refresh={refreshCategories} />
 
-        <CreateProducts ref={createProductRef} />
+      <CreateProducts ref={createProductRef} onProductCreated={handleProductCreated} />
     </div>
   );
 };

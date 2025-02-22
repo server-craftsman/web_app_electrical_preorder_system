@@ -47,7 +47,7 @@ const Category = () => {
         onCancel={handleCancel}
         footer={null}
       >
-        <CreateCategory onCategoryCreated={handleCategoryCreated} />
+        <CreateCategory onCategoryCreated={handleCategoryCreated} onClose={handleCancel} />
       </Modal>
     </div>
   );
