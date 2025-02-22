@@ -12,6 +12,10 @@ export const ROUTER_URL = {
   },
   STAFF: {
     BASE: '/staff',
+    HISTORY: '/staff/history',
+    ACCOUNT: '/staff/account',
+    PRODUCT: '/staff/product',
+    PREORDER: '/staff/preorder',
   },
   CUSTOMER: {
     BASE: '/customer',

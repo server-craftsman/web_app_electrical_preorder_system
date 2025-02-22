@@ -1,3 +1,4 @@
+ 
 export interface Category {
   id: string;
   name: string;
@@ -23,4 +24,22 @@ export interface GetAllProductResponseModel {
   createdAt: string;
   updatedAt: string;
   deleted: boolean;
+}
+
+
+export interface CreateCategoryResponseModel {
+  id: string;
+  productCode: string;
+  name: string;
+  slug: string;
+  quantity: number;
+  description: string;
+  price: number;
+  position: number;
+  status: string;
+  isDeleted: boolean;
+  category: Category;
+  imageProducts: ImageProduct[];
+  createdAt: string;
+  updatedAt: string;
 }

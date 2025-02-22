@@ -10,7 +10,7 @@ export const staffSubPaths: Record<string, RouteObject[]> = {
   [ROUTER_URL.STAFF.BASE]: [
     {
       index: true,
-      element: <h1>Staff</h1>,
+      element: <h1>Stafffffff</h1>,
     },
     {
       path: ROUTER_URL.STAFF.BASE,
