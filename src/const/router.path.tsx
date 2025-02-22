@@ -15,6 +15,12 @@ export const ROUTER_URL = {
   },
   CUSTOMER: {
     BASE: '/customer',
+    PROFILE:'/customer/profile',
+    ORDERS: '/customer/orders',
+    RETURN_ORDER: '/customer/return-order',
+    CHANGE_PASSWORD: '/customer/change-password',
+    LOGOUT: '/customer/logout',
+    
   },
   COMMON: {
     HOME: '/',

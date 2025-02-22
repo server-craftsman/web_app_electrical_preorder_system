@@ -14,7 +14,7 @@ import GuardPublicRoute from '../publish/guard.publish.route';
 // Import layout
 const AdminLayout = lazy(() => import('../../layout/admin/admin.layout'));
 const CustomerLayout = lazy(
-  () => import('../../layout/customer/customer_layout')
+  () => import('../../layout/customer/customer.layout')
 );
 const StaffLayout = lazy(() => import('../../layout/staff/staff_layout'));
 // Import sub paths
