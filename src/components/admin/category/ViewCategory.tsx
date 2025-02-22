@@ -1,5 +1,5 @@
 import { Modal, Table } from 'antd';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Pagination from '../../pagination';
 import { CustomEditIcon, CustomDeleteIcon } from './Icons';
 import { CategoryService } from '../../../services/category/category.service';
@@ -33,6 +33,39 @@ const ViewCategory = ({ refresh, searchTerm, refreshKey }: ViewCategoryProps) =>
       console.error('Failed to fetch categories:', error);
     }
   };
+
+  const deleteCategory = async (categoryId: string) => {
+    try {
+      const response = await CategoryService.delete(categoryId);
+      return response.data.data.id;
+    } catch (error) {
+      console.error("Failed to delete category:", error);
+      return false;
+    }
+  };
+
+  const handleDeleteCategory = useCallback(
+    (categoryId: string) => {
+      Modal.confirm({
+        title: "Are you sure you want to delete this category?",
+        footer: [
+          <button key="back" onClick={() => Modal.destroyAll()}>
+            Cancel
+          </button>,
+          <button key="submit" className="bg-gradient-tone ml-3" onClick={async () => {
+            const success = await deleteCategory(categoryId);
+            if (success) {
+              fetchCategories();
+              Modal.destroyAll();
+            }
+          }}>
+            OK
+          </button>
+        ]
+      });
+    },
+    [fetchCategories]
+  );
 
   useEffect(() => {
     fetchCategories();
@@ -69,7 +102,9 @@ const ViewCategory = ({ refresh, searchTerm, refreshKey }: ViewCategoryProps) =>
           >
             <CustomEditIcon />
           </button>
-          <button className="bg-red-600 text-white p-2 rounded-full shadow-lg hover:bg-red-700">
+          <button 
+          onClick={() => handleDeleteCategory(record.id)} 
+          className="bg-red-600 text-white p-2 rounded-full shadow-lg hover:bg-red-700">
             <CustomDeleteIcon />
           </button>
         </span>
