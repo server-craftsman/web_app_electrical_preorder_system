@@ -1,8 +1,9 @@
 import { Form, message, Modal, Input, InputNumber, Upload, Button, Select } from 'antd';
 import  { useEffect, useState, forwardRef, useImperativeHandle } from 'react'
-import { BaseService } from '../../../services/config/base.service'; // Adjust import path as needed
+// import { BaseService } from '../../../services/config/base.service'; // Adjust import path as needed
 import { ProductService } from '../../../services/product/product.service'; // Add import for createProduct function
 import { CategoryService } from '../../../services/category/category.service';
+import { CreateProductRequestModel } from '../../../models/api/request/product.req.model';
 
 const CreateProducts = forwardRef((_props, ref) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
@@ -11,6 +12,7 @@ const CreateProducts = forwardRef((_props, ref) => {
     const [categories, setCategories] = useState<any[]>([]);
     const [_totalCategories, setTotalCategories] = useState(0);
     const [refresh, _setRefresh] = useState(false); // To trigger category re-fetch
+    const [loading, setLoading] = useState(false);
 
    // Fetch categories from the API
    const fetchCategories = async () => {
@@ -33,39 +35,51 @@ const CreateProducts = forwardRef((_props, ref) => {
     try {
       // Validate form values
       const values = await form.validateFields();
+      setLoading(true);
 
-      // Upload files if any
-      let uploadedFiles = [];
+      const productData: CreateProductRequestModel = {
+        productCode: values.productCode,
+        name: values.name,
+        quantity: values.quantity,
+        description: values.description,
+        price: values.price,
+        position: 0,
+        category: { 
+          id: values.category,
+          name: values.name
+        },
+      };
 
-      if (fileList.length > 0) {
-        const files = fileList.map((file) => file.originFileObj);
-        uploadedFiles = await BaseService.uploadMedia('/products', files, true); // Upload files using the function from base.service
-      }
+      // Lấy danh sách file từ Upload
+      const files = fileList.map((file) => file.originFileObj);
+
+      // Gửi dữ liệu lên API
+      const response = await ProductService.create(productData, files);
 
       // Prepare product data
-      const productData = {
-        ...values,
-        imageProducts: uploadedFiles, // Attach uploaded file info to the product data
-      };
+      // const productData = {
+      //   ...values,
+      //   imageProducts: uploadedFiles, // Attach uploaded file info to the product data
+      // };
 
 
 
       // Call the createProduct function to send data to the backend
-      const response = await ProductService.create(productData);
+      // const response = await ProductService.create(productData);
 
-      if (response.success) {
-        message.success('Sản phẩm đã được tạo thành công!');
+      if (response) {
+        message.success("Sản phẩm đã được tạo thành công!");
+        form.resetFields();
+        setFileList([]);
+        setIsModalVisible(false);
       } else {
-        message.error('Có lỗi xảy ra khi tạo sản phẩm!');
+        message.error("Có lỗi xảy ra khi tạo sản phẩm!");
       }
-
-      // Reset the form and modal
-      form.resetFields();
-      setFileList([]);
-      setIsModalVisible(false);
     } catch (error) {
-      console.log('Validate Failed:', error);
-      message.error('Đã xảy ra lỗi!');
+      console.log("Validate Failed:", error);
+      message.error("Đã xảy ra lỗi!");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -95,6 +109,7 @@ const CreateProducts = forwardRef((_props, ref) => {
         open={isModalVisible}
         onOk={handleOk}
         onCancel={handleCancel}
+        confirmLoading={loading}
       >
         <Form
           form={form}
@@ -156,16 +171,8 @@ const CreateProducts = forwardRef((_props, ref) => {
               ))}
             </Select>
           </Form.Item>
-          <Form.Item
-            label="Hình ảnh sản phẩm"
-            name="imageProducts"
-          >
-            <Upload
-              fileList={fileList}
-              onChange={handleFileChange}
-              beforeUpload={() => false} // Disable auto upload
-              multiple={true}
-            >
+          <Form.Item label="Hình ảnh sản phẩm" name="imageProducts">
+            <Upload fileList={fileList} onChange={handleFileChange} beforeUpload={() => false} multiple={true}>
               <Button>Chọn hình ảnh</Button>
             </Upload>
           </Form.Item>

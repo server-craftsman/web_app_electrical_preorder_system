@@ -2,10 +2,10 @@ import { useState, useRef } from 'react';
 import Search from '../../../components/search';
 import ViewProducts from '../../../components/admin/products/ViewProducts';
 import CreateProducts from '../../../components/admin/products/CreateProducts';
-import { Modal } from 'antd';
 const Products = () => {
-  const [_isModalVisible, setIsModalVisible] = useState(false);
+  const [, setIsModalVisible] = useState(false);
   const createProductRef = useRef<{ handleOpenModal: () => void } | null>(null);
+  const [refreshCategories] = useState(false); // state to trigger refresh
 
   const handleCreateProduct = () => {
     setIsModalVisible(true);
@@ -13,6 +13,10 @@ const Products = () => {
       createProductRef.current.handleOpenModal();
     }
   };
+
+  // const handleCategoryCreated = () => {
+  //   setRefreshCategories(prev => !prev); // toggle to trigger useEffect in ViewCategory
+  // };
 
   return (
     <div>
@@ -22,15 +26,9 @@ const Products = () => {
           Tạo sản phẩm
         </button>
       </div>
-      <ViewProducts />
-      <Modal
-        title="Thêm sản phẩm mới"
-        // open={isModalVisible}
-        // onCancel={handleCancel}
-        // footer={null}
-      >
+      <ViewProducts refresh={refreshCategories} />
+
         <CreateProducts ref={createProductRef} />
-      </Modal>
     </div>
   );
 };

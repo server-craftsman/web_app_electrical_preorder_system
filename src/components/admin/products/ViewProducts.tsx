@@ -1,6 +1,12 @@
 import { Table } from 'antd';
 import Pagination from '../../pagination';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { GetAllProductResponseModel } from '../../../models/api/response/product.res.model';
+import { ProductService } from '../../../services/product/product.service';
+
+interface ViewProductProps {
+  refresh: boolean;
+}
 
 const CustomEyeIcon = () => (
   <svg
@@ -19,9 +25,24 @@ const CustomEyeIcon = () => (
   </svg>
 );
 
-const ViewProducts = () => {
+const ViewProducts = ({refresh}: ViewProductProps) => {
   const [currentPage, setCurrentPage] = useState(1);
+  const [products, setProducts] = useState<GetAllProductResponseModel[]>([]);
 
+  const fetchCategories = async () => {
+        try {
+          const response = await ProductService.getAll({});
+          if (Array.isArray(response.data?.data?.content)) {
+            setProducts(response.data.data.content);
+          }
+        } catch (error) {
+          console.error('Failed to fetch categories:', error);
+        }
+      };
+  
+    useEffect(() => {
+      fetchCategories();
+    }, [refresh]);
   const columns = [
     {
       title: 'Mã sản phẩm',
@@ -50,7 +71,7 @@ const ViewProducts = () => {
     },
     {
       title: 'Danh mục',
-      dataIndex: 'category',
+      dataIndex: ['category', 'name'],
       key: 'category',
     },
     {
@@ -83,7 +104,7 @@ const ViewProducts = () => {
     <div>
       <Table
         columns={columns}
-        dataSource={data}
+        dataSource={products}
         pagination={false}
         footer={() => (
           <Pagination

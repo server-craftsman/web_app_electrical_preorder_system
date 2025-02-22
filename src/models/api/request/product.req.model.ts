@@ -4,11 +4,11 @@ export interface Category {
 }
 
 export interface CreateProductRequestModel {
+  productCode: string;
   name: string;
   quantity: number;
   description: string;
-  productCode: string;
   price: number;
-  position: number;
+  position?: number;
   category: Category;
 }

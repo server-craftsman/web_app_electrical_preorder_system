@@ -8,30 +8,35 @@ import EditCategory from './EditCategory';
 
 interface ViewCategoryProps {
   refresh: boolean;
+  searchTerm: string;
+  refreshKey: number
 }
 
-const ViewCategory = ({ refresh }: ViewCategoryProps) => {
+const ViewCategory = ({ refresh, searchTerm, refreshKey }: ViewCategoryProps) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [categories, setCategories] = useState<GetAllCategoryResponseModel[]>([]);
   const [totalCategories, setTotalCategories] = useState(0);
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);  // State to control modal visibility
   const [categoryToEdit, setCategoryToEdit] = useState<GetAllCategoryResponseModel | null>(null);  // State to hold category data for editing
 
-    const fetchCategories = async () => {
-      try {
-        const response = await CategoryService.getAll({});
-        if (Array.isArray(response.data?.data)) {
-          setCategories(response.data.data);
-          setTotalCategories(response.data?.data.length || 0);
-        }
-      } catch (error) {
-        console.error('Failed to fetch categories:', error);
+  const fetchCategories = async () => {
+    try {
+      const response = await CategoryService.getAll({ searchTerm });
+      if (Array.isArray(response.data?.data)) {
+        const filteredCategories = response.data.data.filter((category: GetAllCategoryResponseModel) =>
+          category.name.toLowerCase().includes(searchTerm.toLowerCase())  // Case-insensitive search
+        );
+        setCategories(filteredCategories);
+        setTotalCategories(filteredCategories.length || 0);
       }
-    };
+    } catch (error) {
+      console.error('Failed to fetch categories:', error);
+    }
+  };
 
   useEffect(() => {
     fetchCategories();
-  }, [refresh]);
+  }, [refresh, searchTerm, refreshKey]);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);

@@ -31,9 +31,15 @@ export interface CreateCategoryResponseModel {
   id: string;
   productCode: string;
   name: string;
+  slug: string;
   quantity: number;
   description: string;
   price: number;
   position: number;
-  category: Category
+  status: string;
+  isDeleted: boolean;
+  category: Category;
+  imageProducts: ImageProduct[];
+  createdAt: string;
+  updatedAt: string;
 }
