@@ -138,9 +138,53 @@ export const BaseService = {
       if (isLoading) store.dispatch(toggleLoading(false));
     }
   },
+
+uploadMedia: async (
+  url: string,
+  file?: any,
+  isMultiple: boolean = false,
+  isLoading: boolean = true
+) => {
+  const formData = new FormData();
+  const maxFileSize = 2 * 1024 * 1024; // 2MB in bytes
+
+  if (isMultiple) {
+    for (let i = 0; i < file.length; i++) {
+      if (file[i].size > maxFileSize) {
+        throw new Error(`File size should not exceed 2MB. File ${file[i].name} is too large.`);
+      }
+      formData.append("files[]", file[i]);
+    }
+  } else {
+    if (file.size > maxFileSize) {
+      throw new Error(`File size should not exceed 2MB. File ${file.name} is too large.`);
+    }
+    formData.append("file", file);
+  }
+  if (isLoading) store.dispatch(toggleLoading(true) as any);
+  const token = storage.getToken();
+  try {
+    const response = await axios({
+      method: "post",
+      url: `${DOMAIN_API}${url}`,
+      data: formData,
+      params: {},
+      headers: {
+        "content-type": "multipart/form-data",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    store.dispatch(toggleLoading(false));
+    return response.data;
+  } catch (error) {
+    handleErrorByToast(error);
+    return null;
+  }
+}
 };
 
 export interface PromiseState<T = unknown> extends AxiosResponse<T> {
+  success: any;
   totalItem: number;
 }
 

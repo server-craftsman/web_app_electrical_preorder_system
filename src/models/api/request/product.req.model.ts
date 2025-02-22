@@ -1,7 +1,14 @@
+export interface Category {
+  id: string;
+  name: string;
+}
+
 export interface CreateProductRequestModel {
   name: string;
-  description: string;
-  price: number;
   quantity: number;
-  categoryId: string;
+  description: string;
+  productCode: string;
+  price: number;
+  position: number;
+  category: Category;
 }
