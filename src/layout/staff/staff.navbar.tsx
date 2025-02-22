@@ -26,7 +26,7 @@ const menuItems = [
     path: ROUTER_URL.STAFF.BASE,
   },
   {
-    label: 'Quản Lý Đơn Hàng',
+    label: 'Tài Khoản',
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -65,10 +65,10 @@ const menuItems = [
       </svg>
     ),
     key: 'product',
-    path: ROUTER_URL.STAFF.PRODUCT,
+    path: ROUTER_URL.STAFF.PREORDER,
   },
   {
-    label: 'Tài Khoản',
+    label: 'Đơn Hàng',
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -86,10 +86,10 @@ const menuItems = [
       </svg>
     ),
     key: 'category',
-    path: ROUTER_URL.STAFF.CATEGORY,
+    path: ROUTER_URL.STAFF.PRODUCT,
   },
   {
-    label: 'Đơn Hàng',
+    label: 'Lịch Sử',
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
