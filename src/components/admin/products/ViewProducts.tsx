@@ -6,6 +6,8 @@ import { ProductService } from '../../../services/product/product.service';
 
 interface ViewProductProps {
   refresh: boolean;
+  searchTerm: string;
+  refreshKey: number
 }
 
 const CustomEyeIcon = () => (
@@ -25,15 +27,20 @@ const CustomEyeIcon = () => (
   </svg>
 );
 
-const ViewProducts = ({ refresh }: ViewProductProps) => {
+const ViewProducts = ({ refresh, searchTerm, refreshKey }: ViewProductProps) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [products, setProducts] = useState<GetAllProductResponseModel[]>([]);
+  const [totalProducts, setTotalProducts] = useState(0);
 
   const fetchProducts = async () => {
     try {
-      const response = await ProductService.getAll({});
+      const response = await ProductService.getAll({ searchTerm });
       if (Array.isArray(response.data?.data?.content)) {
-        setProducts(response.data.data.content);
+        const filterProducts = response.data.data.content.filter((product: GetAllProductResponseModel) => 
+        product.productCode.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        setProducts(filterProducts);
+        setTotalProducts(filterProducts.length || 0);
       }
     } catch (error) {
       console.error('Failed to fetch products:', error);
@@ -42,7 +49,7 @@ const ViewProducts = ({ refresh }: ViewProductProps) => {
 
   useEffect(() => {
     fetchProducts();
-  }, [refresh]);
+  }, [refresh, searchTerm, refreshKey]);
 
   const columns = [
     {
@@ -88,16 +95,20 @@ const ViewProducts = ({ refresh }: ViewProductProps) => {
     },
   ];
 
+  // Calculate the current page data slice
+  const startIndex = (currentPage - 1) * 10;
+  const currentProducts = products.slice(startIndex, startIndex + 10);
+
   return (
     <div>
       <Table
         columns={columns}
-        dataSource={products}
+        dataSource={currentProducts}
         pagination={false}
         footer={() => (
           <Pagination
             currentPage={currentPage}
-            totalPages={Math.ceil(products.length / 10)}
+            totalPages={Math.ceil(totalProducts / 10)}
             onPageChange={setCurrentPage}
           />
         )}

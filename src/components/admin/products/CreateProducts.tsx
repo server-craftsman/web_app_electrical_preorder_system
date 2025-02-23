@@ -1,5 +1,6 @@
-import { Form, message, Modal, Input, InputNumber, Upload, Button, Select } from 'antd';
+import { Form, message, Modal, Input, InputNumber, Upload, Select } from 'antd';
 import { useEffect, useState, forwardRef, useImperativeHandle } from 'react';
+import { UploadOutlined } from '@ant-design/icons';
 // import { BaseService } from '../../../services/config/base.service'; // Adjust import path as needed
 import { ProductService } from '../../../services/product/product.service'; // Add import for createProduct function
 import { CategoryService } from '../../../services/category/category.service';
@@ -88,6 +89,15 @@ const CreateProducts = forwardRef<{ handleOpenModal: () => void }, CreateProduct
             setFileList(info.fileList);
         };
 
+        // Add this new function to check file size
+        const beforeUpload = (file: File) => {
+            const isLt5M = file.size / 1024 / 1024 < 5;
+            if (!isLt5M) {
+                message.error('Kích thước hình ảnh phải nhỏ hơn 5MB!');
+            }
+            return false;
+        };
+
         const handleOpenModal = () => {
             form.resetFields();
             fetchCategories();
@@ -145,14 +155,14 @@ const CreateProducts = forwardRef<{ handleOpenModal: () => void }, CreateProduct
                             name="quantity"
                             rules={[{ required: true, message: 'Vui lòng nhập số lượng!' }]}
                         >
-                            <InputNumber min={0} />
+                            <InputNumber min={0} style={{ width: '100%' }}/>
                         </Form.Item>
                         <Form.Item
                             label="Giá"
                             name="price"
                             rules={[{ required: true, message: 'Vui lòng nhập giá!' }]}
                         >
-                            <InputNumber min={0} />
+                            <InputNumber min={0} style={{ width: '100%' }}/>
                         </Form.Item>
                         <Form.Item
                             label="Danh mục"
@@ -168,8 +178,19 @@ const CreateProducts = forwardRef<{ handleOpenModal: () => void }, CreateProduct
                             </Select>
                         </Form.Item>
                         <Form.Item label="Hình ảnh sản phẩm" name="imageProducts">
-                            <Upload fileList={fileList} onChange={handleFileChange} beforeUpload={() => false} multiple={true}>
-                                <Button>Chọn hình ảnh</Button>
+                            <Upload
+                                listType="picture-card"
+                                fileList={fileList}
+                                onChange={handleFileChange}
+                                beforeUpload={beforeUpload}
+                                multiple={true}
+                            >
+                                {fileList.length >= 5 ? null : (
+                                    <div>
+                                        <UploadOutlined />
+                                        <div style={{ marginTop: 8 }}>Upload Image</div>
+                                    </div>
+                                )}
                             </Upload>
                         </Form.Item>
                     </Form>
