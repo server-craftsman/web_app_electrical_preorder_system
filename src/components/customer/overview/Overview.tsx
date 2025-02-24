@@ -1,24 +1,26 @@
-import { useAuth } from "../../../contexts/AuthContexts"; 
-import { motion } from "framer-motion"; 
+import { useAuth } from "../../../contexts/AuthContexts";
+import { useNavigate } from "react-router-dom";
+import { ROUTER_URL } from "../../../const";
+import { motion } from "framer-motion";
 
 const OverviewComponents = () => {
   const { getCurrentUser } = useAuth();
   const user = getCurrentUser();
-  const userName = user?.fullName || "bạn"; 
+  const userName = user?.fullName || "bạn";
+  const navigate = useNavigate();
 
   return (
     <div className="max-w-4xl mx-auto bg-white shadow-md rounded-2xl p-6 -mt-10 min-h-[590px] flex flex-col items-center justify-center">
-      {/* Hiệu ứng robot lắc qua trái và phải */}
       <motion.div
         className="robot-container"
         animate={{
-          x: [-10, 10, -10], 
+          x: [-10, 10, -10],
         }}
         transition={{
-          duration: 2, 
+          duration: 2,
           repeat: Infinity,
           repeatType: "loop",
-          ease: "easeInOut", 
+          ease: "easeInOut",
         }}
       >
         {/* SVG Robot với cánh tay vẫy */}
@@ -31,14 +33,14 @@ const OverviewComponents = () => {
         >
           {/* Thân robot (màu đỏ) */}
           <rect x="35" y="40" width="30" height="40" fill="red" />
-        
+
           <motion.circle
             cx="50"
             cy="30"
             r="15"
             fill="url(#gradient-head)"
             animate={{
-              scale: [1, 1.1, 1], 
+              scale: [1, 1.1, 1],
             }}
             transition={{
               duration: 0.8,
@@ -47,7 +49,7 @@ const OverviewComponents = () => {
               ease: "easeInOut",
             }}
           />
-          
+
           {/* Mắt robot với hiệu ứng nhấp nháy */}
           <motion.circle
             cx="43"
@@ -55,7 +57,7 @@ const OverviewComponents = () => {
             r="1"
             fill="white"
             animate={{
-              r: [3, 5, 3], 
+              r: [3, 5, 3],
             }}
             transition={{
               duration: 0.5,
@@ -63,14 +65,14 @@ const OverviewComponents = () => {
               repeatType: "loop",
               ease: "easeInOut",
             }}
-          /> 
+          />
           <motion.circle
             cx="57"
             cy="28"
             r="3"
             fill="white"
             animate={{
-              r: [3, 5, 3], 
+              r: [3, 5, 3],
             }}
             transition={{
               duration: 0.5,
@@ -82,7 +84,7 @@ const OverviewComponents = () => {
 
           {/* Mũi robot */}
           <polygon points="50,35 45,40 55,40" fill="white" transform="translate(0, -5)" />
-          
+
           {/* Miệng robot */}
           <path
             d="M 43 42 Q 50 47 57 42"
@@ -90,7 +92,7 @@ const OverviewComponents = () => {
             strokeWidth="1"
             fill="transparent"
             transform="translate(0, -3)"
-          /> 
+          />
 
           {/* Cánh tay trái vẫy (màu hồng) */}
           <motion.rect
@@ -100,7 +102,7 @@ const OverviewComponents = () => {
             height="30"
             fill="green"
             animate={{
-              rotate: [0, 20, 0], 
+              rotate: [0, 20, 0],
             }}
             transition={{
               duration: 1,
@@ -116,7 +118,7 @@ const OverviewComponents = () => {
             height="30"
             fill="purple"
             animate={{
-              rotate: [0, -20, 0], 
+              rotate: [0, -20, 0],
             }}
             transition={{
               duration: 1,
@@ -128,7 +130,7 @@ const OverviewComponents = () => {
           {/* Chân robot (màu xanh lá) */}
           <rect x="35" y="80" width="10" height="15" fill="blue" />
           <rect x="55" y="80" width="10" height="15" fill="blue" />
-          
+
           {/* Thêm đổ bóng cho robot */}
           <defs>
             <filter id="f1" x="0" y="0" width="200%" height="200%">
@@ -151,11 +153,33 @@ const OverviewComponents = () => {
           </defs>
         </svg>
       </motion.div>
-
-      {/* Lời chào */}
-      <h2 className="text-xl font-bold text-center mt-4">
+      <h2 className="text-2xl font-bold text-center mt-4">
         Xin chào, {userName}!
       </h2>
+      <p className="text-xl text-center text-gray-600 mt-4">
+        Chào mừng bạn đến với hệ thống cửa hàng của chúng tôi! Tại đây, bạn có thể{" "}
+        <span
+          className="text-blue-500 cursor-pointer hover:underline"
+          onClick={() => navigate(ROUTER_URL.CUSTOMER.ORDERS)}
+        >
+          theo dõi đơn hàng gần nhất
+        </span>,{" "}
+        cập nhật{" "}
+        <span
+          className="text-blue-500 cursor-pointer hover:underline"
+          onClick={() => navigate(ROUTER_URL.CUSTOMER.PROFILE)}
+        >
+          thông tin tài khoản
+        </span>{" "}
+        và{" "}
+        <span
+          className="text-blue-500 cursor-pointer hover:underline"
+          onClick={() => navigate(ROUTER_URL.CUSTOMER.CHANGE_PASSWORD)}
+        >
+          cài đặt bảo mật
+        </span>{" "}
+        một cách dễ dàng.
+      </p>
     </div>
   );
 };

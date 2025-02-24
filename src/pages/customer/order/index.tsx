@@ -1,7 +1,11 @@
+import OrderComponents from "../../../components/customer/order/Order";
+
 const Order = () => {
   return (
-    <div>index</div>
-  )
-}
+    <div className="">
+      <OrderComponents  />
+    </div>
+  );
+};
 
-export default Order
+export default Order ;

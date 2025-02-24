@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useNavigate} from "react-router-dom"; 
+import { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom"; 
 import { Menu } from "antd";
 import { ROUTER_URL } from '../../const';
 
@@ -13,9 +13,9 @@ import {
 } from "@ant-design/icons";
 
 const CustomerNavbar = () => {
-
     const navigate = useNavigate();
-    const [selectedKey, setSelectedKey] = useState(""); 
+    const location = useLocation(); 
+    const [selectedKey, setSelectedKey] = useState("overview"); 
 
     const menuItems = [
         {
@@ -56,17 +56,25 @@ const CustomerNavbar = () => {
         },
     ];
 
+
+    useEffect(() => {
+        const currentItem = menuItems.find(item => item.path === location.pathname);
+        if (currentItem) {
+            setSelectedKey(currentItem.key);
+        } else {
+            setSelectedKey("overview"); 
+        }
+    }, [location.pathname]); 
+
     return (
         <div className="flex items-center justify-center bg-gray-100 h-[590px]">
-
             <div className="bg-white shadow-md rounded-3xl p-8 w-80 h-full flex flex-col justify-center">
-
-            <Menu
+                <Menu
                     mode="vertical"
                     selectedKeys={[selectedKey]} 
                     className="space-y-6"
                     onClick={({ key }) => {
-                        setSelectedKey(key); 
+                        setSelectedKey(key);
                         const item = menuItems.find((menu) => menu.key === key);
                         if (item) {
                             navigate(item.path);
@@ -87,7 +95,6 @@ const CustomerNavbar = () => {
             </div>
         </div>
     );
-
 };
 
 export default CustomerNavbar;

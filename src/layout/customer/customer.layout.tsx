@@ -35,19 +35,19 @@ const CustomerLayout = () => {
       <Layout className="flex flex-row">
         <Layout className="flex-1">
           <Header className="bg-white flex justify-between items-center px-8 shadow-lg">
-           
-            <div className="flex items-center space-x-3 hover:opacity-80 transition-opacity">
-          <img
-            src={logo1}
-            alt="Eureka Logo"
-            className="w-10 h-10 rounded-full object-cover shadow-sm"
-          />
-          <span className="text-2xl font-bold bg-gradient-to-r from-red-600 to-black text-transparent bg-clip-text tracking-tight">
-            Elecee
-          </span>
-        </div>
 
-           
+            <Link to="/" className="flex items-center space-x-3 hover:opacity-80 transition-opacity">
+              <img
+                src={logo1}
+                alt="Eureka Logo"
+                className="w-10 h-10 rounded-full object-cover shadow-sm"
+              />
+              <span className="text-2xl font-bold bg-gradient-to-r from-red-600 to-black text-transparent bg-clip-text tracking-tight">
+                Elecee
+              </span>
+            </Link>
+
+
             <div className="ml-auto flex items-center gap-6">
               {user && (
                 <Dropdown menu={userMenu} placement="bottomRight" arrow={true}>
