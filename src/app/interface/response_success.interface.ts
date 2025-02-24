@@ -4,7 +4,7 @@ export interface ResponseSuccessForList<T> {
   message: string;
   data: {
     content: T;
-    pageable?: Pageable;
+    page?: Pageable;
   };
 }
 

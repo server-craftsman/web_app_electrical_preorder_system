@@ -26,15 +26,21 @@ const Products = () => {
     setRefreshKey(prevKey => prevKey + 1);
   };
 
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      handleSearch(event.currentTarget.value);
+    }
+  };
+
   return (
     <div>
       <div className="flex justify-between mb-4">
-        <Search onSearch={handleSearch} />
+        <Search onSearch={handleSearch} onKeyPress={handleKeyPress} />
         <button onClick={handleCreateProduct} className="btn-submit">
           Tạo sản phẩm
         </button>
       </div>
-      <ViewProducts refresh={refreshProducts} searchTerm={searchTerm} refreshKey={refreshKey}/>
+      <ViewProducts refresh={refreshProducts} searchTerm={searchTerm} refreshKey={refreshKey} />
 
       <CreateProducts ref={createProductRef} onProductCreated={handleProductCreated} />
     </div>

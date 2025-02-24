@@ -4,11 +4,13 @@ import { SearchOutlined } from '@ant-design/icons';
 interface SearchProps {
   onSearch: (searchTerm: string) => void;
   placeholder?: string;
+  onKeyPress?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
 const Search: React.FC<SearchProps> = ({
   onSearch,
   placeholder = 'Tìm kiếm...',
+  onKeyPress
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -22,6 +24,12 @@ const Search: React.FC<SearchProps> = ({
 
   const memoizedPlaceholder = useMemo(() => placeholder, [placeholder]);
 
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      handleSearchSubmit();
+    }
+  };
+
   return (
     <div className="flex items-center">
       <input
@@ -33,6 +41,7 @@ const Search: React.FC<SearchProps> = ({
         style={{
           boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
         }}
+        onKeyDown={onKeyPress || handleKeyPress}
       />
       <button
         onClick={handleSearchSubmit}
