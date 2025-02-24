@@ -139,48 +139,66 @@ export const BaseService = {
     }
   },
 
-uploadMedia: async (
-  url: string,
-  file?: any,
-  isMultiple: boolean = false,
-  isLoading: boolean = true
-) => {
-  const formData = new FormData();
-  const maxFileSize = 2 * 1024 * 1024; // 2MB in bytes
+  uploadMedia: async (
+    url: string,
+    file?: any,
+    isMultiple: boolean = false,
+    isLoading: boolean = true
+  ) => {
+    const formData = new FormData();
+    const maxFileSize = 2 * 1024 * 1024; // 2MB in bytes
 
-  if (isMultiple) {
-    for (let i = 0; i < file.length; i++) {
-      if (file[i].size > maxFileSize) {
-        throw new Error(`File size should not exceed 2MB. File ${file[i].name} is too large.`);
+    if (isMultiple) {
+      for (let i = 0; i < file.length; i++) {
+        if (file[i].size > maxFileSize) {
+          throw new Error(`File size should not exceed 2MB. File ${file[i].name} is too large.`);
+        }
+        formData.append("files[]", file[i]);
       }
-      formData.append("files[]", file[i]);
+    } else {
+      if (file.size > maxFileSize) {
+        throw new Error(`File size should not exceed 2MB. File ${file.name} is too large.`);
+      }
+      formData.append("file", file);
     }
-  } else {
-    if (file.size > maxFileSize) {
-      throw new Error(`File size should not exceed 2MB. File ${file.name} is too large.`);
+    if (isLoading) store.dispatch(toggleLoading(true) as any);
+    const token = storage.getToken();
+    try {
+      const response = await axios({
+        method: "post",
+        url: `${DOMAIN_API}${url}`,
+        data: formData,
+        params: {},
+        headers: {
+          "content-type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      store.dispatch(toggleLoading(false));
+      return response.data;
+    } catch (error) {
+      handleErrorByToast(error);
+      return null;
     }
-    formData.append("file", file);
-  }
-  if (isLoading) store.dispatch(toggleLoading(true) as any);
-  const token = storage.getToken();
-  try {
-    const response = await axios({
-      method: "post",
-      url: `${DOMAIN_API}${url}`,
-      data: formData,
-      params: {},
-      headers: {
-        "content-type": "multipart/form-data",
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    store.dispatch(toggleLoading(false));
-    return response.data;
-  } catch (error) {
-    handleErrorByToast(error);
-    return null;
-  }
-}
+  },
+
+  createProduct: async <T = Record<string, unknown>>(
+    url: string,
+    formData: FormData,
+    isLoading: boolean = true,
+    toggleLoading?: (isLoading: boolean) => void
+  ): Promise<PromiseState<T>> => {
+    if (toggleLoading) store.dispatch(toggleLoading(isLoading) as any);
+    return axiosInstance
+      .post<T, PromiseState<T>>(`${url}`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .finally(() => {
+        if (toggleLoading) toggleLoading(false);
+      });
+  },
 };
 
 export interface PromiseState<T = unknown> extends AxiosResponse<T> {
@@ -197,7 +215,7 @@ axiosInstance.interceptors.request.use(
     return config as InternalAxiosRequestConfig;
   },
   (err) => {
-    setTimeout(() => store.dispatch(toggleLoading(false)), 5000); // Hide loading with delay
+    setTimeout(() => store.dispatch(toggleLoading(false)), 2000); // Hide loading with delay
     return handleErrorByToast(err);
   }
 );
@@ -221,21 +239,20 @@ axiosInstance.interceptors.response.use(
 
           break;
         case HTTP_STATUS.FORBIDDEN:
-          // helper.notificationMessage(
-          //   'Access denied. You do not have permission to perform this action.',
-          //   'error'
-          // );
-          // storage.clearLocalStorage();
-          // setTimeout(() => {
-          //   window.location.href = ROUTER_URL.LOGIN;
-          // }, 3000);
-          alert("access denied")
+          helper.notificationMessage(
+            'Access denied. You do not have permission to perform this action.',
+            'error'
+          );
+          storage.clearLocalStorage();
+          setTimeout(() => {
+            window.location.href = ROUTER_URL.LOGIN;
+          }, 3000);
           break;
         case HTTP_STATUS.NOT_FOUND:
           helper.notificationMessage('Requested resource not found.', 'error');
-          // setTimeout(() => {
-          //   window.location.href = ROUTER_URL.LOGIN;
-          // }, 2000);
+          setTimeout(() => {
+            window.location.href = ROUTER_URL.LOGIN;
+          }, 2000);
           break;
 
         case HTTP_STATUS.INTERNAL_SERVER_ERROR:
