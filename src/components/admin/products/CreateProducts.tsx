@@ -5,6 +5,7 @@ import { ProductService } from '../../../services/product/product.service';
 import { CategoryService } from '../../../services/category/category.service';
 import { CreateProductRequestModel } from '../../../models/api/request/product.req.model';
 import { limitMemoryFile } from '../../../utils/validation';
+import { Rule } from 'antd/es/form';
 
 interface CreateProductsProps {
     onProductCreated: () => void;
@@ -99,6 +100,55 @@ const CreateProducts = forwardRef<{ handleOpenModal: () => void }, CreateProduct
             handleOpenModal
         }));
 
+        const validateFields = {
+            productCode: {
+                required: true,
+                pattern: /^[A-Z0-9]{3,10}$/,
+                message: 'Mã sản phẩm phải từ 3-10 ký tự, chỉ chứa chữ hoa và số!'
+            },
+            name: {
+                required: true,
+                min: 3,
+                max: 100,
+                pattern: /^[a-zA-Z0-9\sÀ-ỹ]+$/,
+                message: 'Tên sản phẩm phải từ 3-100 ký tự, chỉ chứa chữ, số và khoảng trắng!'
+            },
+            description: {
+                max: 500,
+                message: 'Mô tả không được vượt quá 500 ký tự!'
+            },
+            quantity: {
+                required: true,
+                type: 'number',
+                min: 0,
+                max: 10000,
+                message: 'Số lượng phải từ 0 đến 10,000!'
+            },
+            price: {
+                required: true,
+                type: 'number',
+                min: 1000,
+                max: 100000000,
+                message: 'Giá phải từ 1,000 đến 100,000,000 VND!'
+            },
+            category: {
+                required: true,
+                message: 'Vui lòng chọn danh mục!'
+            },
+            imageProducts: {
+                required: true,
+                validator: (_: any, fileList: any[]) => {
+                    if (!fileList || fileList.length === 0) {
+                        return Promise.reject('Vui lòng chọn ít nhất 1 hình ảnh!');
+                    }
+                    if (fileList.length > 5) {
+                        return Promise.reject('Không được chọn quá 5 hình ảnh!');
+                    }
+                    return Promise.resolve();
+                }
+            },
+        };
+
         return (
             <div>
                 <Modal
@@ -123,41 +173,42 @@ const CreateProducts = forwardRef<{ handleOpenModal: () => void }, CreateProduct
                         <Form.Item
                             label="Mã sản phẩm"
                             name="productCode"
-                            rules={[{ required: true, message: 'Vui lòng nhập mã sản phẩm!' }]}
+                            rules={[validateFields.productCode as Rule]}
                         >
-                            <Input />
+                            <Input placeholder="Nhập mã sản phẩm. Ex: SP001" />
                         </Form.Item>
                         <Form.Item
                             label="Tên sản phẩm"
                             name="name"
-                            rules={[{ required: true, message: 'Vui lòng nhập tên sản phẩm!' }]}
+                            rules={[validateFields.name as Rule]}
                         >
                             <Input />
                         </Form.Item>
                         <Form.Item
                             label="Mô tả"
                             name="description"
+                            rules={[validateFields.description as Rule]}
                         >
                             <Input.TextArea />
                         </Form.Item>
                         <Form.Item
                             label="Số lượng"
                             name="quantity"
-                            rules={[{ required: true, message: 'Vui lòng nhập số lượng!' }]}
+                            rules={[validateFields.quantity as Rule]}
                         >
                             <InputNumber min={0} style={{ width: '100%' }}/>
                         </Form.Item>
                         <Form.Item
                             label="Giá"
                             name="price"
-                            rules={[{ required: true, message: 'Vui lòng nhập giá!' }]}
+                            rules={[validateFields.price as Rule]}
                         >
                             <InputNumber min={0} style={{ width: '100%' }}/>
                         </Form.Item>
                         <Form.Item
                             label="Danh mục"
                             name="category"
-                            rules={[{ required: true, message: 'Vui lòng chọn danh mục!' }]}
+                            rules={[validateFields.category as Rule]}
                         >
                             <Select>
                                 {categories.map((category) => (
@@ -167,7 +218,11 @@ const CreateProducts = forwardRef<{ handleOpenModal: () => void }, CreateProduct
                                 ))}
                             </Select>
                         </Form.Item>
-                        <Form.Item label="Hình ảnh sản phẩm" name="imageProducts">
+                        <Form.Item
+                            label="Hình ảnh sản phẩm"
+                            name="imageProducts"
+                            rules={[validateFields.imageProducts as Rule]}
+                        >
                             <Upload
                                 listType="picture-card"
                                 fileList={fileList}
