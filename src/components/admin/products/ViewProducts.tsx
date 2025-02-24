@@ -31,13 +31,17 @@ const ViewProducts = ({ refresh, searchTerm, refreshKey }: ViewProductProps) => 
   const [currentPage, setCurrentPage] = useState(1);
   const [products, setProducts] = useState<GetAllProductResponseModel[]>([]);
   const [totalProducts, setTotalProducts] = useState(0);
-  const [loading, setLoading] = useState(false); // Added loading state
-  const pageSize = 10; // Explicitly define page size
+  const [loading, setLoading] = useState(false);
+  const pageSize = 10;
 
   const fetchProducts = async (page: number) => {
-    setLoading(true); // Start loading
+    setLoading(true);
     try {
-      const response = await ProductService.getAll({ searchTerm, page: page - 1, size: pageSize }); // Adjust page to 0-based if API expects it
+      const response = await ProductService.getAll({
+        searchTerm,
+        page: page - 1, // Adjust if API uses 1-based indexing
+        size: pageSize,
+      });
       const content = response?.data?.data?.content;
       const total = response?.data?.data?.page?.totalElements;
 
@@ -53,19 +57,17 @@ const ViewProducts = ({ refresh, searchTerm, refreshKey }: ViewProductProps) => 
       setProducts([]);
       setTotalProducts(0);
     } finally {
-      setLoading(false); // End loading
+      setLoading(false);
     }
   };
 
-  // Reset page to 1 when searchTerm or refreshKey changes
   useEffect(() => {
-    setCurrentPage(1); // Reset to first page
-  }, [searchTerm, refreshKey]);
+    setCurrentPage(1); // Reset to first page on search or refresh
+  }, [refreshKey]);
 
-  // Fetch products when currentPage, refresh, or dependencies change
   useEffect(() => {
     fetchProducts(currentPage);
-  }, [currentPage, refresh, searchTerm, refreshKey]);
+  }, [currentPage, refresh, refreshKey]);
 
   const columns = [
     { title: 'Mã sản phẩm', dataIndex: 'productCode', key: 'productCode' },
@@ -92,17 +94,15 @@ const ViewProducts = ({ refresh, searchTerm, refreshKey }: ViewProductProps) => 
       <Table
         columns={columns}
         dataSource={products}
-        loading={loading} // Show loading spinner
-        pagination={false} // Disable built-in pagination
-        locale={{ emptyText: 'Không có sản phẩm nào' }} // Custom empty message
-        rowKey="productCode" // Unique key for each row
+        loading={loading}
+        pagination={false}
+        locale={{ emptyText: 'Không có sản phẩm nào' }}
+        rowKey="productCode"
         footer={() => (
           <Pagination
             currentPage={currentPage}
             totalPages={Math.ceil(totalProducts / pageSize)}
-            onPageChange={(page) => {
-              setCurrentPage(page);
-            }}
+            onPageChange={(page) => setCurrentPage(page)}
           />
         )}
       />

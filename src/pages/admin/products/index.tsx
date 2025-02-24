@@ -6,8 +6,8 @@ import CreateProducts from '../../../components/admin/products/CreateProducts';
 const Products = () => {
   const [, setIsModalVisible] = useState(false);
   const createProductRef = useRef<{ handleOpenModal: () => void } | null>(null);
-  const [refreshProducts, setRefreshProducts] = useState(false); // state to trigger refresh
-  const [searchTerm, setSearchTerm] = useState('')
+  const [refreshProducts, setRefreshProducts] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
   const [refreshKey, setRefreshKey] = useState(0);
 
   const handleCreateProduct = () => {
@@ -18,30 +18,28 @@ const Products = () => {
   };
 
   const handleProductCreated = () => {
-    setRefreshProducts(prev => !prev); // toggle to trigger useEffect in ViewProducts
+    setRefreshProducts((prev) => !prev); // Trigger refresh
+    setRefreshKey((prev) => prev + 1); // Ensure re-fetch
   };
 
   const handleSearch = (value: string) => {
     setSearchTerm(value);
-    setRefreshKey(prevKey => prevKey + 1);
-  };
-
-  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter') {
-      handleSearch(event.currentTarget.value);
-    }
+    setRefreshKey((prev) => prev + 1); // Trigger re-fetch in ViewProducts
   };
 
   return (
     <div>
       <div className="flex justify-between mb-4">
-        <Search onSearch={handleSearch} onKeyPress={handleKeyPress} />
+        <Search onSearch={handleSearch} placeholder="Tìm kiếm sản phẩm..." />
         <button onClick={handleCreateProduct} className="btn-submit">
           Tạo sản phẩm
         </button>
       </div>
-      <ViewProducts refresh={refreshProducts} searchTerm={searchTerm} refreshKey={refreshKey} />
-
+      <ViewProducts
+        refresh={refreshProducts}
+        searchTerm={searchTerm}
+        refreshKey={refreshKey}
+      />
       <CreateProducts ref={createProductRef} onProductCreated={handleProductCreated} />
     </div>
   );
