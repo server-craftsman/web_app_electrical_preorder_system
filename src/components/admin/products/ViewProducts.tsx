@@ -42,7 +42,6 @@ const ViewProducts = ({ refresh, searchTerm, refreshKey }: ViewProductProps) => 
       const total = response?.data?.data?.page?.totalElements;
 
       if (Array.isArray(content)) {
-        console.log('Products fetched:', content);
         setProducts(content);
         setTotalProducts(total || 0);
       } else {
