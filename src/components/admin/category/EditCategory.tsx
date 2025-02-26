@@ -1,33 +1,35 @@
-import { useState, useEffect } from 'react';
+import {  useEffect } from 'react';
 import { Form, Input, Button } from 'antd';
 import { GetAllCategoryResponseModel } from '../../../models/api/response/category.res.model';
 import { CategoryService } from '../../../services/category/category.service';
 
 interface EditCategoryProps {
   category: GetAllCategoryResponseModel;  // Receive category data as prop
+  onEditSuccess: () => void;
 }
 
-const EditCategory = ({ category }: EditCategoryProps) => {
-  const [form] = Form.useForm();
-  const [isLoading, setIsLoading] = useState(false);
+const EditCategory = ({ category, onEditSuccess }: EditCategoryProps) => {
+  const [form] = Form.useForm();  
 
   // Populate form with category data
   useEffect(() => {
     form.setFieldsValue({
+      id: category.id,
       name: category.name,
     });
-  }, [category]);
+  }, []);
 
   const handleSubmit = async () => {
-    setIsLoading(true);
     try {
       const values = form.getFieldsValue();
-      const updatedCategory = await CategoryService.update(category.id ?? '', values);  // Ensure id is a string
-      console.log('Updated category:', updatedCategory);
+      const updatedCategory = await CategoryService.update({ ...values, id: category.id });     
+      if(updatedCategory){
+        onEditSuccess();
+      }
     } catch (error) {
       console.error('Failed to update category:', error);
     } finally {
-      setIsLoading(false);
+      console.log("Load success!");
     }
   };
 
@@ -52,7 +54,6 @@ const EditCategory = ({ category }: EditCategoryProps) => {
         <Button
           type="primary"
           htmlType="submit"
-          loading={isLoading}
           block
         >
           Save Changes

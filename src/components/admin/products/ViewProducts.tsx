@@ -3,7 +3,8 @@ import Pagination from '../../pagination';
 import { useState, useEffect } from 'react';
 import { GetAllProductResponseModel } from '../../../models/api/response/product.res.model';
 import { ProductService } from '../../../services/product/product.service';
-
+import { useNavigate } from 'react-router-dom';
+import { ROUTER_URL } from '../../../const';
 interface ViewProductProps {
   refresh: boolean;
   searchTerm: string;
@@ -33,6 +34,8 @@ const ViewProducts = ({ refresh, searchTerm, refreshKey }: ViewProductProps) => 
   const [totalProducts, setTotalProducts] = useState(0);
   const [loading, setLoading] = useState(false);
   const pageSize = 10;
+
+  const navigate = useNavigate();
 
   const fetchProducts = async (page: number) => {
     setLoading(true);
@@ -79,9 +82,12 @@ const ViewProducts = ({ refresh, searchTerm, refreshKey }: ViewProductProps) => 
     {
       title: 'Hành động',
       key: 'action',
-      render: () => (
+      render:(_: string, record: GetAllProductResponseModel) => (
         <span className="flex space-x-2">
-          <button className="bg-blue-600 text-white p-2 rounded-full shadow-lg hover:bg-blue-700">
+          <button 
+          className="bg-blue-600 text-white p-2 rounded-full shadow-lg hover:bg-blue-700"
+          onClick={() => navigate(`${ROUTER_URL.ADMIN.PRODUCT}/${record.id}`)}
+          >
             <CustomEyeIcon />
           </button>
         </span>

@@ -1,5 +1,5 @@
 export interface GetAllCategoryResponseModel {
-  id: string | null;
+  id: string;
   name: string;
   createdAt: string | null;
   updatedAt: string | null;
@@ -7,10 +7,15 @@ export interface GetAllCategoryResponseModel {
 }
 [];
 
-export interface UpdateCategoryResponseModel {
+// export interface UpdateCategoryResponseModel {
+//   id: string;
+//   name: string;
+// }
+
+export interface UpdateCategoryResponse {
   id: string;
   name: string;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: string | null;
+  updatedAt: string | null;
   deleted: boolean;
 }

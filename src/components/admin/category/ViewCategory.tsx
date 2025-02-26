@@ -1,5 +1,5 @@
-import { Modal, Table } from 'antd';
-import { useState, useEffect, useCallback } from 'react';
+import { message, Modal, Table } from 'antd';
+import { useState, useEffect } from 'react';
 import Pagination from '../../pagination';
 import { CustomEditIcon, CustomDeleteIcon } from './Icons';
 import { CategoryService } from '../../../services/category/category.service';
@@ -34,6 +34,10 @@ const ViewCategory = ({ refresh, searchTerm, refreshKey }: ViewCategoryProps) =>
     }
   };
 
+  useEffect(() => {
+    fetchCategories();
+  }, [refresh, searchTerm, refreshKey]);
+
   const deleteCategory = async (categoryId: string) => {
     try {
       const response = await CategoryService.delete(categoryId);
@@ -44,32 +48,22 @@ const ViewCategory = ({ refresh, searchTerm, refreshKey }: ViewCategoryProps) =>
     }
   };
 
-  const handleDeleteCategory = useCallback(
-    (categoryId: string) => {
-      Modal.confirm({
-        title: "Are you sure you want to delete this category?",
-        footer: [
-          <button key="back" onClick={() => Modal.destroyAll()}>
-            Cancel
-          </button>,
-          <button key="submit" className="bg-gradient-tone ml-3" onClick={async () => {
-            const success = await deleteCategory(categoryId);
-            if (success) {
-              fetchCategories();
-              Modal.destroyAll();
-            }
-          }}>
-            OK
-          </button>
-        ]
-      });
-    },
-    [fetchCategories]
-  );
+  
+  const handleDeleteCategory = (categoryId: string) => {
+    Modal.confirm({
+      title: "Bạn có chắc chắn muốn xóa danh mục này?",
+      onOk: async () => {
+        const success = await deleteCategory(categoryId);
+        if (success) {
+          message.success("Xóa thành công!");
+          fetchCategories();
+          Modal.destroyAll();
+        }
+      },
+      onCancel: () => Modal.destroyAll(),
+    });
+  };
 
-  useEffect(() => {
-    fetchCategories();
-  }, [refresh, searchTerm, refreshKey]);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -86,11 +80,11 @@ const ViewCategory = ({ refresh, searchTerm, refreshKey }: ViewCategoryProps) =>
       dataIndex: 'name',
       key: 'name',
     },
-    {
-      title: 'Description',
-      dataIndex: 'description',
-      key: 'description',
-    },
+    // {
+    //   title: 'Description',
+    //   dataIndex: 'description',
+    //   key: 'description',
+    // },
     {
       title: 'Hành động',
       key: 'action',
@@ -137,7 +131,15 @@ const ViewCategory = ({ refresh, searchTerm, refreshKey }: ViewCategoryProps) =>
         onCancel={() => setIsEditModalVisible(false)}
         footer={null}
       >
-        {categoryToEdit && <EditCategory category={categoryToEdit} />}
+       {categoryToEdit && (
+    <EditCategory 
+      category={categoryToEdit} 
+      onEditSuccess={() => {
+        fetchCategories(); // Refresh data
+        setIsEditModalVisible(false); // Close modal
+      }} 
+    />
+  )}
       </Modal>
     </div>
   );

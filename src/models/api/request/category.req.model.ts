@@ -1,5 +1,5 @@
 export interface CreateCategoryRequestModel {
-  id: string;
+  id: string | null;
   name: string;
   createdAt: string;
   updatedAt: string;
@@ -9,7 +9,4 @@ export interface CreateCategoryRequestModel {
 export interface UpdateCategoryRequestModel {
   id: string;
   name: string;
-  createdAt: string;
-  updatedAt: string;
-  deleted: boolean;
 }

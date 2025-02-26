@@ -2,6 +2,7 @@ import { lazy } from 'react';
 
 import { ROUTER_URL } from '../../const/router.path';
 import { RouteObject } from 'react-router-dom';
+import DetailProducts from '../../components/admin/products/DetailProducts';
 //import admin page
 const Dashboard = lazy(() => import('../../pages/admin/overview/index'));
 const Account = lazy(() => import('../../pages/admin/account/index'));
@@ -34,6 +35,10 @@ export const adminSubPaths: Record<string, RouteObject[]> = {
         {
           element: <StageHistory />,
           path: ROUTER_URL.ADMIN.HISTORY,
-    },
+        },
+        {
+          element: <DetailProducts />,
+          path: `${ROUTER_URL.ADMIN.PRODUCT}/:productId`,
+        },
   ],
 };
