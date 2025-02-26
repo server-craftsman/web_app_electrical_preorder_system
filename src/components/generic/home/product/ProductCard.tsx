@@ -3,6 +3,7 @@ import { GetAllProductResponseModel } from '../../../../models/api/response/prod
 import { formatCurrency } from '../../../../utils/helper';
 import { ROUTER_URL } from '../../../../const';
 import { useNavigate } from 'react-router-dom';
+import { ProductService } from '../../../../services/product/product.service';
 
 
 interface ProductCardProps {
@@ -25,6 +26,18 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
   const discountedPrice = product.price * 0.9;
 
+  const fetchAndNavigate = async () => {
+    try {
+      const response = await ProductService.detail(product.id);
+      const data = response.data.data;
+      if (data && data.slug) {
+        navigate(`${ROUTER_URL.COMMON.PRODUCT_DETAIL}/${data.slug}`);
+      }
+    } catch (error) {
+      console.error("Failed to fetch product data", error);
+    }
+  };
+
   return (
     <div className="bg-white shadow-md rounded-md overflow-hidden w-[228px] h-[410px]">
       {/* Image Section */}
@@ -34,7 +47,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         onMouseLeave={handleMouseLeave}
       >
         <img
-          onClick={() => navigate(`${ROUTER_URL.COMMON.PRODUCT_DETAIL}/${product.slug}`)}
+          onClick={fetchAndNavigate}
           src={
             product.imageProducts.length > 1 && isHovered
               ? product.imageProducts[1].imageUrl
@@ -58,12 +71,12 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       </div>
       {/* Content Section */}
       <div className="p-4">
-      <h3
-  onClick={() => navigate(`${ROUTER_URL.COMMON.PRODUCT_DETAIL}/${product.slug}`)}
-  className="text-sm mx-auto py-2 font-semibold text-left h-[65px] cursor-pointer hover:text-blue-500"
->
-  {product.name}
-</h3>
+        <h3
+          onClick={fetchAndNavigate}
+          className="text-sm mx-auto py-2 font-semibold text-left h-[65px] cursor-pointer hover:text-blue-500"
+        >
+          {product.name}
+        </h3>
         <div className="flex items-center justify-between mt-2">
           <div>
             <span className="text-red-500 font-bold text-base">

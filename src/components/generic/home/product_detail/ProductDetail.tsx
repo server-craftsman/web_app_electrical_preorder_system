@@ -1,15 +1,19 @@
-import PropTypes from 'prop-types'; // Import PropTypes
 import { useState, useEffect } from 'react';
 import productImage from '../../../../assets/Carousel_4.jpg';
 import thumb1 from '../../../../assets/Elecee_logo.jpg';
 import thumb2 from '../../../../assets/Carousel_2.jpg';
 import thumb3 from '../../../../assets/imageuilogin.jpg';
-
+// import { Product } from '../../../../models/modules/Product';
 interface ProductDetailProps {
-  productSlug: string;
+  product: {
+    id: string;
+    name: string;
+    price: number;
+    // Add other product fields as needed
+  };
 }
 
-const ProductDetail: React.FC<ProductDetailProps> = () => { 
+const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => { 
   const thumbnails = [thumb1, thumb2, thumb3];
   const [mainImage, setMainImage] = useState(productImage);
   const [quantity, setQuantity] = useState(1);
@@ -60,13 +64,13 @@ const ProductDetail: React.FC<ProductDetailProps> = () => {
       {/* Right: Product Details */}
       <div className="space-y-4">
         
-        <h1 className="text-2xl font-bold">Trạm sạc LISEN 3 trong 1</h1>
+        <h1 className="text-2xl font-bold">{product.name}</h1>
         <div className="flex items-center space-x-2">
           <span className="text-yellow-500">★★★★★</span>
           <span className="text-gray-600">(1 đánh giá)</span>
         </div>
         <div className="text-red-500 text-2xl font-bold">
-          999,000đ <span className="line-through text-gray-500 text-lg">1,300,000đ</span>
+          {product.price}đ
         </div>
         <ul className="list-disc list-inside space-y-2 text-gray-700">
           <li>Sạc 3 thiết bị cùng lúc</li>
@@ -116,9 +120,5 @@ const ProductDetail: React.FC<ProductDetailProps> = () => {
   );
 };
 
-// **Định nghĩa PropTypes bên ngoài function**
-ProductDetail.propTypes = {
-  productSlug: PropTypes.string.isRequired,
-};
 
 export default ProductDetail;
