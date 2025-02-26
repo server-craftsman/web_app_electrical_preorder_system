@@ -12,3 +12,13 @@ export interface CreateProductRequestModel {
   position?: number;
   category: Category;
 }
+
+export interface UpdateProductRequestModel {
+  productCode: string;
+  name: string;
+  quantity: number; // Assuming @Min(0) means non-negative
+  description: string;
+  price: number; // Assuming BigDecimal is used for precise decimal values
+  position: number; // Assuming @PositiveOrZero means non-negative
+  category: Category;
+}

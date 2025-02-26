@@ -28,7 +28,24 @@ export interface GetAllProductResponseModel {
 }
 
 
-export interface CreateCategoryResponseModel {
+export interface CreateProductResponseModel {
+  id: string;
+  productCode: string;
+  name: string;
+  slug: string;
+  quantity: number;
+  description: string;
+  price: number;
+  position: number;
+  status: string;
+  isDeleted: boolean;
+  category: Category;
+  imageProducts: ImageProduct[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface UpdateProductResponseModel {
   id: string;
   productCode: string;
   name: string;

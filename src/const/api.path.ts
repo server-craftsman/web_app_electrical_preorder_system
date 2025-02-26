@@ -8,7 +8,7 @@ export const API_PATH = {
   PRODUCT: {
     GET_ALL: '/products',
     DETAIL: '/products/:id',
-    
+    UPDATE: '/products/:id',
   },
   CATEGORY: {
     BASE: '/categories',
