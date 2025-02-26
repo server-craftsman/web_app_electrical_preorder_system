@@ -7,7 +7,7 @@ import { MainLayout } from '../../layout/main-layout/main.layout';
 const Login = lazy(() => import('../../pages/login'));
 const Register = lazy(() => import('../../pages/register'));
 const Home = lazy(() => import('../../pages/home'));
-const ProductPage = lazy(() => import('../../pages/public/product_details'));
+const ProductDetails = lazy(() => import('../../pages/public/product_details'));
 //======================================================
 //export public sub paths
 
@@ -21,7 +21,7 @@ export const publicSubPaths: Record<string, RouteObject[]> = {
           path: ROUTER_URL.COMMON.HOME,
         },
         {
-          element: <ProductPage />,
+          element: <ProductDetails />,
           path: `${ROUTER_URL.COMMON.PRODUCT_DETAIL}/:slug`,
         },
       ],
