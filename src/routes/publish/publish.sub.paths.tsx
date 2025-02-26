@@ -7,7 +7,7 @@ import { MainLayout } from '../../layout/main-layout/main.layout';
 const Login = lazy(() => import('../../pages/login'));
 const Register = lazy(() => import('../../pages/register'));
 const Home = lazy(() => import('../../pages/home'));
-const ProductDetails = lazy(() => import('../../pages/public/product_details'));
+const ProductDetails = lazy(() => import('../../pages/public/product_detail'));
 //======================================================
 //export public sub paths
 
