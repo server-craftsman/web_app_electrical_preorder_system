@@ -15,7 +15,6 @@ export interface GetAllProductResponseModel {
   name: string;
   quantity: number;
   description: string;
-
   price: number;
   position: number;
   status: string;
@@ -24,6 +23,8 @@ export interface GetAllProductResponseModel {
   createdAt: string;
   updatedAt: string;
   deleted: boolean;
+  slug: string;
+  
 }
 
 

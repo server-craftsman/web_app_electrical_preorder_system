@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { GetAllProductResponseModel } from '../../../../models/api/response/product.res.model';
 import { formatCurrency } from '../../../../utils/helper';
+import { ROUTER_URL } from '../../../../const';
+import { useNavigate } from 'react-router-dom';
+
 
 interface ProductCardProps {
   product: GetAllProductResponseModel;
@@ -8,6 +11,7 @@ interface ProductCardProps {
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const navigate = useNavigate();
 
   const handleMouseEnter = () => setIsHovered(true);
   const handleMouseLeave = () => setIsHovered(false);
@@ -15,8 +19,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const discountPercentage =
     product.quantity > 0
       ? Math.round(
-          ((product.price - product.price * 0.9) / product.price) * 100
-        )
+        ((product.price - product.price * 0.9) / product.price) * 100
+      )
       : null;
 
   const discountedPrice = product.price * 0.9;
@@ -30,6 +34,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         onMouseLeave={handleMouseLeave}
       >
         <img
+          onClick={() => navigate(`${ROUTER_URL.COMMON.PRODUCT_DETAIL}/${product.slug}`)}
           src={
             product.imageProducts.length > 1 && isHovered
               ? product.imageProducts[1].imageUrl
@@ -40,7 +45,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               ? product.imageProducts[1].altText
               : product.imageProducts[0].altText
           }
-          className="w-[160px] h-[160px] object-cover scale-95 mx-auto"
+          className="w-[160px] h-[160px] object-cover scale-95 mx-auto cursor-pointer"
         />
         {discountPercentage && (
           <span className="absolute top-2 left-2 bg-red-500 text-white px-2 py-1 text-xs font-bold rounded">
@@ -53,9 +58,12 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       </div>
       {/* Content Section */}
       <div className="p-4">
-        <h3 className="text-sm mx-auto py-2 font-semibold text-left h-[65px]">
-          {product.name}
-        </h3>
+      <h3
+  onClick={() => navigate(`${ROUTER_URL.COMMON.PRODUCT_DETAIL}/${product.slug}`)}
+  className="text-sm mx-auto py-2 font-semibold text-left h-[65px] cursor-pointer hover:text-blue-500"
+>
+  {product.name}
+</h3>
         <div className="flex items-center justify-between mt-2">
           <div>
             <span className="text-red-500 font-bold text-base">

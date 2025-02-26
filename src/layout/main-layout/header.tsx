@@ -5,7 +5,6 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '../../contexts/AuthContexts'
 import { UserRole } from '../../app/enums';
 
-
 export const Header = () => {
   const [showSearch, setShowSearch] = useState(false);
   const { getCurrentUser, logout, role } = useAuth();
@@ -77,9 +76,6 @@ export const Header = () => {
           <Link to="/products" className="tab-custom">
             SẢN PHẨM
           </Link>
-          {/* <Link to="/review" className="tab-custom">
-            REVIEW
-          </Link> */}
           <Link to="/guide" className="tab-custom">
             HƯỚNG DẪN
           </Link>
