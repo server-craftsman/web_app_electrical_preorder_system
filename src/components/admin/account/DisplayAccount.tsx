@@ -4,17 +4,22 @@ import { useEffect, useState } from 'react';
 import { UserService } from '../../../services/user/user.service';
 import { User } from '../../../models/modules/User';
 
-const Account = () => {
+const Account = ({ refresh }: { refresh: boolean }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [users, setUsers] = useState<User[]>([]);
 
-  useEffect(() => {
-    const fetchUsers = async () => {
+  const fetchUsers = async () => {
+    try {
       const response = await UserService.getAll();
       setUsers(response.data.data.content as unknown as User[]);
-    };
+    } catch (error) {
+      console.error("Lỗi khi tải danh sách người dùng:", error);
+    }
+  };
+
+  useEffect(() => {
     fetchUsers();
-  }, []);
+  }, [refresh]); // Fetch lại khi `refresh` thay đổi
 
   const columns = [
     {

@@ -39,15 +39,21 @@ const CreateUser: React.FC<CreateUserProps> = ({ onUserCreated, onClose }) => {
 
       await UserService.create(userData);
       message.success("Người dùng đã được tạo thành công!");
+      form.resetFields();
       onUserCreated();
       onClose();
-      form.resetFields();
     } catch (error) {
       message.error("Lỗi khi tạo người dùng!");
       console.error(error);
     } finally {
       setLoading(false);
     }
+  };
+
+
+  const handleCancel = () => {
+    form.resetFields(); // Xóa dữ liệu trong form
+    onClose(); // Đóng modal
   };
 
   return (
@@ -84,8 +90,11 @@ const CreateUser: React.FC<CreateUserProps> = ({ onUserCreated, onClose }) => {
       </Form.Item>
 
       <Form.Item>
-        <Button type="primary" htmlType="submit" loading={loading}>
+      <Button type="primary" htmlType="submit" loading={loading}>
           Tạo người dùng
+        </Button>
+        <Button type="default" onClick={handleCancel} style={{ marginLeft: "10px" }}>
+          Hủy
         </Button>
       </Form.Item>
     </Form>

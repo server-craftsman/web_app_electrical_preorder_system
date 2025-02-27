@@ -19,8 +19,6 @@ const CreateCampaign: React.FC<CreateCampaignProps> = ({ onCategoryCreated, onCl
   const [form] = Form.useForm();
   const [products, setProducts] = useState<Product[]>([]);
   const [loadingProducts, setLoadingProducts] = useState(false);
-  const [startDate, setStartDate] = useState<string>("");
-  const [endDate, setEndDate] = useState<string>("");
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -47,8 +45,8 @@ const CreateCampaign: React.FC<CreateCampaignProps> = ({ onCategoryCreated, onCl
     try {
       const formattedValues = {
         ...values,
-        startDate: values.startDate.toISOString(),
-        endDate: values.endDate.toISOString(),
+        startDate: values.startDate ? new Date(values.startDate).toISOString() : null,
+        endDate: values.endDate ? new Date(values.endDate).toISOString() : null,
       };
       const response = await CampaignService.create(formattedValues);
       if (response) {
@@ -80,22 +78,12 @@ const CreateCampaign: React.FC<CreateCampaignProps> = ({ onCategoryCreated, onCl
         <Input />
       </Form.Item>
 
-      <Form.Item label="Ngày bắt đầu" required>
-        <input
-          type="datetime-local"
-          value={startDate}
-          onChange={(e) => setStartDate(e.target.value)}
-          className="border p-2 w-full"
-        />
+      <Form.Item name="startDate" label="Ngày bắt đầu" rules={[{ required: true, message: "Vui lòng chọn ngày bắt đầu" }]}>
+        <input type="datetime-local" className="border p-2 w-full" onChange={(e) => form.setFieldsValue({ startDate: e.target.value })} />
       </Form.Item>
 
-      <Form.Item label="Ngày kết thúc" required>
-        <input
-          type="datetime-local"
-          value={endDate}
-          onChange={(e) => setEndDate(e.target.value)}
-          className="border p-2 w-full"
-        />
+      <Form.Item name="endDate" label="Ngày kết thúc" rules={[{ required: true, message: "Vui lòng chọn ngày kết thúc" }]}>
+        <input type="datetime-local" className="border p-2 w-full" onChange={(e) => form.setFieldsValue({ endDate: e.target.value })} />
       </Form.Item>
 
       <Form.Item name="minQuantity" label="Số lượng tối thiểu" rules={[{ required: true, message: "Nhập số lượng tối thiểu" }]}>

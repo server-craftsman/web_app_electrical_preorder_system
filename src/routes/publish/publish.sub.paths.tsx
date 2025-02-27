@@ -10,6 +10,7 @@ const Home = lazy(() => import('../../pages/home'));
 const ProductDetails = lazy(
   () => import('../../pages/publish/product_details')
 );
+const VerifyAccount = lazy(() => import('../../pages/verify/VerifyAccount'));
 //======================================================
 //export public sub paths
 
@@ -33,6 +34,10 @@ export const publicSubPaths: Record<string, RouteObject[]> = {
     {
       element: <Login />,
       path: ROUTER_URL.LOGIN,
+    },
+    {
+      element: <VerifyAccount />,
+      path: "/verify",
     },
   ],
   [ROUTER_URL.REGISTER]: [

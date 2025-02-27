@@ -6,13 +6,16 @@ import { useState } from 'react';
 
 const Account = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [refresh, setRefresh] = useState(false);
 
   const handleClose = () => {
     setIsModalVisible(false);
+    setRefresh((prev) => !prev);
   };
 
   const handleCreateUser = () => {
     setIsModalVisible(true);
+    setRefresh((prev) => !prev);
   };
 
   return (
@@ -21,9 +24,11 @@ const Account = () => {
         <Search onSearch={(searchTerm) => console.log(searchTerm)} />
         <button className="btn-submit" onClick={handleCreateUser}>Tạo tài khoản</button>
       </div>
-      <DisplayAccount />
+      <DisplayAccount refresh={refresh} />
       <Modal title="Tạo người dùng" open={isModalVisible} onCancel={handleClose} footer={null}>
-        <CreateUser onUserCreated={() => {}} onClose={handleClose} />
+        <CreateUser
+        onUserCreated={() => setRefresh((prev) => !prev)}
+         onClose={handleClose} />
       </Modal>
     </div>
   );

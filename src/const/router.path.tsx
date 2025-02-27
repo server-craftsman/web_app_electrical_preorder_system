@@ -1,6 +1,7 @@
 export const ROUTER_URL = {
   LOGIN: '/login',
   REGISTER: '/register',
+  VERIFY_TOKEN: '/verify',
   UNAUTHORIZED: '/unauthorized',
   PROFILE: '/profile',
   ADMIN: {
