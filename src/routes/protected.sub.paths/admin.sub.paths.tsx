@@ -1,16 +1,14 @@
 import { lazy } from 'react';
-
 import { ROUTER_URL } from '../../const/router.path';
 import { RouteObject } from 'react-router-dom';
-import DetailProducts from '../../components/admin/products/DetailProducts';
+
 //import admin page
+import DetailProducts from '../../components/admin/products/DetailProducts';
 const Dashboard = lazy(() => import('../../pages/admin/overview/index'));
 const Account = lazy(() => import('../../pages/admin/account/index'));
 const AdminProduct = lazy(() => import('../../pages/admin/products/index'));
 const AdminCategory = lazy(() => import('../../pages/admin/category/index'));
-const StageHistory = lazy(
-  () => import('../../pages/admin/stage_history/index')
-);
+const StageHistory = lazy(() => import('../../pages/admin/stage_history/index'));
 //======================================================
 
 //export admin sub paths
