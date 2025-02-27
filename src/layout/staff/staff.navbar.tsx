@@ -86,7 +86,7 @@ const menuItems = [
       </svg>
     ),
     key: 'category',
-    path: ROUTER_URL.STAFF.PRODUCT,
+    path: ROUTER_URL.STAFF.ORDERS,
   },
   {
     label: 'Lịch Sử',
