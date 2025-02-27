@@ -7,6 +7,8 @@ export const API_PATH = {
   },
   USER: {
     GET_ALL: '/users',
+    CREATE: '/users/sign-up',
+    VERIFY_TOKEN: '/users/verify',
   },
   PRODUCT: {
     GET_ALL: '/products',
