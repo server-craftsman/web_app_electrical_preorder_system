@@ -46,6 +46,8 @@ const CreateProducts = forwardRef<{ handleOpenModal: () => void }, CreateProduct
                 // Lấy danh sách file từ Upload
                 const files = fileList.map((file) => file.originFileObj);
 
+                const selectedCategory = categories.find(cat => cat.id === values.category);
+
                 // Prepare product data
                 const productData: CreateProductRequestModel = {
                     productCode: values.productCode,
@@ -56,7 +58,7 @@ const CreateProducts = forwardRef<{ handleOpenModal: () => void }, CreateProduct
                     position: 0,
                     category: {
                         id: values.category,
-                        name: values.name
+                        name: selectedCategory ? selectedCategory.name : "",
                     },
                 };
 

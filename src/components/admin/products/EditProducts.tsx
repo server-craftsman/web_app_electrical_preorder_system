@@ -92,7 +92,7 @@ const EditProducts = forwardRef<
           name:
             categories.find((cat) => cat.id === values.category)?.name || '',
         },
-        imageProducts: existingImages,
+        oldImageProducts: existingImages,
       };
 
       if (!productId) {

@@ -13,6 +13,11 @@ export interface CreateProductRequestModel {
   category: Category;
 }
 
+export interface ImageProduct {
+  imageUrl: string;
+  altText: string;
+}
+
 export interface UpdateProductRequestModel {
   productCode: string;
   name: string;
@@ -21,4 +26,5 @@ export interface UpdateProductRequestModel {
   price: number; // Assuming BigDecimal is used for precise decimal values
   position: number; // Assuming @PositiveOrZero means non-negative
   category: Category;
+  oldImageProducts: ImageProduct[],
 }
