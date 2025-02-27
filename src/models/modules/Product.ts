@@ -1,15 +1,19 @@
-import { ImageProduct } from "../api/response/product.res.model";
+import { Category, ImageProduct } from "../api/response/product.res.model";
 
 export interface Product {
   id: string;
+  productCode: string;
   name: string;
-  price: number;
-  slug: string;
+  quantity: number;
   description: string;
+  price: number;
+  position: number;
+  status: string;
+  category: Category;
+  imageProducts: ImageProduct[];
   createdAt: string;
   updatedAt: string;
-  imageProducts: ImageProduct[];
-  
-  // Add other product fields as needed
+  deleted: boolean;
+  slug: string;
 }
 
