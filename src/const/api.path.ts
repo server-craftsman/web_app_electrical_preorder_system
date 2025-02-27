@@ -5,6 +5,9 @@ export const API_PATH = {
     SOCIAL_LOGIN: '/auth/social-login',
     SOCIAL_LOGIN_CALLBACK: '/auth/social/callback',
   },
+  USER: {
+    GET_ALL: '/users',
+  },
   PRODUCT: {
     GET_ALL: '/products',
     GET_BY_ID: '/products/:id',

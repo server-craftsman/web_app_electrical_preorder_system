@@ -1,15 +1,31 @@
 import { Table } from 'antd';
 import Pagination from '../../pagination';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { UserService } from '../../../services/user/user.service';
+import { User } from '../../../models/modules/User';
 
 const Account = () => {
   const [currentPage, setCurrentPage] = useState(1);
+  const [users, setUsers] = useState<User[]>([]);
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      const response = await UserService.getAll();
+      setUsers(response.data.data.content as unknown as User[]);
+    };
+    fetchUsers();
+  }, []);
 
   const columns = [
     {
       title: 'Tên tài khoản',
-      dataIndex: 'name',
-      key: 'name',
+      dataIndex: 'username',
+      key: 'username',
+    },
+    {
+      title: 'Họ tên',
+      dataIndex: 'fullname',
+      key: 'fullname',
     },
     {
       title: 'Email',
@@ -42,18 +58,10 @@ const Account = () => {
     },
   ];
 
-  const data = [
-    {
-      key: '1',
-      name: 'Thịt 3 Chỉ',
-      email: 'khoabachibeo@gmail.com',
-    },
-    {
-      key: '2',
-      name: 'Thịt 3 Chỉ',
-      email: 'khoabachibeo@gmail.com',
-    },
-  ];
+  const data = users.map((user) => ({
+    key: user.id,
+    ...user,
+  }));
 
   return (
     <div>
