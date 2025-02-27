@@ -14,10 +14,10 @@ export const ROUTER_URL = {
   },
   STAFF: {
     BASE: '/staff',
-    HISTORY: '/staff/history',
     ACCOUNT: '/staff/account',
-    PRODUCT: '/staff/product',
+    ORDERS: '/staff/orders',
     PREORDER: '/staff/preorder',
+    HISTORY: '/staff/history',
   },
   CUSTOMER: {
     BASE: '/customer',

@@ -1,5 +1,10 @@
 import { ROUTER_URL } from '../../const/router.path';
 import { RouteObject } from 'react-router-dom';
+import Account from '../../pages/staff/account';
+import PreOrder from '../../pages/staff/pre-oder';
+import StageHistory from '../../pages/staff/stage_history';
+import Order from '../../pages/staff/order';
+import Dashboard from '../../pages/staff/overview';
 
 // Import staff pages
 
@@ -10,11 +15,23 @@ export const staffSubPaths: Record<string, RouteObject[]> = {
   [ROUTER_URL.STAFF.BASE]: [
     {
       index: true,
-      element: <h1>Stafffffff</h1>,
+      element: <Dashboard />,
     },
     {
-      path: ROUTER_URL.STAFF.BASE,
-      element: <h1>Courses</h1>,
+      element: <Account />,
+      path: ROUTER_URL.STAFF.ACCOUNT,
+    },
+    {
+      element: <StageHistory />,
+      path: ROUTER_URL.STAFF.HISTORY,
+    },
+    {
+      element: <Order />,
+      path: ROUTER_URL.STAFF.ORDERS,
+    },
+    {
+      element: <PreOrder />,
+      path: ROUTER_URL.STAFF.PREORDER,
     },
   ],
 };
