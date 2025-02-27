@@ -7,10 +7,9 @@ import { ProductStatus } from '../../../app/enums/product.status';
 import EditProducts from './EditProducts';
 
 const DetailProducts = () => {
-  const { slug } = useParams();
-  const [product, setProduct] = useState<GetAllProductResponseModel | null>(
-    null
-  );
+  const { slug: initialSlug } = useParams();
+  const [slug, setSlug] = useState(initialSlug);
+  const [product, setProduct] = useState<GetAllProductResponseModel | null>(null);
   const navigate = useNavigate();
   const carouselRef = useRef<any>(null);
   const editProductRef = useRef<{
@@ -30,7 +29,7 @@ const DetailProducts = () => {
 
   useEffect(() => {
     fetchProductDetail();
-  }, [fetchProductDetail]);
+  }, [fetchProductDetail, slug]);
 
   if (!product)
     return (
@@ -155,7 +154,14 @@ const DetailProducts = () => {
               Chỉnh sửa sản phẩm
             </button>
 
-            <EditProducts ref={editProductRef} onProductUpdated={fetchProductDetail} />
+            <EditProducts
+              ref={editProductRef}
+              onProductUpdated={(newSlug) => {
+                setSlug(newSlug);
+                navigate(`/products/${newSlug}`);
+              }}
+              slug={slug!}
+            />
           </div>
         </div>
       </div>

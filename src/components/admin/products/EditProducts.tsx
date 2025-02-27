@@ -7,7 +7,8 @@ import { limitMemoryFile } from '../../../utils/validation';
 import { Rule } from 'antd/es/form';
 
 interface EditProductsProps {
-  onProductUpdated: () => void;
+  onProductUpdated: (newSlug?: string) => void;
+  slug: string;
 }
 
 const EditProducts = forwardRef<
@@ -99,10 +100,12 @@ const EditProducts = forwardRef<
         return;
       }
 
-      await ProductService.update(productId, updatedProduct, newFiles);
+      const response = await ProductService.update(productId, updatedProduct, newFiles);
+      const newSlug = response.slug;
+
       message.success('Cập nhật sản phẩm thành công!');
       setIsModalVisible(false);
-      onProductUpdated();
+      onProductUpdated(newSlug);
     } catch (error) {
       console.error('Lỗi cập nhật sản phẩm:', error);
       message.error('Có lỗi xảy ra!');
