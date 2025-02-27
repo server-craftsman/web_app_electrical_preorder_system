@@ -14,7 +14,7 @@ const DetailProducts = () => {
   const navigate = useNavigate();
   const carouselRef = useRef<any>(null);
   const editProductRef = useRef<{
-    handleOpenModal: (id: string) => void;
+    handleOpenModal: (slug: string) => void;
   } | null>(null);
 
   const fetchProductDetail = useCallback(async () => {

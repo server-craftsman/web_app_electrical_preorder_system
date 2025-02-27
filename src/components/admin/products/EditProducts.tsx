@@ -11,7 +11,7 @@ interface EditProductsProps {
 }
 
 const EditProducts = forwardRef<
-  { handleOpenModal: (productId: string) => void },
+  { handleOpenModal: (slug: string) => void },
   EditProductsProps
 >(({ onProductUpdated }, ref) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -36,11 +36,13 @@ const EditProducts = forwardRef<
   }, []);
 
   // Fetch product details when opening modal
-  const fetchProductDetail = async (id: string) => {
+  const fetchProductDetail = async (slug: string) => {
     try {
-      const response = await ProductService.getById(id);
+      const response = await ProductService.getBySlug(slug);
       const product = response?.data?.data;
       if (product) {
+        setProductId(product.id); // Lưu productId từ API
+
         form.setFieldsValue({
           productCode: product.productCode,
           name: product.name,
@@ -54,7 +56,6 @@ const EditProducts = forwardRef<
             product.imageProducts?.map((img) => ({
               name: img.altText || 'Product Image',
               url: img.imageUrl,
-              status: 'done', // ✅ Đánh dấu là ảnh cũ
             })) || []
         );
       }
@@ -92,9 +93,13 @@ const EditProducts = forwardRef<
         },
         imageProducts: existingImages,
       };
-      console.log("ảnh củ?:", existingImages)
-      console.log ("anh moi", newFiles)
-      await ProductService.update(productId!, updatedProduct, newFiles);
+
+      if (!productId) {
+        message.error('Không tìm thấy ID sản phẩm!');
+        return;
+      }
+
+      await ProductService.update(productId, updatedProduct, newFiles);
       message.success('Cập nhật sản phẩm thành công!');
       setIsModalVisible(false);
       onProductUpdated();
@@ -112,9 +117,9 @@ const EditProducts = forwardRef<
     setFileList(info.fileList);
   };
 
-  const handleOpenModal = (id: string) => {
-    setProductId(id);
-    fetchProductDetail(id);
+  const handleOpenModal = (slug: string) => {
+    setProductId(null);
+    fetchProductDetail(slug);
     setIsModalVisible(true);
   };
 

@@ -48,7 +48,7 @@ export const ProductService = {
 
     // Add image files to FormData
     files.forEach((file) => {
-      formData.append("files", file);
+      formData.append("imageFiles", file);
     });
 
     const response = await BaseService.updateProduct<UpdateProductResponseModel>(
