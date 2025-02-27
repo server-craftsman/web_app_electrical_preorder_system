@@ -29,9 +29,7 @@ export const CategoryService = {
     });
   },
   delete(id: string) {
-    return BaseService.remove<
-      formatResponseSuccess<GetAllCategoryResponseModel>
-    >({
+    return BaseService.remove<formatResponseSuccess<any>>({
       url: API_PATH.CATEGORY.DELETE.replace(':id', id),
     });
   },

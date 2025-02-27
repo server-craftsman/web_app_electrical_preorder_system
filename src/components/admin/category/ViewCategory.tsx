@@ -1,10 +1,11 @@
-import { message, Modal, Table } from 'antd';
+import { Modal, Table } from 'antd';
 import { useState, useEffect } from 'react';
 import Pagination from '../../pagination';
-import { CustomEditIcon, CustomDeleteIcon } from './Icons';
 import { CategoryService } from '../../../services/category/category.service';
 import { GetAllCategoryResponseModel } from '../../../models/api/response/category.res.model';
 import EditCategory from './EditCategory';
+import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import { helper } from '../../../utils';
 
 interface ViewCategoryProps {
   refresh: boolean;
@@ -49,7 +50,7 @@ const ViewCategory = ({
   const deleteCategory = async (categoryId: string) => {
     try {
       const response = await CategoryService.delete(categoryId);
-      return response.data.data.id;
+      return response;
     } catch (error) {
       console.error('Failed to delete category:', error);
       return false;
@@ -62,7 +63,7 @@ const ViewCategory = ({
       onOk: async () => {
         const success = await deleteCategory(categoryId);
         if (success) {
-          message.success('Xóa thành công!');
+          helper.notificationMessage('Xóa danh mục thành công!', 'success');
           fetchCategories();
           Modal.destroyAll();
         }
@@ -82,31 +83,26 @@ const ViewCategory = ({
 
   const columns = [
     {
-      title: 'Category Name',
+      title: 'Tên danh mục',
       dataIndex: 'name',
       key: 'name',
     },
-    // {
-    //   title: 'Description',
-    //   dataIndex: 'description',
-    //   key: 'description',
-    // },
     {
       title: 'Hành động',
       key: 'action',
       render: (_: any, record: GetAllCategoryResponseModel) => (
         <span className="flex space-x-2">
           <button
-            onClick={() => handleEdit(record)} // Open edit modal with category data
-            className="bg-blue-600 text-white p-2 rounded-full shadow-lg hover:bg-blue-700"
+            className="bg-green-600 text-white p-2 rounded-lg shadow-lg hover:bg-green-700"
+            onClick={() => handleEdit(record)}
           >
-            <CustomEditIcon />
+            <EditOutlined className="text-xl" />
           </button>
           <button
-            onClick={() => record.id && handleDeleteCategory(record.id)}
-            className="bg-red-600 text-white p-2 rounded-full shadow-lg hover:bg-red-700"
+            className="bg-red-600 text-white p-2 rounded-lg shadow-lg hover:bg-red-700"
+            onClick={() => handleDeleteCategory(record.id)}
           >
-            <CustomDeleteIcon />
+            <DeleteOutlined className="text-xl" />
           </button>
         </span>
       ),
@@ -122,7 +118,10 @@ const ViewCategory = ({
     <div>
       <Table
         columns={columns}
-        dataSource={currentCategories}
+        dataSource={currentCategories.map(category => ({
+          ...category,
+          key: category.id, // Add a unique key for each category
+        }))}
         pagination={false}
         footer={() => (
           <Pagination
