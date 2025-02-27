@@ -20,4 +20,8 @@ export const API_PATH = {
     UPDATE: '/categories/:id',
     DELETE: '/categories/:id',
   },
+  CAMPAIGN: {
+    BASE: '/campaigns',
+    
+  }
 };
