@@ -38,7 +38,7 @@ const EditProducts = forwardRef<
   // Fetch product details when opening modal
   const fetchProductDetail = async (id: string) => {
     try {
-      const response = await ProductService.detail(id);
+      const response = await ProductService.getById(id);
       const product = response?.data?.data;
       if (product) {
         form.setFieldsValue({

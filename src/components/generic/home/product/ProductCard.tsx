@@ -26,18 +26,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
   const discountedPrice = product.price * 0.9;
 
-  // const fetchAndNavigate = async () => {
-  //   try {
-  //     const response = await ProductService.detail(product.id);
-  //     const data = response.data.data;
-  //     if (data && data.slug) {
-  //       navigate(`${ROUTER_URL.COMMON.PRODUCT_DETAIL}/${data.slug}`);
-  //     }
-  //   } catch (error) {
-  //     console.error("Failed to fetch product data", error);
-  //   }
-  // };
-
   return (
     <div className="bg-white shadow-md rounded-md overflow-hidden w-[228px] h-[410px]">
       {/* Image Section */}
@@ -47,7 +35,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         onMouseLeave={handleMouseLeave}
       >
         <img
-          onClick={() => navigate(`${ROUTER_URL.COMMON.PRODUCT_DETAIL}/${product.slug}`)}
+          onClick={() => navigate(`${ROUTER_URL.COMMON.GET_PRODUCT_DETAIL_BY_SLUG}/${product.slug}`)}
           src={
             product.imageProducts.length > 1 && isHovered
               ? product.imageProducts[1].imageUrl
@@ -72,7 +60,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       {/* Content Section */}
       <div className="p-4">
         <h3
-          onClick={() => navigate(`${ROUTER_URL.COMMON.PRODUCT_DETAIL}/${product.slug}`)}
+          onClick={() => navigate(`${ROUTER_URL.COMMON.GET_PRODUCT_DETAIL_BY_SLUG}/${product.slug}`)}
           className="text-sm mx-auto py-2 font-semibold text-left h-[65px] cursor-pointer hover:text-blue-500"
         >
           {product.name}

@@ -3,14 +3,10 @@ import productImage from '../../../../assets/Carousel_4.jpg';
 import thumb1 from '../../../../assets/Elecee_logo.jpg';
 import thumb2 from '../../../../assets/Carousel_2.jpg';
 import thumb3 from '../../../../assets/imageuilogin.jpg';
+import { GetAllProductResponseModel } from '../../../../models/api/response/product.res.model';
 // import { Product } from '../../../../models/modules/Product';
 interface ProductDetailProps {
-  product: {
-    id: string;
-    name: string;
-    price: number;
-    // Add other product fields as needed
-  };
+  product: GetAllProductResponseModel;
 }
 
 const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => { 

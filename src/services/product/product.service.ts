@@ -13,10 +13,16 @@ export const ProductService = {
     });
   },
 
-  detail(id: string){
+  getById(id: string){
     return BaseService.get<formatResponseSuccess<GetAllProductResponseModel>>({
-      url: API_PATH.PRODUCT.DETAIL.replace(":id", id),
+      url: API_PATH.PRODUCT.GET_BY_ID.replace(":id", id),
     })
+  },
+
+  getBySlug(slug: string) {
+    return BaseService.get<formatResponseSuccess<GetAllProductResponseModel>>({
+      url: API_PATH.PRODUCT.GET_BY_SLUG.replace(":slug", slug),
+    });
   },
 
   create: async (productData: CreateProductRequestModel, files: File[]): Promise<CreateProductResponseModel> => {

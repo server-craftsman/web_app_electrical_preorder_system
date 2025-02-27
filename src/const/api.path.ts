@@ -7,7 +7,8 @@ export const API_PATH = {
   },
   PRODUCT: {
     GET_ALL: '/products',
-    DETAIL: '/products/:id',
+    GET_BY_ID: '/products/:id',
+    GET_BY_SLUG: '/products/:slug',
     UPDATE: '/products/:id',
   },
   CATEGORY: {

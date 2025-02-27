@@ -20,7 +20,7 @@ const DetailProducts = () => {
   const fetchProductDetail = useCallback(async () => {
     if (!productId) return;
     try {
-      const response = await ProductService.detail(productId);
+      const response = await ProductService.getById(productId);
       setProduct(response?.data.data);
     } catch (error) {
       console.error('Lỗi khi tải sản phẩm:', error);

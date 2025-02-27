@@ -27,6 +27,6 @@ export const ROUTER_URL = {
   },
   COMMON: {
     HOME: '/',
-    PRODUCT_DETAIL: '/product', 
+    GET_PRODUCT_DETAIL_BY_SLUG: '/product/:slug',
   },
 };
