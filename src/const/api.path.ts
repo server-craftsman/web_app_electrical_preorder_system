@@ -10,6 +10,7 @@ export const API_PATH = {
     GET_BY_ID: '/products/:id',
     GET_BY_SLUG: '/products/:slug',
     UPDATE: '/products/:id',
+    DELETE: '/products/:id',
   },
   CATEGORY: {
     BASE: '/categories',

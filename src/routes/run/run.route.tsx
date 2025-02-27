@@ -86,10 +86,20 @@ const RunRoutes = (): JSX.Element => {
 
     return (
       <>
-        <Route path={ROUTER_URL.ADMIN.BASE} element={<GuardProtectedRoute component={<AdminLayout />} userRole={currentRole} allowedRoles={["ROLE_ADMIN"]} onAccessDenied={handleAccessDenied} />}>
+        <Route
+          path={ROUTER_URL.ADMIN.BASE}
+          element={
+            <GuardProtectedRoute
+              component={<AdminLayout />}
+              userRole={currentRole}
+              allowedRoles={['ROLE_ADMIN']}
+              onAccessDenied={handleAccessDenied}
+            />
+          }
+        >
           {adminSubPaths[ROUTER_URL.ADMIN.BASE]?.map((route) => (
             <Route
-              key={route.path || "index"}
+              key={route.path || 'index'}
               index={route.index}
               path={route.path}
               element={route.element}
@@ -97,10 +107,20 @@ const RunRoutes = (): JSX.Element => {
           ))}
         </Route>
 
-        <Route path={ROUTER_URL.STAFF.BASE} element={<GuardProtectedRoute component={<StaffLayout />} userRole={currentRole} allowedRoles={["ROLE_STAFF"]} onAccessDenied={handleAccessDenied} />}>
+        <Route
+          path={ROUTER_URL.STAFF.BASE}
+          element={
+            <GuardProtectedRoute
+              component={<StaffLayout />}
+              userRole={currentRole}
+              allowedRoles={['ROLE_STAFF']}
+              onAccessDenied={handleAccessDenied}
+            />
+          }
+        >
           {staffSubPaths[ROUTER_URL.STAFF.BASE]?.map((route) => (
             <Route
-              key={route.path || "index"}
+              key={route.path || 'index'}
               index={route.index} //loading index
               path={route.path}
               element={route.element}
@@ -108,10 +128,20 @@ const RunRoutes = (): JSX.Element => {
           ))}
         </Route>
 
-        <Route path={ROUTER_URL.CUSTOMER.BASE} element={<GuardProtectedRoute component={<CustomerLayout />} userRole={currentRole} allowedRoles={["ROLE_CUSTOMER"]} onAccessDenied={handleAccessDenied} />}>
+        <Route
+          path={ROUTER_URL.CUSTOMER.BASE}
+          element={
+            <GuardProtectedRoute
+              component={<CustomerLayout />}
+              userRole={currentRole}
+              allowedRoles={['ROLE_CUSTOMER']}
+              onAccessDenied={handleAccessDenied}
+            />
+          }
+        >
           {customerSubPaths[ROUTER_URL.CUSTOMER.BASE]?.map((route) => (
             <Route
-              key={route.path || "index"}
+              key={route.path || 'index'}
               index={route.index} //loading index
               path={route.path}
               element={route.element}

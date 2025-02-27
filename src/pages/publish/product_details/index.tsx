@@ -4,7 +4,7 @@ import { ProductService } from '../../../services/product/product.service';
 import { Product } from '../../../models/modules/Product';
 import ProductDetail from '../../../components/generic/home/product_details/ProductDetail';
 
-const ProductDetails : React.FC = () => {
+const ProductDetails: React.FC = () => {
   const { slug } = useParams();
   const [product, setProduct] = useState<Product | null>(null);
 
@@ -20,7 +20,11 @@ const ProductDetails : React.FC = () => {
     fetchProduct();
   }, [slug]);
 
-  return product ? <ProductDetail product={product} /> : <div>Product not found</div>;
+  return product ? (
+    <ProductDetail product={product} />
+  ) : (
+    <div>Product not found</div>
+  );
 };
 
 export default ProductDetails;

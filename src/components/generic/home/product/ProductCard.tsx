@@ -18,8 +18,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const discountPercentage =
     product.quantity > 0
       ? Math.round(
-        ((product.price - product.price * 0.9) / product.price) * 100
-      )
+          ((product.price - product.price * 0.9) / product.price) * 100
+        )
       : null;
 
   const discountedPrice = product.price * 0.9;
@@ -33,7 +33,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         onMouseLeave={handleMouseLeave}
       >
         <img
-          onClick={() => navigate(`${ROUTER_URL.COMMON.PRODUCT}/${product.slug}`)}
+          onClick={() =>
+            navigate(`${ROUTER_URL.COMMON.PRODUCT}/${product.slug}`)
+          }
           src={
             product.imageProducts.length > 1 && isHovered
               ? product.imageProducts[1].imageUrl
@@ -58,7 +60,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       {/* Content Section */}
       <div className="p-4">
         <h3
-          onClick={() => navigate(`${ROUTER_URL.COMMON.PRODUCT}/${product.slug}`)}
+          onClick={() =>
+            navigate(`${ROUTER_URL.COMMON.PRODUCT}/${product.slug}`)
+          }
           className="text-sm mx-auto py-2 font-semibold text-left h-[65px] cursor-pointer hover:text-blue-500"
         >
           {product.name}

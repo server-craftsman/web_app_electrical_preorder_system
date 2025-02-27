@@ -26,5 +26,5 @@ export interface UpdateProductRequestModel {
   price: number; // Assuming BigDecimal is used for precise decimal values
   position: number; // Assuming @PositiveOrZero means non-negative
   category: Category;
-  oldImageProducts: ImageProduct[],
+  oldImageProducts: ImageProduct[];
 }

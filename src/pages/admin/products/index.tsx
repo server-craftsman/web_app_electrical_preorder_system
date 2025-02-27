@@ -40,7 +40,10 @@ const Products = () => {
         searchTerm={searchTerm}
         refreshKey={refreshKey}
       />
-      <CreateProducts ref={createProductRef} onProductCreated={handleProductCreated} />
+      <CreateProducts
+        ref={createProductRef}
+        onProductCreated={handleProductCreated}
+      />
     </div>
   );
 };

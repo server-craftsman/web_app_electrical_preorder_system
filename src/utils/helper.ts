@@ -83,3 +83,18 @@ export const formatCampaignStatus = (status: string) => {
       return 'black';
   }
 };
+
+export const formatProductStatus = (status: string) => {
+  switch (status.toLowerCase()) {
+    case 'AVAILABLE':
+      return 'bg-green-500';
+    case 'OUT_OF_STOCK':
+      return 'bg-yellow-500';
+    case 'PREORDER':
+      return 'bg-blue-500';
+    case 'DISCONTINUED':
+      return 'bg-red-500';
+    default:
+      return 'bg-gray-500';
+  }
+};

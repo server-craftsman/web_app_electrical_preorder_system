@@ -1,4 +1,4 @@
-import ChangePasswordComponents from "../../../components/customer/change_password/ChangePassword";
+import ChangePasswordComponents from '../../../components/customer/change_password/ChangePassword';
 
 const Changepassword = () => {
   return (

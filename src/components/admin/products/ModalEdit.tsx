@@ -5,6 +5,7 @@ import { ProductService } from '../../../services/product/product.service';
 import { CategoryService } from '../../../services/category/category.service';
 import { limitMemoryFile } from '../../../utils/validation';
 import { Rule } from 'antd/es/form';
+import { helper } from '../../../utils';
 
 interface EditProductsProps {
   onProductUpdated: (newSlug?: string) => void;
@@ -30,7 +31,7 @@ const EditProducts = forwardRef<
           setCategories(response.data.data);
         }
       } catch (error) {
-        console.error('Failed to fetch categories:', error);
+        helper.notificationMessage('Lỗi khi lấy danh mục!', 'error');
       }
     };
     fetchCategories();
@@ -54,10 +55,10 @@ const EditProducts = forwardRef<
           category: product.category?.id,
         });
         setFileList(
-            product.imageProducts?.map((img) => ({
-              name: img.altText || 'Product Image',
-              url: img.imageUrl,
-            })) || []
+          product.imageProducts?.map((img) => ({
+            name: img.altText || 'Product Image',
+            url: img.imageUrl,
+          })) || []
         );
       }
     } catch (error) {
@@ -70,15 +71,15 @@ const EditProducts = forwardRef<
       const values = await form.validateFields();
 
       const newFiles: File[] = fileList
-      .filter((file) => file.originFileObj)
-      .map((file) => file.originFileObj);
+        .filter((file) => file.originFileObj)
+        .map((file) => file.originFileObj);
 
-    const existingImages = fileList
-      .filter((file) => !file.originFileObj)
-      .map((file) => ({
-        imageUrl: file.url,
-        altText: file.name,
-      }));
+      const existingImages = fileList
+        .filter((file) => !file.originFileObj)
+        .map((file) => ({
+          imageUrl: file.url,
+          altText: file.name,
+        }));
 
       const updatedProduct = {
         productCode: values.productCode,
@@ -100,15 +101,19 @@ const EditProducts = forwardRef<
         return;
       }
 
-      const response = await ProductService.update(productId, updatedProduct, newFiles);
+      const response = await ProductService.update(
+        productId,
+        updatedProduct,
+        newFiles
+      );
       const newSlug = response.slug;
 
-      message.success('Cập nhật sản phẩm thành công!');
+      helper.notificationMessage('Cập nhật sản phẩm thành công!', 'success');
       setIsModalVisible(false);
       onProductUpdated(newSlug);
     } catch (error) {
       console.error('Lỗi cập nhật sản phẩm:', error);
-      message.error('Có lỗi xảy ra!');
+      helper.notificationMessage('Lỗi cập nhật sản phẩm!', 'error');
     }
   };
 
@@ -132,47 +137,32 @@ const EditProducts = forwardRef<
 
   const validateFields = {
     name: {
-        required: true,
-        min: 3,
-        max: 100,
-        pattern: /^[a-zA-Z0-9\sÀ-ỹ]+$/,
-        message: 'Tên sản phẩm phải từ 3-100 ký tự, chỉ chứa chữ, số và khoảng trắng!'
+      min: 3,
+      max: 100,
+      pattern: /^[a-zA-Z0-9\sÀ-ỹ]+$/,
+      message:
+        'Tên sản phẩm phải từ 3-100 ký tự, chỉ chứa chữ, số và khoảng trắng!',
     },
     description: {
-        max: 500,
-        message: 'Mô tả không được vượt quá 500 ký tự!'
+      max: 500,
+      message: 'Mô tả không được vượt quá 500 ký tự!',
     },
     quantity: {
-        required: true,
-        type: 'number',
-        min: 0,
-        max: 10000,
-        message: 'Số lượng phải từ 0 đến 10,000!'
+      type: 'number',
+      min: 0,
+      max: 10000,
+      message: 'Số lượng phải từ 0 đến 10,000!',
     },
     price: {
-        required: true,
-        type: 'number',
-        min: 1000,
-        max: 100000000,
-        message: 'Giá phải từ 1,000 đến 100,000,000 VND!'
+      type: 'number',
+      min: 1000,
+      max: 100000000,
+      message: 'Giá phải từ 1,000 đến 100,000,000 VND!',
     },
     category: {
-        required: true,
-        message: 'Vui lòng chọn danh mục!'
+      message: 'Vui lòng chọn danh mục!',
     },
-    imageProducts: {
-        required: true,
-        validator: (_: any, fileList: any[]) => {
-            if (!fileList || fileList.length === 0) {
-                return Promise.reject('Vui lòng chọn ít nhất 1 hình ảnh!');
-            }
-            if (fileList.length > 5) {
-                return Promise.reject('Không được chọn quá 5 hình ảnh!');
-            }
-            return Promise.resolve();
-        }
-    },
-};
+  };
   return (
     <Modal
       title="Chỉnh sửa sản phẩm"
@@ -184,31 +174,41 @@ const EditProducts = forwardRef<
         <Form.Item label="Mã sản phẩm" name="productCode">
           <Input disabled />
         </Form.Item>
-        <Form.Item label="Tên sản phẩm" name="name"
-        rules={[validateFields.name as Rule]}
+        <Form.Item
+          label="Tên sản phẩm"
+          name="name"
+          rules={[validateFields.name as Rule]}
         >
           <Input />
         </Form.Item>
-        <Form.Item label="Mô tả" name="description"
-        rules={[validateFields.description as Rule]}
+        <Form.Item
+          label="Mô tả"
+          name="description"
+          rules={[validateFields.description as Rule]}
         >
           <Input.TextArea />
         </Form.Item>
-        <Form.Item label="Số lượng" name="quantity"
-        rules={[validateFields.quantity as Rule]}
+        <Form.Item
+          label="Số lượng"
+          name="quantity"
+          rules={[validateFields.quantity as Rule]}
         >
           <InputNumber min={0} style={{ width: '100%' }} />
         </Form.Item>
-        <Form.Item label="Giá" name="price"
-        rules={[validateFields.price as Rule]}
+        <Form.Item
+          label="Giá"
+          name="price"
+          rules={[validateFields.price as Rule]}
         >
           <InputNumber min={0} style={{ width: '100%' }} />
         </Form.Item>
         <Form.Item label="Thứ tự hiện thi sản phẩm" name="position">
           <InputNumber min={0} style={{ width: '100%' }} />
         </Form.Item>
-        <Form.Item label="Danh mục" name="category"
-        rules={[validateFields.category as Rule]}
+        <Form.Item
+          label="Danh mục"
+          name="category"
+          rules={[validateFields.category as Rule]}
         >
           <Select>
             {categories.map((category) => (
@@ -218,10 +218,7 @@ const EditProducts = forwardRef<
             ))}
           </Select>
         </Form.Item>
-        <Form.Item label="Hình ảnh sản phẩm"
-            name="imageProducts"
-            rules={[validateFields.imageProducts as Rule]}
-        >
+        <Form.Item label="Hình ảnh sản phẩm" name="imageProducts">
           <Upload
             listType="picture-card"
             fileList={fileList}

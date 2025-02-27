@@ -1,12 +1,12 @@
-import { useAuth } from "../../../contexts/AuthContexts";
-import { useNavigate } from "react-router-dom";
-import { ROUTER_URL } from "../../../const";
-import { motion } from "framer-motion";
+import { useAuth } from '../../../contexts/AuthContexts';
+import { useNavigate } from 'react-router-dom';
+import { ROUTER_URL } from '../../../const';
+import { motion } from 'framer-motion';
 
 const OverviewComponents = () => {
   const { getCurrentUser } = useAuth();
   const user = getCurrentUser();
-  const userName = user?.fullName || "bạn";
+  const userName = user?.fullName || 'bạn';
   const navigate = useNavigate();
 
   return (
@@ -19,8 +19,8 @@ const OverviewComponents = () => {
         transition={{
           duration: 2,
           repeat: Infinity,
-          repeatType: "loop",
-          ease: "easeInOut",
+          repeatType: 'loop',
+          ease: 'easeInOut',
         }}
       >
         {/* SVG Robot với cánh tay vẫy */}
@@ -45,8 +45,8 @@ const OverviewComponents = () => {
             transition={{
               duration: 0.8,
               repeat: Infinity,
-              repeatType: "loop",
-              ease: "easeInOut",
+              repeatType: 'loop',
+              ease: 'easeInOut',
             }}
           />
 
@@ -62,8 +62,8 @@ const OverviewComponents = () => {
             transition={{
               duration: 0.5,
               repeat: Infinity,
-              repeatType: "loop",
-              ease: "easeInOut",
+              repeatType: 'loop',
+              ease: 'easeInOut',
             }}
           />
           <motion.circle
@@ -77,13 +77,17 @@ const OverviewComponents = () => {
             transition={{
               duration: 0.5,
               repeat: Infinity,
-              repeatType: "loop",
-              ease: "easeInOut",
+              repeatType: 'loop',
+              ease: 'easeInOut',
             }}
           />
 
           {/* Mũi robot */}
-          <polygon points="50,35 45,40 55,40" fill="white" transform="translate(0, -5)" />
+          <polygon
+            points="50,35 45,40 55,40"
+            fill="white"
+            transform="translate(0, -5)"
+          />
 
           {/* Miệng robot */}
           <path
@@ -107,7 +111,7 @@ const OverviewComponents = () => {
             transition={{
               duration: 1,
               repeat: Infinity,
-              repeatType: "reverse",
+              repeatType: 'reverse',
             }}
           />
           {/* Cánh tay phải vẫy (màu hồng) */}
@@ -123,7 +127,7 @@ const OverviewComponents = () => {
             transition={{
               duration: 1,
               repeat: Infinity,
-              repeatType: "reverse",
+              repeatType: 'reverse',
             }}
           />
 
@@ -138,17 +142,53 @@ const OverviewComponents = () => {
               <feGaussianBlur result="blurOut" stdDeviation="3" />
               <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
             </filter>
-            <linearGradient id="gradient-body" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" style={{ stopColor: "#ff7a34", stopOpacity: 1 }} />
-              <stop offset="100%" style={{ stopColor: "#ff6347", stopOpacity: 1 }} />
+            <linearGradient
+              id="gradient-body"
+              x1="0%"
+              y1="0%"
+              x2="100%"
+              y2="100%"
+            >
+              <stop
+                offset="0%"
+                style={{ stopColor: '#ff7a34', stopOpacity: 1 }}
+              />
+              <stop
+                offset="100%"
+                style={{ stopColor: '#ff6347', stopOpacity: 1 }}
+              />
             </linearGradient>
-            <linearGradient id="gradient-head" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" style={{ stopColor: "#ffdd00", stopOpacity: 1 }} />
-              <stop offset="100%" style={{ stopColor: "#ffb74d", stopOpacity: 1 }} />
+            <linearGradient
+              id="gradient-head"
+              x1="0%"
+              y1="0%"
+              x2="100%"
+              y2="100%"
+            >
+              <stop
+                offset="0%"
+                style={{ stopColor: '#ffdd00', stopOpacity: 1 }}
+              />
+              <stop
+                offset="100%"
+                style={{ stopColor: '#ffb74d', stopOpacity: 1 }}
+              />
             </linearGradient>
-            <linearGradient id="arm-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" style={{ stopColor: "#f7a8b8", stopOpacity: 1 }} />
-              <stop offset="100%" style={{ stopColor: "#f06292", stopOpacity: 1 }} />
+            <linearGradient
+              id="arm-gradient"
+              x1="0%"
+              y1="0%"
+              x2="100%"
+              y2="100%"
+            >
+              <stop
+                offset="0%"
+                style={{ stopColor: '#f7a8b8', stopOpacity: 1 }}
+              />
+              <stop
+                offset="100%"
+                style={{ stopColor: '#f06292', stopOpacity: 1 }}
+              />
             </linearGradient>
           </defs>
         </svg>
@@ -157,27 +197,28 @@ const OverviewComponents = () => {
         Xin chào, {userName}!
       </h2>
       <p className="text-xl text-center text-gray-600 mt-4">
-        Chào mừng bạn đến với hệ thống cửa hàng của chúng tôi! Tại đây, bạn có thể{" "}
+        Chào mừng bạn đến với hệ thống cửa hàng của chúng tôi! Tại đây, bạn có
+        thể{' '}
         <span
           className="text-blue-500 cursor-pointer hover:underline"
           onClick={() => navigate(ROUTER_URL.CUSTOMER.ORDERS)}
         >
           theo dõi đơn hàng gần nhất
-        </span>,{" "}
-        cập nhật{" "}
+        </span>
+        , cập nhật{' '}
         <span
           className="text-blue-500 cursor-pointer hover:underline"
           onClick={() => navigate(ROUTER_URL.CUSTOMER.PROFILE)}
         >
           thông tin tài khoản
-        </span>{" "}
-        và{" "}
+        </span>{' '}
+        và{' '}
         <span
           className="text-blue-500 cursor-pointer hover:underline"
           onClick={() => navigate(ROUTER_URL.CUSTOMER.CHANGE_PASSWORD)}
         >
           cài đặt bảo mật
-        </span>{" "}
+        </span>{' '}
         một cách dễ dàng.
       </p>
     </div>

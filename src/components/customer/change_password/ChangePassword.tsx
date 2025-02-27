@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useState } from 'react';
 
 const ChangePasswordComponents = () => {
   const [formData, setFormData] = useState({
-    currentPassword: "",
-    newPassword: "",
-    confirmPassword: "",
+    currentPassword: '',
+    newPassword: '',
+    confirmPassword: '',
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -14,14 +14,17 @@ const ChangePasswordComponents = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Thay đổi mật khẩu với thông tin:", formData);
+    console.log('Thay đổi mật khẩu với thông tin:', formData);
   };
 
   return (
     <div className="max-w-4xl mx-auto bg-white shadow-md rounded-2xl p-6 -mt-10 min-h-[500px]">
       <h2 className="text-lg font-semibold mb-3">Thay Đổi Mật Khẩu</h2>
       <div className="flex flex-col justify-center min-h-[500px] ">
-        <form onSubmit={handleSubmit} className="space-y-3 flex-row grid grid-cols-1 gap-6 ">
+        <form
+          onSubmit={handleSubmit}
+          className="space-y-3 flex-row grid grid-cols-1 gap-6 "
+        >
           {/* Mật khẩu hiện tại */}
           <div>
             <label className="block font-semibold">Mật khẩu hiện tại</label>
@@ -43,7 +46,7 @@ const ChangePasswordComponents = () => {
               name="newPassword"
               value={formData.newPassword}
               onChange={handleChange}
-               placeholder="Nhập mật khẩu mới"
+              placeholder="Nhập mật khẩu mới"
               className="w-full p-2 rounded-lg border border-gray-300 mt-1"
             />
           </div>
@@ -56,7 +59,7 @@ const ChangePasswordComponents = () => {
               name="confirmPassword"
               value={formData.confirmPassword}
               onChange={handleChange}
-                 placeholder="Nhập lại mật khẩu mới"
+              placeholder="Nhập lại mật khẩu mới"
               className="w-full p-2 rounded-lg border border-gray-300 mt-1"
             />
           </div>

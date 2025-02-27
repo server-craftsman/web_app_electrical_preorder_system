@@ -6,9 +6,11 @@ import Search from '../../../components/search';
 
 const Category = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const createCategoryRef = useRef<{ handleOpenModal: () => void } | null>(null);
+  const createCategoryRef = useRef<{ handleOpenModal: () => void } | null>(
+    null
+  );
   const [refreshCategories, setRefreshCategories] = useState(false); // state to trigger refresh
-  const [searchTerm, setSearchTerm] = useState('')
+  const [searchTerm, setSearchTerm] = useState('');
   const [refreshKey, setRefreshKey] = useState(0);
 
   const handleCreateCategory = () => {
@@ -24,12 +26,12 @@ const Category = () => {
 
   // Trigger refresh of categories
   const handleCategoryCreated = () => {
-    setRefreshCategories(prev => !prev); // toggle to trigger useEffect in ViewCategory
+    setRefreshCategories((prev) => !prev); // toggle to trigger useEffect in ViewCategory
   };
 
   const handleSearch = (value: string) => {
     setSearchTerm(value);
-    setRefreshKey(prevKey => prevKey + 1);
+    setRefreshKey((prevKey) => prevKey + 1);
   };
 
   return (
@@ -40,14 +42,21 @@ const Category = () => {
           Tạo danh mục
         </button>
       </div>
-      <ViewCategory  refresh={refreshCategories} searchTerm={searchTerm} refreshKey={refreshKey}/>
+      <ViewCategory
+        refresh={refreshCategories}
+        searchTerm={searchTerm}
+        refreshKey={refreshKey}
+      />
       <Modal
         title="Tạo danh mục"
         open={isModalVisible}
         onCancel={handleCancel}
         footer={null}
       >
-        <CreateCategory onCategoryCreated={handleCategoryCreated} onClose={handleCancel} />
+        <CreateCategory
+          onCategoryCreated={handleCategoryCreated}
+          onClose={handleCancel}
+        />
       </Modal>
     </div>
   );

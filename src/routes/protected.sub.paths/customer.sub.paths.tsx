@@ -6,8 +6,12 @@ import { lazy } from 'react';
 const Overview = lazy(() => import('../../pages/customer/overview/index'));
 const Profile = lazy(() => import('../../pages/customer/profile/index'));
 const Order = lazy(() => import('../../pages/customer/order/index'));
-const ReturnOrder = lazy(() => import('../../pages/customer/return_order/index'));
-const ChangePassword = lazy(() => import('../../pages/customer/change_password/index'));
+const ReturnOrder = lazy(
+  () => import('../../pages/customer/return_order/index')
+);
+const ChangePassword = lazy(
+  () => import('../../pages/customer/change_password/index')
+);
 
 //======================================================
 
@@ -16,7 +20,7 @@ export const customerSubPaths: Record<string, RouteObject[]> = {
   [ROUTER_URL.CUSTOMER.BASE]: [
     {
       index: true,
-      element: <Overview/>,
+      element: <Overview />,
     },
     {
       path: ROUTER_URL.CUSTOMER.PROFILE,

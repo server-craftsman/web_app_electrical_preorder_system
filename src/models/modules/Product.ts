@@ -1,4 +1,4 @@
-import { Category, ImageProduct } from "../api/response/product.res.model";
+import { Category, ImageProduct } from '../api/response/product.res.model';
 
 export interface Product {
   id: string;
@@ -16,4 +16,3 @@ export interface Product {
   deleted: boolean;
   slug: string;
 }
-

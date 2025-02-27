@@ -1,11 +1,11 @@
-import OverviewComponents from "../../../components/customer/overview/Overview";
+import OverviewComponents from '../../../components/customer/overview/Overview';
 
 const Overview = () => {
   return (
     <div className="">
-      <OverviewComponents  />
+      <OverviewComponents />
     </div>
   );
 };
 
-export default Overview ;
+export default Overview;

@@ -8,9 +8,8 @@ export interface userInfo {
   role: string;
   provider: string;
   fullName: string;
-  email?: string 
+  email?: string;
   iat: number;
   exp: number;
   jti: string;
 }
-

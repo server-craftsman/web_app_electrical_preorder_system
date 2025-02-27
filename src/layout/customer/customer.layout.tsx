@@ -35,8 +35,6 @@ const CustomerLayout = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
-
-
   const getAvatar = () => {
     return 'https://res.cloudinary.com/dsqbxgh88/image/upload/v1732626514/j8kpw2s84uwmoyxdokgq.jpg';
   };
@@ -58,21 +56,31 @@ const CustomerLayout = () => {
 
             {/* Navigation Links */}
             <nav className="hidden md:flex space-x-8 font-medium">
-              <Link to="/" className="relative hover:text-red-600 transition-colors duration-300 before:absolute before:bottom-0 before:left-0 before:w-0 before:h-[2px] before:bg-red-600 before:transition-all before:duration-300 hover:before:w-full">
+              <Link
+                to="/"
+                className="relative hover:text-red-600 transition-colors duration-300 before:absolute before:bottom-0 before:left-0 before:w-0 before:h-[2px] before:bg-red-600 before:transition-all before:duration-300 hover:before:w-full"
+              >
                 TRANG CHỦ
               </Link>
-              <Link to="/about" className="relative hover:text-red-600 transition-colors duration-300 before:absolute before:bottom-0 before:left-0 before:w-0 before:h-[2px] before:bg-red-600 before:transition-all before:duration-300 hover:before:w-full">
+              <Link
+                to="/about"
+                className="relative hover:text-red-600 transition-colors duration-300 before:absolute before:bottom-0 before:left-0 before:w-0 before:h-[2px] before:bg-red-600 before:transition-all before:duration-300 hover:before:w-full"
+              >
                 GIỚI THIỆU
               </Link>
-              <Link to="/products" className="relative hover:text-red-600 transition-colors duration-300 before:absolute before:bottom-0 before:left-0 before:w-0 before:h-[2px] before:bg-red-600 before:transition-all before:duration-300 hover:before:w-full">
+              <Link
+                to="/products"
+                className="relative hover:text-red-600 transition-colors duration-300 before:absolute before:bottom-0 before:left-0 before:w-0 before:h-[2px] before:bg-red-600 before:transition-all before:duration-300 hover:before:w-full"
+              >
                 SẢN PHẨM
               </Link>
-              <Link to="/guide" className="relative hover:text-red-600 transition-colors duration-300 before:absolute before:bottom-0 before:left-0 before:w-0 before:h-[2px] before:bg-red-600 before:transition-all before:duration-300 hover:before:w-full">
+              <Link
+                to="/guide"
+                className="relative hover:text-red-600 transition-colors duration-300 before:absolute before:bottom-0 before:left-0 before:w-0 before:h-[2px] before:bg-red-600 before:transition-all before:duration-300 hover:before:w-full"
+              >
                 HƯỚNG DẪN
               </Link>
             </nav>
-
-
 
             <div className="flex items-center space-x-6">
               <div className="flex items-center space-x-4">
@@ -117,13 +125,18 @@ const CustomerLayout = () => {
               <div className="flex items-center justify-center space-x-1">
                 {isLoggedIn ? (
                   <div className="relative">
-                    <button className="flex items-center space-x-2 focus:outline-none" onClick={toggleDropdown}>
+                    <button
+                      className="flex items-center space-x-2 focus:outline-none"
+                      onClick={toggleDropdown}
+                    >
                       <img
                         src={getAvatar()}
                         alt="Avatar"
                         className="w-8 h-8 rounded-full"
                       />
-                      <span className="text-gray-600">{userInfo?.fullName}</span>
+                      <span className="text-gray-600">
+                        {userInfo?.fullName}
+                      </span>
                     </button>
                     {isDropdownOpen && (
                       <div className="absolute right-0 -mt-4 w-60 bg-white border border-gray-200 rounded-md shadow-md p-4">
@@ -134,21 +147,26 @@ const CustomerLayout = () => {
                             className="w-10 h-10 rounded-full mt-6"
                           />
                           <div>
-                            <div className="font-medium text-gray-800">{userInfo?.fullName}</div>
-                            <div className="text-sm text-gray-500 -mt-5">0869872830</div>
+                            <div className="font-medium text-gray-800">
+                              {userInfo?.fullName}
+                            </div>
+                            <div className="text-sm text-gray-500 -mt-5">
+                              0869872830
+                            </div>
                           </div>
                         </div>
 
-                        <button className="w-full mt-2 text-center text-base font-medium text-white bg-red-600 hover:bg-red-700 transition-colors px-3 py-2 rounded-md" onClick={logout}>
+                        <button
+                          className="w-full mt-2 text-center text-base font-medium text-white bg-red-600 hover:bg-red-700 transition-colors px-3 py-2 rounded-md"
+                          onClick={logout}
+                        >
                           Đăng xuất
                         </button>
                       </div>
                     )}
                   </div>
                 ) : (
-                  <>
-
-                  </>
+                  <></>
                 )}
               </div>
             </div>

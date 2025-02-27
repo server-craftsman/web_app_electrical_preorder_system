@@ -1,10 +1,5 @@
-
 const Campaign = () => {
-  return (
-    <div>
-      aa
-    </div>
-  )
-}
+  return <div>aa</div>;
+};
 
 export default Campaign;

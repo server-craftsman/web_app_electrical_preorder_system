@@ -1,16 +1,16 @@
-import { useState, useMemo } from "react";
-import { useAuth } from "../../../contexts/AuthContexts";
+import { useState, useMemo } from 'react';
+import { useAuth } from '../../../contexts/AuthContexts';
 
 const ProfileComponents = () => {
   const { getCurrentUser } = useAuth();
   const user = useMemo(() => getCurrentUser(), []);
 
   const [formData, setFormData] = useState({
-    fullName: user?.fullName || "",
-    gender: "",
-    email: user?.email || user?.sub || "",
-    phone: "",
-    birthDate: "",
+    fullName: user?.fullName || '',
+    gender: '',
+    email: user?.email || user?.sub || '',
+    phone: '',
+    birthDate: '',
   });
 
   const handleChange = (e: any) => {
@@ -20,14 +20,17 @@ const ProfileComponents = () => {
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    console.log("Thông tin cập nhật:", formData);
+    console.log('Thông tin cập nhật:', formData);
   };
 
   return (
     <div className="max-w-4xl mx-auto bg-white shadow-md rounded-2xl p-6 -mt-10 min-h-[500px]">
       <h2 className="text-lg font-semibold mb-3">Thông Tin Cá Nhân</h2>
       <div className="flex flex-col justify-between min-h-[500px]">
-        <form onSubmit={handleSubmit} className="space-y-3 flex-grow grid grid-cols-1">
+        <form
+          onSubmit={handleSubmit}
+          className="space-y-3 flex-grow grid grid-cols-1"
+        >
           {/* Họ và tên */}
           <div>
             <label className="block font-semibold">Họ và tên</label>
@@ -49,7 +52,7 @@ const ProfileComponents = () => {
                   type="radio"
                   name="gender"
                   value="Nam"
-                  checked={formData.gender === "Nam"}
+                  checked={formData.gender === 'Nam'}
                   onChange={handleChange}
                   className="mr-2"
                 />
@@ -60,7 +63,7 @@ const ProfileComponents = () => {
                   type="radio"
                   name="gender"
                   value="Nữ"
-                  checked={formData.gender === "Nữ"}
+                  checked={formData.gender === 'Nữ'}
                   onChange={handleChange}
                   className="mr-2"
                 />

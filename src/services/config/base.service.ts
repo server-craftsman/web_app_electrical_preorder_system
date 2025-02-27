@@ -151,26 +151,30 @@ export const BaseService = {
     if (isMultiple) {
       for (let i = 0; i < file.length; i++) {
         if (file[i].size > maxFileSize) {
-          throw new Error(`File size should not exceed 2MB. File ${file[i].name} is too large.`);
+          throw new Error(
+            `File size should not exceed 2MB. File ${file[i].name} is too large.`
+          );
         }
-        formData.append("files[]", file[i]);
+        formData.append('files[]', file[i]);
       }
     } else {
       if (file.size > maxFileSize) {
-        throw new Error(`File size should not exceed 2MB. File ${file.name} is too large.`);
+        throw new Error(
+          `File size should not exceed 2MB. File ${file.name} is too large.`
+        );
       }
-      formData.append("file", file);
+      formData.append('file', file);
     }
     if (isLoading) store.dispatch(toggleLoading(true) as any);
     const token = storage.getToken();
     try {
       const response = await axios({
-        method: "post",
+        method: 'post',
         url: `${DOMAIN_API}${url}`,
         data: formData,
         params: {},
         headers: {
-          "content-type": "multipart/form-data",
+          'content-type': 'multipart/form-data',
           Authorization: `Bearer ${token}`,
         },
       });
@@ -192,7 +196,7 @@ export const BaseService = {
     return axiosInstance
       .post<T, PromiseState<T>>(`${url}`, formData, {
         headers: {
-          "Content-Type": "multipart/form-data",
+          'Content-Type': 'multipart/form-data',
         },
       })
       .finally(() => {
@@ -205,19 +209,18 @@ export const BaseService = {
     formData: FormData,
     isLoading: boolean = true,
     toggleLoading?: (isLoading: boolean) => void
-  ):  Promise<PromiseState<T>> => {
+  ): Promise<PromiseState<T>> => {
     if (toggleLoading) store.dispatch(toggleLoading(isLoading) as any);
     return axiosInstance
-    .patch<T, PromiseState<T>>(`${url}`, formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    })
-    .finally(() => {
-      if (toggleLoading) toggleLoading(false);
-    });
+      .patch<T, PromiseState<T>>(`${url}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+      .finally(() => {
+        if (toggleLoading) toggleLoading(false);
+      });
   },
-
 };
 
 export interface PromiseState<T = unknown> extends AxiosResponse<T> {

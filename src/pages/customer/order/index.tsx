@@ -1,11 +1,11 @@
-import OrderComponents from "../../../components/customer/order/Order";
+import OrderComponents from '../../../components/customer/order/Order';
 
 const Order = () => {
   return (
     <div className="">
-      <OrderComponents  />
+      <OrderComponents />
     </div>
   );
 };
 
-export default Order ;
+export default Order;

@@ -1,4 +1,4 @@
-import { message } from "antd";
+import { message } from 'antd';
 
 export const checkURL = (url: string) => {
   return /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/.test(url);
@@ -40,11 +40,10 @@ export const isEmptyNumber = (num: number) => {
   return num === 0;
 };
 
-
 export const limitMemoryFile = (file: File) => {
   const isLt5M = file.size / 1024 / 1024 < 5;
   if (!isLt5M) {
-      message.error('Kích thước hình ảnh phải nhỏ hơn 5MB!');
+    message.error('Kích thước hình ảnh phải nhỏ hơn 5MB!');
   }
   return false;
 };

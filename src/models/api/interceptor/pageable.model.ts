@@ -16,5 +16,5 @@ export interface Pageable {
   number?: number;
   first?: boolean;
   numberOfElements?: number;
-  empty?: boolean;  
+  empty?: boolean;
 }

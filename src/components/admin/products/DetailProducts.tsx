@@ -4,52 +4,35 @@ import { ProductService } from '../../../services/product/product.service';
 import { GetAllProductResponseModel } from '../../../models/api/response/product.res.model';
 import { Carousel } from 'antd';
 import { ProductStatus } from '../../../app/enums/product.status';
-import EditProducts from './EditProducts';
+import { helper } from '../../../utils';
 
 const DetailProducts = () => {
   const { slug: initialSlug } = useParams();
-  const [slug, setSlug] = useState(initialSlug);
-  const [product, setProduct] = useState<GetAllProductResponseModel | null>(null);
+  const [product, setProduct] = useState<GetAllProductResponseModel | null>(
+    null
+  );
   const navigate = useNavigate();
   const carouselRef = useRef<any>(null);
-  const editProductRef = useRef<{
-    handleOpenModal: (slug: string) => void;
-  } | null>(null);
 
   const fetchProductDetail = useCallback(async () => {
-    if (!slug) return;
+    if (!initialSlug) return;
     try {
-      const response = await ProductService.getBySlug(slug);
+      const response = await ProductService.getBySlug(initialSlug);
       setProduct(response?.data.data);
     } catch (error) {
       console.error('Lỗi khi tải sản phẩm:', error);
       setProduct(null);
     }
-  }, [slug]);
+  }, [initialSlug]);
 
   useEffect(() => {
     fetchProductDetail();
-  }, [fetchProductDetail, slug]);
+  }, [fetchProductDetail, initialSlug]);
 
   if (!product)
     return (
       <p className="text-center text-gray-500">Không tìm thấy sản phẩm.</p>
     );
-
-  const getStatusStyle = (status: ProductStatus) => {
-    switch (status) {
-      case ProductStatus.AVAILABLE:
-        return 'bg-green-500';
-      case ProductStatus.OUT_OF_STOCK:
-        return 'bg-yellow-500';
-      case ProductStatus.PREORDER:
-        return 'bg-blue-500';
-      case ProductStatus.DISCONTINUED:
-        return 'bg-red-500';
-      default:
-        return 'bg-gray-500';
-    }
-  };
 
   return (
     <div className="p-6 bg-white shadow-lg rounded-lg max-w-6xl mx-auto">
@@ -95,7 +78,7 @@ const DetailProducts = () => {
           <div className="space-y-2 text-gray-700">
             <h1 className="text-2xl font-bold">{product.name}</h1>
             <span
-              className={`px-3 py-1 text-white text-sm font-semibold rounded ${getStatusStyle(product.status as ProductStatus)}`}
+              className={`px-3 py-1 text-white text-sm font-semibold rounded ${helper.formatProductStatus(product.status as ProductStatus)}`}
             >
               {product.status}
             </span>
@@ -109,12 +92,12 @@ const DetailProducts = () => {
             </p>
             <p>
               <strong className="text-black">Mô tả:</strong>{' '}
-              {product.description}
+              {product.description.slice(0, 100)}
             </p>
             <p>
               <strong className="text-black">Giá:</strong>{' '}
               <span className="text-lg font-bold text-green-600">
-                ${product.price}
+                {helper.formatCurrency(product.price)}
               </span>
             </p>
             <p>
@@ -122,15 +105,16 @@ const DetailProducts = () => {
               {product.quantity}
             </p>
             <p>
-              <strong className="text-black">Thứ tự hiện thi sản phẩm:</strong> {product.position}
+              <strong className="text-black">Thứ tự hiện thi sản phẩm:</strong>{' '}
+              {product.position}
             </p>
             <p>
               <strong className="text-black">Ngày tạo:</strong>{' '}
-              {new Date(product.createdAt).toLocaleDateString()}
+              {helper.formatDate(new Date(product.createdAt))}
             </p>
             <p>
               <strong className="text-black">Cập nhật lần cuối:</strong>{' '}
-              {new Date(product.updatedAt).toLocaleDateString()}
+              {helper.formatDate(new Date(product.updatedAt))}
             </p>
           </div>
 
@@ -142,26 +126,6 @@ const DetailProducts = () => {
             >
               Quay lại
             </button>
-            <button className="px-4 py-2 bg-red-500 text-white rounded shadow hover:bg-red-600 transition-all">
-              Xóa sản phẩm
-            </button>
-            <button
-              className="px-4 py-2 bg-green-500 text-white rounded shadow hover:bg-green-600"
-              onClick={() =>
-                editProductRef.current?.handleOpenModal(slug!)
-              }
-            >
-              Chỉnh sửa sản phẩm
-            </button>
-
-            <EditProducts
-              ref={editProductRef}
-              onProductUpdated={(newSlug) => {
-                setSlug(newSlug);
-                navigate(`/products/${newSlug}`);
-              }}
-              slug={slug!}
-            />
           </div>
         </div>
       </div>

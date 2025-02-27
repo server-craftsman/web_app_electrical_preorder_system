@@ -1,4 +1,3 @@
- 
 export interface Category {
   id: string;
   name: string;
@@ -24,9 +23,7 @@ export interface GetAllProductResponseModel {
   updatedAt: string;
   deleted: boolean;
   slug: string;
-  
 }
-
 
 export interface CreateProductResponseModel {
   id: string;

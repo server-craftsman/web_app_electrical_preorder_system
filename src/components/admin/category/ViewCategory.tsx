@@ -9,22 +9,30 @@ import EditCategory from './EditCategory';
 interface ViewCategoryProps {
   refresh: boolean;
   searchTerm: string;
-  refreshKey: number
+  refreshKey: number;
 }
 
-const ViewCategory = ({ refresh, searchTerm, refreshKey }: ViewCategoryProps) => {
+const ViewCategory = ({
+  refresh,
+  searchTerm,
+  refreshKey,
+}: ViewCategoryProps) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [categories, setCategories] = useState<GetAllCategoryResponseModel[]>([]);
+  const [categories, setCategories] = useState<GetAllCategoryResponseModel[]>(
+    []
+  );
   const [totalCategories, setTotalCategories] = useState(0);
-  const [isEditModalVisible, setIsEditModalVisible] = useState(false);  // State to control modal visibility
-  const [categoryToEdit, setCategoryToEdit] = useState<GetAllCategoryResponseModel | null>(null);  // State to hold category data for editing
+  const [isEditModalVisible, setIsEditModalVisible] = useState(false); // State to control modal visibility
+  const [categoryToEdit, setCategoryToEdit] =
+    useState<GetAllCategoryResponseModel | null>(null); // State to hold category data for editing
 
   const fetchCategories = async () => {
     try {
       const response = await CategoryService.getAll({ searchTerm });
       if (Array.isArray(response.data?.data)) {
-        const filteredCategories = response.data.data.filter((category: GetAllCategoryResponseModel) =>
-          category.name.toLowerCase().includes(searchTerm.toLowerCase())  // Case-insensitive search
+        const filteredCategories = response.data.data.filter(
+          (category: GetAllCategoryResponseModel) =>
+            category.name.toLowerCase().includes(searchTerm.toLowerCase()) // Case-insensitive search
         );
         setCategories(filteredCategories);
         setTotalCategories(filteredCategories.length || 0);
@@ -43,19 +51,18 @@ const ViewCategory = ({ refresh, searchTerm, refreshKey }: ViewCategoryProps) =>
       const response = await CategoryService.delete(categoryId);
       return response.data.data.id;
     } catch (error) {
-      console.error("Failed to delete category:", error);
+      console.error('Failed to delete category:', error);
       return false;
     }
   };
 
-  
   const handleDeleteCategory = (categoryId: string) => {
     Modal.confirm({
-      title: "Bạn có chắc chắn muốn xóa danh mục này?",
+      title: 'Bạn có chắc chắn muốn xóa danh mục này?',
       onOk: async () => {
         const success = await deleteCategory(categoryId);
         if (success) {
-          message.success("Xóa thành công!");
+          message.success('Xóa thành công!');
           fetchCategories();
           Modal.destroyAll();
         }
@@ -64,14 +71,13 @@ const ViewCategory = ({ refresh, searchTerm, refreshKey }: ViewCategoryProps) =>
     });
   };
 
-
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
 
   const handleEdit = (category: GetAllCategoryResponseModel) => {
-    setCategoryToEdit(category);  // Set the category data to edit
-    setIsEditModalVisible(true);  // Show the modal
+    setCategoryToEdit(category); // Set the category data to edit
+    setIsEditModalVisible(true); // Show the modal
   };
 
   const columns = [
@@ -91,14 +97,15 @@ const ViewCategory = ({ refresh, searchTerm, refreshKey }: ViewCategoryProps) =>
       render: (_: any, record: GetAllCategoryResponseModel) => (
         <span className="flex space-x-2">
           <button
-            onClick={() => handleEdit(record)}  // Open edit modal with category data
+            onClick={() => handleEdit(record)} // Open edit modal with category data
             className="bg-blue-600 text-white p-2 rounded-full shadow-lg hover:bg-blue-700"
           >
             <CustomEditIcon />
           </button>
-          <button 
-          onClick={() => record.id && handleDeleteCategory(record.id)} 
-          className="bg-red-600 text-white p-2 rounded-full shadow-lg hover:bg-red-700">
+          <button
+            onClick={() => record.id && handleDeleteCategory(record.id)}
+            className="bg-red-600 text-white p-2 rounded-full shadow-lg hover:bg-red-700"
+          >
             <CustomDeleteIcon />
           </button>
         </span>
@@ -131,15 +138,15 @@ const ViewCategory = ({ refresh, searchTerm, refreshKey }: ViewCategoryProps) =>
         onCancel={() => setIsEditModalVisible(false)}
         footer={null}
       >
-       {categoryToEdit && (
-    <EditCategory 
-      category={categoryToEdit} 
-      onEditSuccess={() => {
-        fetchCategories(); // Refresh data
-        setIsEditModalVisible(false); // Close modal
-      }} 
-    />
-  )}
+        {categoryToEdit && (
+          <EditCategory
+            category={categoryToEdit}
+            onEditSuccess={() => {
+              fetchCategories(); // Refresh data
+              setIsEditModalVisible(false); // Close modal
+            }}
+          />
+        )}
       </Modal>
     </div>
   );

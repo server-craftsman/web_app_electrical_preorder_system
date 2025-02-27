@@ -1,15 +1,15 @@
-import {  useEffect } from 'react';
+import { useEffect } from 'react';
 import { Form, Input, Button } from 'antd';
 import { GetAllCategoryResponseModel } from '../../../models/api/response/category.res.model';
 import { CategoryService } from '../../../services/category/category.service';
 
 interface EditCategoryProps {
-  category: GetAllCategoryResponseModel;  // Receive category data as prop
+  category: GetAllCategoryResponseModel; // Receive category data as prop
   onEditSuccess: () => void;
 }
 
 const EditCategory = ({ category, onEditSuccess }: EditCategoryProps) => {
-  const [form] = Form.useForm();  
+  const [form] = Form.useForm();
 
   // Populate form with category data
   useEffect(() => {
@@ -22,14 +22,17 @@ const EditCategory = ({ category, onEditSuccess }: EditCategoryProps) => {
   const handleSubmit = async () => {
     try {
       const values = form.getFieldsValue();
-      const updatedCategory = await CategoryService.update({ ...values, id: category.id });     
-      if(updatedCategory){
+      const updatedCategory = await CategoryService.update({
+        ...values,
+        id: category.id,
+      });
+      if (updatedCategory) {
         onEditSuccess();
       }
     } catch (error) {
       console.error('Failed to update category:', error);
     } finally {
-      console.log("Load success!");
+      console.log('Load success!');
     }
   };
 
@@ -51,11 +54,7 @@ const EditCategory = ({ category, onEditSuccess }: EditCategoryProps) => {
         <Input.TextArea />
       </Form.Item> */}
       <Form.Item>
-        <Button
-          type="primary"
-          htmlType="submit"
-          block
-        >
+        <Button type="primary" htmlType="submit" block>
           Save Changes
         </Button>
       </Form.Item>

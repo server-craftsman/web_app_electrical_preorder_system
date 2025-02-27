@@ -1,44 +1,44 @@
 import { Table } from 'antd';
 import Pagination from '../../pagination';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { GetAllProductResponseModel } from '../../../models/api/response/product.res.model';
 import { ProductService } from '../../../services/product/product.service';
 import { useNavigate } from 'react-router-dom';
+import { EditOutlined, DeleteOutlined, EyeOutlined } from '@ant-design/icons';
 import { ROUTER_URL } from '../../../const';
+import EditProducts from './ModalEdit';
+import ModalDelete from './ModalDelete';
+import { helper } from '../../../utils';
 interface ViewProductProps {
   refresh: boolean;
   searchTerm: string;
   refreshKey: number;
 }
 
-const CustomEyeIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    fill="none"
-    viewBox="0 0 24 24"
-    strokeWidth={1.5}
-    stroke="currentColor"
-    className="w-4 h-4"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="M12 4.5c-4.97 0-9 3.582-9 8s4.03 8 9 8 9-3.582 9-8-4.03-8-9-8zm0 14c-3.866 0-7-2.686-7-6s3.134-6 7-6 7 2.686 7 6-3.134 6-7 6zm0-10.5a4.5 4.5 0 1 0 0 9 4.5 4.5 0 0 0 0-9z"
-    />
-  </svg>
-);
-
-const ViewProducts = ({ refresh, searchTerm, refreshKey }: ViewProductProps) => {
+const ViewProducts = ({
+  refresh,
+  searchTerm,
+  refreshKey,
+}: ViewProductProps) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [products, setProducts] = useState<GetAllProductResponseModel[]>([]);
   const [totalProducts, setTotalProducts] = useState(0);
-  const [loading, setLoading] = useState(false);
+  const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const pageSize = 10;
 
   const navigate = useNavigate();
+  const [isEditModalVisible, setIsEditModalVisible] = useState(false);
+  const [selectedProductSlug, setSelectedProductSlug] = useState<string | null>(
+    null
+  );
+  const editProductRef = useRef<{ handleOpenModal: (slug: string) => void }>(
+    null
+  );
+  const deleteProductRef = useRef<{ handleOpenModal: (slug: string) => void }>(
+    null
+  );
 
   const fetchProducts = async (page: number) => {
-    setLoading(true);
     try {
       const response = await ProductService.getAll({
         searchTerm,
@@ -60,8 +60,35 @@ const ViewProducts = ({ refresh, searchTerm, refreshKey }: ViewProductProps) => 
       setProducts([]);
       setTotalProducts(0);
     } finally {
-      setLoading(false);
+      console.log('fetchProducts');
     }
+  };
+
+  const handleEditProduct = (slug: string) => {
+    setSelectedProductSlug(slug);
+    setIsEditModalVisible(true);
+    if (editProductRef.current) {
+      editProductRef.current.handleOpenModal(slug);
+    }
+  };
+
+  const handleProductUpdated = () => {
+    setIsEditModalVisible(false);
+    fetchProducts(currentPage);
+  };
+
+  const handleDeleteProduct = (slug: string) => {
+    setSelectedProductSlug(slug);
+    setIsDeleteModalVisible(true);
+    if (deleteProductRef.current) {
+      deleteProductRef.current.handleOpenModal(slug);
+    }
+  };
+
+  const handleProductDeleted = () => {
+    setIsDeleteModalVisible(false);
+    // setSelectedProductSlug(null);
+    fetchProducts(currentPage);
   };
 
   useEffect(() => {
@@ -75,20 +102,44 @@ const ViewProducts = ({ refresh, searchTerm, refreshKey }: ViewProductProps) => 
   const columns = [
     { title: 'Mã sản phẩm', dataIndex: 'productCode', key: 'productCode' },
     { title: 'Tên sản phẩm', dataIndex: 'name', key: 'name' },
-    { title: 'Mô tả', dataIndex: 'description', key: 'description' },
+    {
+      title: 'Mô tả',
+      dataIndex: 'description',
+      key: 'description',
+      render: (text: string) => text.slice(0, 100),
+    },
     { title: 'Số lượng', dataIndex: 'quantity', key: 'quantity' },
-    { title: 'Giá', dataIndex: 'price', key: 'price' },
+    {
+      title: 'Giá',
+      dataIndex: 'price',
+      key: 'price',
+      render: (text: number) => helper.formatCurrency(text),
+    },
     { title: 'Danh mục', dataIndex: ['category', 'name'], key: 'category' },
     {
       title: 'Hành động',
       key: 'action',
-      render:(_: string, record: GetAllProductResponseModel) => (
+      render: (_: string, record: GetAllProductResponseModel) => (
         <span className="flex space-x-2">
-          <button 
-          className="bg-blue-600 text-white p-2 rounded-full shadow-lg hover:bg-blue-700"
-          onClick={() => navigate(`${ROUTER_URL.ADMIN.PRODUCT}/${record.slug}`)}
+          <button
+            className="bg-blue-600 text-white p-2 rounded-lg shadow-lg hover:bg-blue-700"
+            onClick={() =>
+              navigate(`${ROUTER_URL.ADMIN.PRODUCT}/${record.slug}`)
+            }
           >
-            <CustomEyeIcon />
+            <EyeOutlined className="text-xl" />
+          </button>
+          <button
+            className="bg-green-600 text-white p-2 rounded-lg shadow-lg hover:bg-green-700"
+            onClick={() => handleEditProduct(record.slug)}
+          >
+            <EditOutlined className="text-xl" />
+          </button>
+          <button
+            className="bg-red-600 text-white p-2 rounded-lg shadow-lg hover:bg-red-700"
+            onClick={() => handleDeleteProduct(record.slug)}
+          >
+            <DeleteOutlined className="text-xl" />
           </button>
         </span>
       ),
@@ -100,7 +151,6 @@ const ViewProducts = ({ refresh, searchTerm, refreshKey }: ViewProductProps) => 
       <Table
         columns={columns}
         dataSource={products}
-        loading={loading}
         pagination={false}
         locale={{ emptyText: 'Không có sản phẩm nào' }}
         rowKey="productCode"
@@ -112,6 +162,20 @@ const ViewProducts = ({ refresh, searchTerm, refreshKey }: ViewProductProps) => 
           />
         )}
       />
+      {isEditModalVisible && (
+        <EditProducts
+          ref={editProductRef}
+          onProductUpdated={handleProductUpdated}
+          slug={selectedProductSlug || ''}
+        />
+      )}
+      {isDeleteModalVisible && (
+        <ModalDelete
+          ref={deleteProductRef}
+          onProductDeleted={handleProductDeleted}
+          slug={selectedProductSlug || ''}
+        />
+      )}
     </div>
   );
 };
