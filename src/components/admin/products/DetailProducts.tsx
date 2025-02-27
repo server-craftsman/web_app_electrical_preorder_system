@@ -7,7 +7,7 @@ import { ProductStatus } from '../../../app/enums/product.status';
 import EditProducts from './EditProducts';
 
 const DetailProducts = () => {
-  const { productId } = useParams();
+  const { slug } = useParams();
   const [product, setProduct] = useState<GetAllProductResponseModel | null>(
     null
   );
@@ -18,15 +18,15 @@ const DetailProducts = () => {
   } | null>(null);
 
   const fetchProductDetail = useCallback(async () => {
-    if (!productId) return;
+    if (!slug) return;
     try {
-      const response = await ProductService.getById(productId);
+      const response = await ProductService.getBySlug(slug);
       setProduct(response?.data.data);
     } catch (error) {
       console.error('Lỗi khi tải sản phẩm:', error);
       setProduct(null);
     }
-  }, [productId]);
+  }, [slug]);
 
   useEffect(() => {
     fetchProductDetail();
@@ -149,7 +149,7 @@ const DetailProducts = () => {
             <button
               className="px-4 py-2 bg-green-500 text-white rounded shadow hover:bg-green-600"
               onClick={() =>
-                editProductRef.current?.handleOpenModal(productId!)
+                editProductRef.current?.handleOpenModal(slug!)
               }
             >
               Chỉnh sửa sản phẩm

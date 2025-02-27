@@ -8,6 +8,7 @@ export const ROUTER_URL = {
     HISTORY: '/admin/history',
     ACCOUNT: '/admin/account',
     PRODUCT: '/admin/product',
+    PRODUCT_DETAIL: '/admin/product/:slug',
     CATEGORY: '/admin/category',
   },
   STAFF: {

@@ -86,7 +86,7 @@ const ViewProducts = ({ refresh, searchTerm, refreshKey }: ViewProductProps) => 
         <span className="flex space-x-2">
           <button 
           className="bg-blue-600 text-white p-2 rounded-full shadow-lg hover:bg-blue-700"
-          onClick={() => navigate(`${ROUTER_URL.ADMIN.PRODUCT}/${record.id}`)}
+          onClick={() => navigate(`${ROUTER_URL.ADMIN.PRODUCT}/${record.slug}`)}
           >
             <CustomEyeIcon />
           </button>

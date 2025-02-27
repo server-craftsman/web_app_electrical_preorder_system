@@ -36,7 +36,7 @@ export const adminSubPaths: Record<string, RouteObject[]> = {
         },
         {
           element: <DetailProducts />,
-          path: `${ROUTER_URL.ADMIN.PRODUCT}/:productId`,
+          path: ROUTER_URL.ADMIN.PRODUCT_DETAIL,
         },
   ],
 };

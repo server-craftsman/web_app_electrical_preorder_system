@@ -22,9 +22,9 @@ const ProductList: React.FC = () => {
 
   return (
     <div className="bg-white py-8">
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-8xl mx-auto">
         <h2 className="text-2xl font-bold mb-6">Đặt hàng sớm cùng Elecee</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
           {products.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}

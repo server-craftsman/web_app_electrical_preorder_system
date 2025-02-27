@@ -3,8 +3,6 @@ import { GetAllProductResponseModel } from '../../../../models/api/response/prod
 import { formatCurrency } from '../../../../utils/helper';
 import { ROUTER_URL } from '../../../../const';
 import { useNavigate } from 'react-router-dom';
-// import { ProductService } from '../../../../services/product/product.service';
-
 
 interface ProductCardProps {
   product: GetAllProductResponseModel;
@@ -75,7 +73,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             </span>
           </div>
         </div>
-        <div className="bg-gray-100 p-2 mt-2 text-gray-700 text-xs rounded h-[50px]">
+        <div className="p-2 mt-2 text-gray-700 text-xs rounded h-[50px]">
           {product.description.slice(0, 50)}...
         </div>
         <div className="flex justify-between items-center mt-2 text-gray-500 text-xs">
