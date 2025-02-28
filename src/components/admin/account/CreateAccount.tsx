@@ -57,6 +57,14 @@ const CreateUser: React.FC<CreateUserProps> = ({ onUserCreated, onClose }) => {
         message: "Vui lòng nhập tên đăng nhập",
         min: 3,
         max: 20,
+        pattern: /^\S*$/, // Ensures no whitespace characters
+        validator: (_: any, value: string) => {
+          if (!value) return Promise.resolve();
+          if (/\s/.test(value)) {
+            return Promise.reject('Tên đăng nhập không được chứa khoảng trắng');
+          }
+          return Promise.resolve();
+        }
       },
     ],
     email: [
