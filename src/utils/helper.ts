@@ -1,4 +1,5 @@
 import { toast, ToastOptions } from 'react-toastify';
+import { Tag } from 'antd';
 
 //===========validate output
 export const notificationMessage = (
@@ -96,5 +97,23 @@ export const formatProductStatus = (status: string) => {
       return 'bg-red-500';
     default:
       return 'bg-gray-500';
+  }
+};
+
+
+export const formatRoleAccountColor = (role: string) => {
+  switch (role) {
+    case 'ROLE_ADMIN':
+      return 'bg-purple-600 text-white rounded-lg px-4 py-2';
+    case 'ROLE_STAFF':
+      return 'bg-blue-600 text-white rounded-lg px-4 py-2';
+    case 'ROLE_CUSTOMER':
+      return 'bg-green-600 text-white rounded-lg px-4 py-2';
+    case 'ROLE_SUPPLIER':
+      return 'bg-orange-600 text-white rounded-lg px-4 py-2';
+    case 'ROLE_MANAGER':
+      return 'bg-indigo-600 text-white rounded-lg px-4 py-2';
+    default:
+      return 'bg-gray-500 text-white rounded-lg px-4 py-2';
   }
 };
