@@ -2,15 +2,16 @@ import { Modal } from 'antd';
 import { useState, useRef } from 'react';
 import CreateCampaign from '../../../components/admin/compaign/CreateCampaign';
 import Search from '../../../components/search';
+import ViewCampaign from '../../../components/admin/compaign/ViewCampaign';
 
 
 
 const Campaign = () => {
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [ isModalVisible, setIsModalVisible] = useState(false);
   const createCampaignRef = useRef<{ handleOpenModal: () => void } | null>(null);
-  const [, setRefreshCampaigns] = useState(false); // state to trigger refresh
-  const [, setSearchTerm] = useState('')
-  const [, setRefreshKey] = useState(0);
+  const [ refreshCampaigns, setRefreshCampaigns ] = useState(false); // state to trigger refresh
+  const [ searchTerm, setSearchTerm ] = useState('')
+  const [ refreshKey, setRefreshKey ] = useState(0);
 
   const handleCreateCampaign = () => {
     setIsModalVisible(true);
@@ -41,6 +42,11 @@ const Campaign = () => {
         Tạo chiến dịch
       </button>
     </div>
+    <ViewCampaign 
+      refresh={refreshCampaigns}
+      searchTerm={searchTerm}
+      refreshKey={refreshKey}
+    />
     {/* <ViewCategory  refresh={refreshCategories} searchTerm={searchTerm} refreshKey={refreshKey}/> */}
     <Modal
       title="Tạo danh mục"

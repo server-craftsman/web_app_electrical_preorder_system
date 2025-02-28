@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Form, Input, InputNumber, Button, Select, message } from "antd";
+import { Form, Input, InputNumber, Button, Select, message, Tag } from "antd";
 import { CampaignService } from "../../../services/campaign/campaign.service"; // Gọi API
 // import dayjs from "dayjs";
 import { ProductService } from "../../../services/product/product.service";
@@ -19,6 +19,7 @@ const CreateCampaign: React.FC<CreateCampaignProps> = ({ onCategoryCreated, onCl
   const [form] = Form.useForm();
   const [products, setProducts] = useState<Product[]>([]);
   const [loadingProducts, setLoadingProducts] = useState(false);
+  const [status, setStatus] = useState<string>("SCHEDULED");
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -40,6 +41,24 @@ const CreateCampaign: React.FC<CreateCampaignProps> = ({ onCategoryCreated, onCl
     };
     fetchProducts();
   }, []);
+
+  const determineCampaignStatus = (startDate?: string, endDate?: string) => {
+    if (!startDate || !endDate) return "SCHEDULED"; // Mặc định là "SCHEDULED" nếu chưa chọn ngày
+    const now = new Date();
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+
+    if (now < start) return "SCHEDULED";
+    if (now > end) return "COMPLETED";
+    return "ACTIVE";
+  };
+
+ const handleDateChange = () => {
+    const { startDate, endDate } = form.getFieldsValue(["startDate", "endDate"]);
+    const newStatus = determineCampaignStatus(startDate, endDate);
+    setStatus(newStatus); // Cập nhật trạng thái trong state
+    form.setFieldsValue({ status: newStatus }); // Cập nhật giá trị trong form
+  };
 
   const handleSubmit = async (values: any) => {
     try {
@@ -79,11 +98,11 @@ const CreateCampaign: React.FC<CreateCampaignProps> = ({ onCategoryCreated, onCl
       </Form.Item>
 
       <Form.Item name="startDate" label="Ngày bắt đầu" rules={[{ required: true, message: "Vui lòng chọn ngày bắt đầu" }]}>
-        <input type="datetime-local" className="border p-2 w-full" onChange={(e) => form.setFieldsValue({ startDate: e.target.value })} />
+        <input type="datetime-local" className="border p-2 w-full" onChange={handleDateChange} />
       </Form.Item>
 
       <Form.Item name="endDate" label="Ngày kết thúc" rules={[{ required: true, message: "Vui lòng chọn ngày kết thúc" }]}>
-        <input type="datetime-local" className="border p-2 w-full" onChange={(e) => form.setFieldsValue({ endDate: e.target.value })} />
+        <input type="datetime-local" className="border p-2 w-full" onChange={handleDateChange} />
       </Form.Item>
 
       <Form.Item name="minQuantity" label="Số lượng tối thiểu" rules={[{ required: true, message: "Nhập số lượng tối thiểu" }]}>
@@ -98,14 +117,11 @@ const CreateCampaign: React.FC<CreateCampaignProps> = ({ onCategoryCreated, onCl
         <InputNumber min={0} className="w-full" />
       </Form.Item>
 
-      <Form.Item name="status" label="Trạng thái" rules={[{ required: true, message: "Chọn trạng thái" }]}>
-        <Select>
-          <Select.Option value="DRAFT">Nháp</Select.Option>
-          <Select.Option value="SCHEDULED">Lên lịch</Select.Option>
-          <Select.Option value="ACTIVE">Hoạt động</Select.Option>
-          <Select.Option value="COMPLETED">Hoàn thành</Select.Option>
-          <Select.Option value="CANCELLED">Hủy bỏ</Select.Option>
-        </Select>
+      {/* Hiển thị trạng thái theo ngày */}
+      <Form.Item label="Trạng thái chiến dịch">
+        <Tag color={status === "SCHEDULED" ? "blue" : status === "ACTIVE" ? "green" : "red"}>
+          {status}
+        </Tag>
       </Form.Item>
 
       <Form.Item name="productId" label="Chọn sản phẩm" rules={[{ required: true, message: "Vui lòng chọn sản phẩm" }]}>

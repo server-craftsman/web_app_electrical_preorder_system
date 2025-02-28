@@ -18,5 +18,5 @@ export const CampaignService = {
             payload: params,     
         }
     );
-        }
+}
 }

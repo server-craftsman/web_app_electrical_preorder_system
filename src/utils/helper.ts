@@ -1,5 +1,4 @@
 import { toast, ToastOptions } from 'react-toastify';
-import { Tag } from 'antd';
 
 //===========validate output
 export const notificationMessage = (
@@ -71,19 +70,20 @@ export const formatDateTimeWithTimezone = (date: Date) => {
 export const formatCampaignStatus = (status: string) => {
   switch (status.toLowerCase()) {
     case 'draft':
-      return 'orange';
-    case 'published':
-      return 'green';
-    case 'archived':
-      return 'gray';
+      return '#FFA500'; // Orange
+    case 'scheduled':
+      return '#28a745'; // Green
     case 'active':
-      return 'blue';
-    case 'inactive':
-      return 'red';
+      return '#007bff'; // Blue
+    case 'completed':
+      return '#6f42c1'; // Purple
+    case 'cancelled':
+      return '#dc3545'; // Red
     default:
-      return 'black';
+      return '#000000'; // Black (Default)
   }
 };
+
 
 export const formatProductStatus = (status: string) => {
   switch (status.toLowerCase()) {
