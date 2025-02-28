@@ -27,32 +27,32 @@ const ViewCampaign = ({
   const pageSize = 10;
 
   // const navigate = useNavigate();
-  
+
   const fetchCampaigns = async (page: number) => {
     try {
-    const response = await CampaignService.getAll({
-      page: page -1,
-      size: pageSize,
-      searchTerm,
-    });
-    const content = response?.data?.data?.content;
-    const total = response?.data?.data?.page?.totalElements;
+      const response = await CampaignService.getAll({
+        page: page - 1,
+        size: pageSize,
+        searchTerm,
+      });
+      const content = response?.data?.data?.content;
+      const total = response?.data?.data?.page?.totalElements;
 
-    if(Array.isArray(content)) {
-      setCampaigns(content);
-      setTotalCampaigns(total || 0);
-    } else {
+      if (Array.isArray(content)) {
+        setCampaigns(content);
+        setTotalCampaigns(total || 0);
+      } else {
+        setCampaigns([]);
+        setTotalCampaigns(0);
+      }
+    } catch (error) {
+      console.error('Failed to fetch products:', error);
       setCampaigns([]);
       setTotalCampaigns(0);
+    } finally {
+      console.log('fetchCampaigns');
     }
-  } catch (error){
-    console.error('Failed to fetch products:', error);
-    setCampaigns([]);
-    setTotalCampaigns(0);
-  } finally {
-    console.log('fetchCampaigns');
-  }
-  }
+  };
 
   useEffect(() => {
     setCurrentPage(1); // Reset to first page on search or refresh
@@ -60,7 +60,7 @@ const ViewCampaign = ({
 
   useEffect(() => {
     fetchCampaigns(currentPage);
-  }, [currentPage, refresh, refreshKey])
+  }, [currentPage, refresh, refreshKey]);
 
   const columns = [
     {
@@ -72,15 +72,15 @@ const ViewCampaign = ({
       title: 'Ngày bắt đầu',
       dataIndex: 'startDate',
       key: 'startDate',
-      render: (text: string) => helper.formatDate(new Date(text)), // Chuyển đổi sang Date
+      render: (text: string) => helper.formatDateTime(new Date(text)), // Chuyển đổi sang Date
     },
     {
       title: 'Ngày kết thúc',
       dataIndex: 'endDate',
       key: 'endDate',
-      render: (text: string) => helper.formatDate(new Date(text)),
+      render: (text: string) => helper.formatDateTime(new Date(text)),
     },
-    
+
     {
       title: 'Số lượng tối thiểu',
       dataIndex: 'minQuantity',
@@ -115,24 +115,33 @@ const ViewCampaign = ({
       title: 'Hành động',
       key: 'actions',
       render: (_: any, _record: CampaignResponseModel) => (
-        <div>
-          <EyeOutlined 
-            style={{ color: 'blue', marginRight: 8, cursor: 'pointer' }}
-            // onClick={() => navigate(`${ROUTER_URL.CAMPAIGN_DETAIL}/${record.id}`)}
-          />
-          <EditOutlined
-            style={{ color: 'green', marginRight: 8, cursor: 'pointer' }}
-            // onClick={() => navigate(`${ROUTER_URL.CAMPAIGN_EDIT}/${record.id}`)}
-          />
-          <DeleteOutlined
-            style={{ color: 'red', cursor: 'pointer' }}
-            // onClick={() => setIsDeleteModalVisible(true)}
-          />
-        </div>
+        <span className="flex space-x-2">
+            <button 
+            className="bg-blue-600 text-white p-2 rounded-lg shadow-lg hover:bg-blue-700"
+            >
+              <EyeOutlined className="text-xl" />
+            </button>
+            <button 
+            className="bg-green-600 text-white p-2 rounded-lg shadow-lg hover:bg-green-700"
+            >
+              <EditOutlined
+                className="text-xl"
+                // onClick={() => navigate(`${ROUTER_URL.CAMPAIGN_EDIT}/${record.id}`)}
+              />
+            </button>
+            <button 
+            className="bg-red-600 text-white p-2 rounded-lg shadow-lg hover:bg-red-700"
+            >
+              <DeleteOutlined
+                className="text-xl"
+                // onClick={() => setIsDeleteModalVisible(true)}
+              />
+            </button>
+        </span>
       ),
     },
   ];
-  
+
   return (
     <div>
       <Table
@@ -145,10 +154,9 @@ const ViewCampaign = ({
         currentPage={currentPage}
         totalPages={Math.ceil(totalCampaigns / pageSize)}
         onPageChange={(page) => setCurrentPage(page)}
-        />
+      />
     </div>
   );
-  
-}
+};
 
-export default ViewCampaign
+export default ViewCampaign;

@@ -66,6 +66,7 @@ const CreateCampaign: React.FC<CreateCampaignProps> = ({ onCategoryCreated, onCl
         ...values,
         startDate: values.startDate ? new Date(values.startDate).toISOString() : null,
         endDate: values.endDate ? new Date(values.endDate).toISOString() : null,
+        status: status,
       };
       const response = await CampaignService.create(formattedValues);
       if (response) {
@@ -76,6 +77,7 @@ const CreateCampaign: React.FC<CreateCampaignProps> = ({ onCategoryCreated, onCl
         onCategoryCreated(); // Cập nhật danh sách
         onClose(); // Đóng modal
         form.resetFields(); // Xóa dữ liệu form
+        setStatus("SCHEDULED");
       } else {
         helper.notificationMessage(
           'Lỗi khi tạo chiến dịch!',
