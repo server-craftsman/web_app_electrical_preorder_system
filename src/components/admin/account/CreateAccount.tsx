@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Form, Input, Select, message } from "antd";
+import { Form, Input, Select } from "antd";
 import { UserService } from "../../../services/user/user.service"; // Import service API
 import { UserRole } from "../../../app/enums/user.role"; // Import danh sách vai trò
 import { Rule } from "antd/es/form";

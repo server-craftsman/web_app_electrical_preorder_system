@@ -44,12 +44,6 @@ const Login = () => {
     }
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      handleLogin();
-    }
-  };
-
   return (
     <div className="flex items-center justify-center w-full h-screen bg-white relative">
       <div className="flex w-full max-w-[1200px] shadow-2xl">

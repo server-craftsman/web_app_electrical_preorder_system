@@ -1,4 +1,4 @@
-import { Form, Modal, Input, InputNumber, Upload, Select, Button } from 'antd';
+import { Form, Modal, Input, InputNumber, Upload, Select } from 'antd';
 import { useEffect, useState, forwardRef, useImperativeHandle } from 'react';
 import { UploadOutlined } from '@ant-design/icons';
 import { ProductService } from '../../../services/product/product.service';
@@ -22,7 +22,6 @@ const CreateProducts = forwardRef<
   const [categories, setCategories] = useState<any[]>([]);
   const [_totalCategories, setTotalCategories] = useState(0);
   const [refresh, _setRefresh] = useState(false);
-  const [loading, setLoading] = useState(false);
 
   // Fetch categories from the API
   const fetchCategories = async () => {
@@ -42,7 +41,6 @@ const CreateProducts = forwardRef<
   }, [refresh]);
 
   const handleOk = async () => {
-    setLoading(true);
     try {
       // Validate form values
       const values = await form.validateFields();
@@ -87,7 +85,6 @@ const CreateProducts = forwardRef<
       console.log('Validate Failed:', error);
       helper.notificationMessage('Đã xảy ra lỗi!', 'error');
     } finally {
-      setLoading(false);
       console.log('Create product success!');
     }
   };
