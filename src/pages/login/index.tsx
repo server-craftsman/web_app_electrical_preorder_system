@@ -44,6 +44,12 @@ const Login = () => {
     }
   };
 
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleLogin();
+    }
+  };
+
   return (
     <div className="flex items-center justify-center w-full h-screen bg-white relative">
       <div className="flex w-full max-w-[1200px] shadow-2xl">
@@ -152,8 +158,13 @@ const Login = () => {
                   className="btn-custom"
                   type="submit"
                   onClick={handleLogin}
+                  onKeyDown={(e: React.KeyboardEvent<HTMLButtonElement>) => {
+                    if (e.key === 'Enter') {
+                      handleLogin();
+                    }
+                  }}
                 >
-                  Đăng nhập
+                  {username && password ? 'Đăng nhập' : 'Vui lòng điền thông tin'}
                 </button>
               </div>
 
