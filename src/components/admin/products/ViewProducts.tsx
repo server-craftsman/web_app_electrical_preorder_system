@@ -113,7 +113,11 @@ const ViewProducts = ({
       title: 'Giá',
       dataIndex: 'price',
       key: 'price',
-      render: (text: number) => helper.formatCurrency(text),
+      render: (text: number) => (
+        <span className="text-green-600 font-mono">
+          {helper.formatCurrency(text)}
+        </span>
+      ),
     },
     { title: 'Danh mục', dataIndex: ['category', 'name'], key: 'category' },
     {

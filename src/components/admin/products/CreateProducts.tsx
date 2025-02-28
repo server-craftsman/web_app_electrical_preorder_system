@@ -1,4 +1,4 @@
-import { Form, Modal, Input, InputNumber, Upload, Select } from 'antd';
+import { Form, Modal, Input, InputNumber, Upload, Select, Button } from 'antd';
 import { useEffect, useState, forwardRef, useImperativeHandle } from 'react';
 import { UploadOutlined } from '@ant-design/icons';
 import { ProductService } from '../../../services/product/product.service';
@@ -22,7 +22,7 @@ const CreateProducts = forwardRef<
   const [categories, setCategories] = useState<any[]>([]);
   const [_totalCategories, setTotalCategories] = useState(0);
   const [refresh, _setRefresh] = useState(false);
-  // const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   // Fetch categories from the API
   const fetchCategories = async () => {
@@ -42,6 +42,7 @@ const CreateProducts = forwardRef<
   }, [refresh]);
 
   const handleOk = async () => {
+    setLoading(true);
     try {
       // Validate form values
       const values = await form.validateFields();
@@ -86,12 +87,14 @@ const CreateProducts = forwardRef<
       console.log('Validate Failed:', error);
       helper.notificationMessage('Đã xảy ra lỗi!', 'error');
     } finally {
-      // setLoading(false);
+      setLoading(false);
       console.log('Create product success!');
     }
   };
 
   const handleCancel = () => {
+    form.resetFields();
+    setFileList([]);
     setIsModalVisible(false);
   };
 
@@ -166,8 +169,19 @@ const CreateProducts = forwardRef<
       <Modal
         title="Thêm sản phẩm mới"
         open={isModalVisible}
-        onOk={handleOk}
         onCancel={handleCancel}
+        footer={[
+          <button className = "mr-2 bg-gradient-to-r rounded-xl from-gray-100 to-gray-200 hover:from-gray-200 hover:to-gray-300 text-black font-semibold py-2 px-4" onClick={handleCancel} style={{ marginLeft: "10px" }}>
+            Hủy bỏ
+          </button>,
+          <button
+            className='btn-custom'
+            key="submit"
+            onClick={handleOk}
+          >
+            Tạo sản phẩm
+          </button>,
+        ]}
       >
         <Form
           form={form}
