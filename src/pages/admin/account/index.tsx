@@ -10,12 +10,10 @@ const Account = () => {
 
   const handleClose = () => {
     setIsModalVisible(false);
-    setRefresh((prev) => !prev);
   };
 
   const handleCreateUser = () => {
     setIsModalVisible(true);
-    setRefresh((prev) => !prev);
   };
 
   return (
@@ -27,8 +25,12 @@ const Account = () => {
       <DisplayAccount refresh={refresh} />
       <Modal title="Tạo người dùng" open={isModalVisible} onCancel={handleClose} footer={null}>
         <CreateUser
-        onUserCreated={() => setRefresh((prev) => !prev)}
-         onClose={handleClose} />
+          onUserCreated={() => {
+            setRefresh((prev) => !prev);
+            setIsModalVisible(false);
+          }}
+          onClose={handleClose}
+        />
       </Modal>
     </div>
   );
