@@ -23,6 +23,7 @@ export interface GetAllProductResponseModel {
   updatedAt: string;
   deleted: boolean;
   slug: string;
+  
 }
 
 export interface CreateProductResponseModel {

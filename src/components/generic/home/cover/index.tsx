@@ -8,7 +8,7 @@ const Cover = () => {
     .slice(0, 4);
 
   return (
-    <div className="w-full mt-2 max-w-10xl mx-auto border-2 border-gray-500 shadow-md rounded-b-lg">
+    <div className="w-full max-w-10xl mx-auto border-2 border-gray-500 shadow-md rounded-b-lg">
       <Carousel
         autoplay
         dots={false}

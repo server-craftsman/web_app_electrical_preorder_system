@@ -7,10 +7,9 @@ import { MainLayout } from '../../layout/main-layout/main.layout';
 const Login = lazy(() => import('../../pages/login'));
 const Register = lazy(() => import('../../pages/register'));
 const Home = lazy(() => import('../../pages/home'));
-const ProductDetails = lazy(
-  () => import('../../pages/publish/product_details')
-);
+const ProductDetails = lazy(() => import('../../pages/publish/product_details'));
 const VerifyAccount = lazy(() => import('../../pages/verify/VerifyAccount'));
+const CartDetails = lazy(() => import('../../pages/publish/cart_details/index'));
 //======================================================
 //export public sub paths
 
@@ -27,6 +26,10 @@ export const publicSubPaths: Record<string, RouteObject[]> = {
           element: <ProductDetails />,
           path: ROUTER_URL.COMMON.GET_PRODUCT_DETAIL_BY_SLUG,
         },
+        {
+          element: <CartDetails />,
+          path: ROUTER_URL.COMMON.ADD_TO_CART,
+        }
       ],
     },
   ],

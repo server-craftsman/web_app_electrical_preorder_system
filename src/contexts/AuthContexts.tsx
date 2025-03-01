@@ -46,7 +46,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     if (role) {
       storage.setUserInfo({ ...storage.getUserInfo(), role: role });
     } else {
-      storage.clearLocalStorage();
+      storage.clearUserData();
     }
     setIsRoleSet(true);
   }, [role]);
@@ -151,14 +151,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const logout = () => {
-    storage.clearLocalStorage();
-    storage.removeItemInLocalStorage('role');
-    storage.removeItemInLocalStorage('accessToken');
-    storage.removeItemInLocalStorage('userInfo');
+    storage.clearUserData();  // Gọi hàm clearUserData thay vì clearLocalStorage
     setIsRoleSet(false);
     setRole(null);
-    navigate(ROUTER_URL.LOGIN);
+    navigate(ROUTER_URL.COMMON.HOME);
   };
+
 
   const getCurrentUser = () => {
     return storage.getUserInfo();
