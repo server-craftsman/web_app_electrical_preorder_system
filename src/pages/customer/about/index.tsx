@@ -5,7 +5,7 @@ const AboutPage: React.FC = () => {
   return (
     <div className="relative">
       {/* Ảnh BG */}
-      <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1518770660439-4636190af475')] bg-cover bg-center opacity-50"></div>
+      <div className="absolute inset-0 bg-[url('')] bg-cover bg-center opacity-50"></div>
 
       {/* Container */}
       <div className="relative z-10 p-10 max-w-5xl mx-auto text-center">
@@ -15,9 +15,9 @@ const AboutPage: React.FC = () => {
         </h1>
         <p className="text-xl font-bold text-gray-700 leading-relaxed mb-8 max-w-3xl mx-auto">
           Elecee là nền tảng mua sắm đồ công nghệ theo hình thức
-          <span className="text-blue-500 font-semibold"> Pre-Order</span>. Chúng
+          <span className="text-green-500 font-semibold"> <strong>Pre-Order</strong></span>. Chúng
           tôi kết nối bạn với những sản phẩm công nghệ mới nhất với mức giá{' '}
-          <span className="text-green-500 font-semibold">ưu đãi nhất</span>.
+          <span className="text-green-500 font-semibold"><strong>ưu đãi nhất</strong></span>.
         </p>
 
         {/* {Trang chính} */}

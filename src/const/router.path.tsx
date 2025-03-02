@@ -35,5 +35,7 @@ export const ROUTER_URL = {
     PRODUCT: '/product',
     GET_PRODUCT_DETAIL_BY_SLUG: '/product/:slug',
     ADD_TO_CART: '/cart',
+    ABOUT: '/about',
+    GUIDE: '/guide',
   },
 };

@@ -1,6 +1,8 @@
 import { lazy } from 'react';
 import { ROUTER_URL } from '../../const/router.path';
 import { RouteObject } from 'react-router-dom';
+import AboutPage from '../../pages/customer/about';
+import GuidePage from '../../pages/customer/guide';
 
 //================= PUBLIC SUB PATHS =================
 import { MainLayout } from '../../layout/main-layout/main.layout';
@@ -33,6 +35,14 @@ export const publicSubPaths: Record<string, RouteObject[]> = {
         {
           element: <CartDetails />,
           path: ROUTER_URL.COMMON.ADD_TO_CART,
+        },
+        {
+          path: ROUTER_URL.COMMON.ABOUT,
+          element: <AboutPage />,
+        },
+        {
+          path: ROUTER_URL.COMMON.GUIDE,
+          element: <GuidePage />,
         },
       ],
     },
