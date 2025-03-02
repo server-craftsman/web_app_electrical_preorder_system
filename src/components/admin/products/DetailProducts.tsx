@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { ProductService } from '../../../services/product/product.service';
 import { GetAllProductResponseModel } from '../../../models/api/response/product.res.model';
 import { Carousel } from 'antd';
-import { ProductStatus } from '../../../app/enums/product.status';
+import { ProductStatus } from '../../../app/enums/product.enum';
 import { helper } from '../../../utils';
 
 const DetailProducts = () => {
