@@ -4,7 +4,7 @@ import ViewProducts from '../../../components/admin/products/ViewProducts';
 import CreateProducts from '../../../components/admin/products/CreateProducts';
 
 const Products = () => {
-  const [, setIsModalVisible] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const createProductRef = useRef<{ handleOpenModal: () => void } | null>(null);
   const [refreshProducts, setRefreshProducts] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
@@ -42,6 +42,7 @@ const Products = () => {
       />
       <CreateProducts
         ref={createProductRef}
+        isOpen={isModalVisible}
         onProductCreated={handleProductCreated}
       />
     </div>

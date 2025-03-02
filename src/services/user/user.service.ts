@@ -8,9 +8,10 @@ import { User } from '../../models/modules/User';
 import { CreateUserRequestModel } from '../../models/api/request/user.req.model';
 
 export const UserService = {
-  getAll() {
+  getAll(params: any) {
     return BaseService.get<ResponseSuccessForList<User>>({
       url: API_PATH.USER.GET_ALL,
+      payload: params,
     });
   },
   create(params: CreateUserRequestModel) {

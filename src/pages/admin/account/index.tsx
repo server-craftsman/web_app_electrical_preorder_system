@@ -6,6 +6,7 @@ import { useState, useRef } from 'react';
 
 const Account = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
   const [refresh, setRefresh] = useState(false);
   const formRef = useRef<any>(null);
 
@@ -21,15 +22,20 @@ const Account = () => {
     setIsModalVisible(true);
   };
 
+  const handleSearch = (value: string) => {
+    setSearchTerm(value);
+    setRefresh((prev) => !prev); // Trigger re-fetch
+  };
+
   return (
     <div>
       <div className="flex justify-between mb-4">
-        <Search onSearch={(searchTerm) => console.log(searchTerm)} />
+        <Search onSearch={handleSearch} placeholder='Tìm kiếm tài khoản' />
         <button className="btn-submit" onClick={handleCreateUser}>
           Tạo tài khoản
         </button>
       </div>
-      <DisplayAccount refresh={refresh} />
+      <DisplayAccount searchTerm={searchTerm} refresh={refresh} />
       <Modal
         title="Tạo người dùng"
         open={isModalVisible}

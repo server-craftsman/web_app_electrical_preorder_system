@@ -8,7 +8,7 @@ const Account = () => {
         <Search onSearch={(searchTerm) => console.log(searchTerm)} />
         <button className="btn-submit">Tạo tài khoản</button>
       </div>
-      <DisplayAccount refresh={false} />
+      <DisplayAccount searchTerm={''} refresh={false} />
     </div>
   );
 };

@@ -6,13 +6,13 @@ import { UserService } from '../../../services/user/user.service';
 import { User } from '../../../models/modules/User';
 import { helper } from '../../../utils';
 
-const Account = ({ refresh }: { refresh: boolean }) => {
+const Account = ({ refresh, searchTerm }: { refresh: boolean; searchTerm: string }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [users, setUsers] = useState<User[]>([]);
 
   const fetchUsers = async () => {
     try {
-      const response = await UserService.getAll();
+      const response = await UserService.getAll({ searchTerm: searchTerm || '' });
       setUsers(response.data.data.content as unknown as User[]);
     } catch (error) {
       console.error('Lỗi khi tải danh sách người dùng:', error);
@@ -21,7 +21,7 @@ const Account = ({ refresh }: { refresh: boolean }) => {
 
   useEffect(() => {
     fetchUsers();
-  }, [refresh]); // Fetch lại khi `refresh` thay đổi
+  }, [refresh, searchTerm]); // Fetch again when `refresh` or `searchTerm` changes
 
   const columns = [
     {

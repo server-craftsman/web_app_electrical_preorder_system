@@ -9,6 +9,7 @@ import { Rule } from 'antd/es/form';
 import { helper } from '../../../utils';
 
 interface CreateProductsProps {
+  isOpen: boolean;
   onProductCreated: () => void;
 }
 
