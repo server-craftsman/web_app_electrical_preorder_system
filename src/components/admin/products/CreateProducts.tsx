@@ -151,10 +151,14 @@ const CreateProducts = forwardRef<
       required: true,
       validator: (_: any, fileList: any[]) => {
         if (!fileList || fileList.length === 0) {
-          return Promise.reject('Vui lòng chọn ít nhất 1 hình ảnh!');
+          return Promise.reject(
+            'Lỗi: Vui lòng chọn ít nhất 1 hình ảnh cho sản phẩm!'
+          );
         }
         if (fileList.length > 5) {
-          return Promise.reject('Không được chọn quá 5 hình ảnh!');
+          return Promise.reject(
+            'Lỗi: Số lượng hình ảnh vượt quá giới hạn! Chỉ được phép tối đa 5 hình ảnh cho mỗi sản phẩm.'
+          );
         }
         return Promise.resolve();
       },

@@ -3,6 +3,7 @@ import { useForm } from 'antd/es/form/Form';
 import { Form, Input } from 'antd';
 import { GetAllCategoryResponseModel } from '../../../models/api/response/category.res.model';
 import { CategoryService } from '../../../services/category/category.service';
+import { Rule } from 'antd/es/form';
 
 interface CreateCategoryProps {
   onCategoryCreated: () => void;
@@ -74,13 +75,22 @@ const CreateCategory = forwardRef<CreateCategoryProps, CreateCategoryProps>(
       onClose,
     }));
 
+    const validateForm = {
+      name: [
+        {
+        required: true,
+        message: 'Vui lòng nhập tên danh mục!',
+      },
+    ],
+    };
+
     return (
       <div className="max-w-md mx-auto">
         <Form form={form} layout="vertical" onFinish={handleSubmit}>
           <Form.Item
             label="Tên danh mục"
             name="name"
-            rules={[{ required: true, message: 'Vui lòng nhập tên danh mục!' }]}
+            rules={validateForm.name as Rule[]}
           >
             <Input />
           </Form.Item>

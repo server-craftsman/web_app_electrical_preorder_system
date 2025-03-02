@@ -36,13 +36,22 @@ const EditCategory = ({ category, onEditSuccess }: EditCategoryProps) => {
     }
   };
 
+  const validateForm = {
+    name: [
+      {
+        required: true,
+        message: 'Please input category name!',
+      },
+    ],
+  };
+
   return (
     <Form form={form} layout="vertical" onFinish={handleSubmit}>
       <Form.Item
         label="Tên danh mục"
         name="name"
         initialValue={category.name}
-        rules={[{ required: true, message: 'Please input category name!' }]}
+        rules={validateForm.name}
       >
         <Input />
       </Form.Item>
