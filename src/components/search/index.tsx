@@ -34,12 +34,12 @@ const Search: React.FC<SearchProps> = ({
         onChange={handleInputChange}
         onKeyDown={handleKeyPress}
         value={searchTerm}
-        className="w-64 h-12 rounded-l-full border-2 border-[#db4040] bg-transparent px-6 text-gray-700 focus:outline-none focus:border-[#1a237e] transition-all"
+        className="w-64 h-12 rounded-l-full border-2 border-[black] bg-transparent px-6 text-gray-700 focus:outline-none focus:border-[#1a237e] transition-all focus:shadow-none"
         style={{ boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}
       />
       <button
         onClick={handleSearchSubmit}
-        className="h-12 px-4 bg-red-500 text-white rounded-r-full flex items-center justify-center"
+        className="h-12 px-4 bg-black text-white rounded-r-full flex items-center justify-center"
         style={{ boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}
       >
         <SearchOutlined className="text-xl" />

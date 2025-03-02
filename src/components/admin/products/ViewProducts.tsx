@@ -23,11 +23,9 @@ const ViewProducts = ({
   const [currentPage, setCurrentPage] = useState(1);
   const [products, setProducts] = useState<GetAllProductResponseModel[]>([]);
   const [totalProducts, setTotalProducts] = useState(0);
-  const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const pageSize = 10;
 
   const navigate = useNavigate();
-  const [isEditModalVisible, setIsEditModalVisible] = useState(false);
   const [selectedProductSlug, setSelectedProductSlug] = useState<string | null>(
     null
   );
@@ -66,28 +64,24 @@ const ViewProducts = ({
 
   const handleEditProduct = (slug: string) => {
     setSelectedProductSlug(slug);
-    setIsEditModalVisible(true);
+    // Call the ref method directly without checking isEditModalVisible first
     if (editProductRef.current) {
       editProductRef.current.handleOpenModal(slug);
     }
   };
 
   const handleProductUpdated = () => {
-    setIsEditModalVisible(false);
     fetchProducts(currentPage);
   };
 
   const handleDeleteProduct = (slug: string) => {
     setSelectedProductSlug(slug);
-    setIsDeleteModalVisible(true);
     if (deleteProductRef.current) {
       deleteProductRef.current.handleOpenModal(slug);
     }
   };
 
   const handleProductDeleted = () => {
-    setIsDeleteModalVisible(false);
-    // setSelectedProductSlug(null);
     fetchProducts(currentPage);
   };
 
@@ -166,20 +160,17 @@ const ViewProducts = ({
           />
         )}
       />
-      {isEditModalVisible && (
-        <EditProducts
-          ref={editProductRef}
-          onProductUpdated={handleProductUpdated}
-          slug={selectedProductSlug || ''}
+      
+      <EditProducts
+        ref={editProductRef}
+        onProductUpdated={handleProductUpdated}
+        slug={selectedProductSlug || ''}
+      />
+      <ModalDelete
+        ref={deleteProductRef}
+        onProductDeleted={handleProductDeleted}
+        slug={selectedProductSlug || ''}
         />
-      )}
-      {isDeleteModalVisible && (
-        <ModalDelete
-          ref={deleteProductRef}
-          onProductDeleted={handleProductDeleted}
-          slug={selectedProductSlug || ''}
-        />
-      )}
     </div>
   );
 };
