@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { GetAllProductResponseModel } from "../../../../models/api/response/product.res.model";
+import { useState, useEffect } from 'react';
+import { GetAllProductResponseModel } from '../../../../models/api/response/product.res.model';
 import { formatCurrency } from '../../../../utils/helper';
 
 interface ProductDetailProps {
@@ -7,10 +7,10 @@ interface ProductDetailProps {
 }
 
 const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
-
-  const productImages = product.imageProducts.length > 0
-    ? product.imageProducts.map((img) => img.imageUrl)
-    : ["https://via.placeholder.com/500"];
+  const productImages =
+    product.imageProducts.length > 0
+      ? product.imageProducts.map((img) => img.imageUrl)
+      : ['https://via.placeholder.com/500'];
 
   // const discountPercentage =
   // product.quantity > 0
@@ -19,12 +19,11 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
   //     )
   //   : null;
 
-  const discountedPrice = product.price ;
+  const discountedPrice = product.price;
 
   const [mainImage, setMainImage] = useState(productImages[0]);
   const [quantity, setQuantity] = useState(1);
   const [timeLeft, setTimeLeft] = useState({
-
     days: 6,
     hours: 11,
     minutes: 25,
@@ -73,10 +72,11 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
               key={index}
               src={thumb}
               alt={`Thumb ${index + 1}`}
-              className={`w-16 h-16 rounded-md cursor-pointer transition-all duration-200 ${mainImage === thumb
-                  ? "border-2 border-blue-500 shadow-lg"
-                  : "border border-gray-300"
-                }`}
+              className={`w-16 h-16 rounded-md cursor-pointer transition-all duration-200 ${
+                mainImage === thumb
+                  ? 'border-2 border-blue-500 shadow-lg'
+                  : 'border border-gray-300'
+              }`}
               onClick={() => setMainImage(thumb)}
             />
           ))}
@@ -92,8 +92,6 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
         </div>
         {/* <div className="text-red-500 text-2xl font-bold">{product.price}đ</div> */}
 
-
-        
         <div className="flex items-center justify-between mt-2">
           <div>
             <span className="text-red-500 font-bold text-3xl">
@@ -108,10 +106,12 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
           {product.description}
         </ul>
         <div className="bg-yellow-100 p-3 rounded-md text-yellow-700">
-          <strong>Lưu ý:</strong> Sản phẩm Pre-Order không hoàn cọc, thời gian lấy hàng lâu hơn bình thường.
+          <strong>Lưu ý:</strong> Sản phẩm Pre-Order không hoàn cọc, thời gian
+          lấy hàng lâu hơn bình thường.
         </div>
         <div className="bg-red-100 p-3 rounded-md text-red-700">
-          <strong>Khuyến mãi kết thúc sau:</strong> {timeLeft.days}D : {timeLeft.hours}H : {timeLeft.minutes}M : {timeLeft.seconds}S
+          <strong>Khuyến mãi kết thúc sau:</strong> {timeLeft.days}D :{' '}
+          {timeLeft.hours}H : {timeLeft.minutes}M : {timeLeft.seconds}S
         </div>
         <div className="text-gray-700">
           <strong>Số lượng:</strong>
@@ -130,8 +130,10 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
             className="w-16 px-2 py-2 border rounded text-center"
             value={quantity}
             onChange={(e) => {
-              const newValue = e.target.value.replace(/\D/g, "");
-              setQuantity(newValue === "" ? 1 : Math.max(1, parseInt(newValue, 10)));
+              const newValue = e.target.value.replace(/\D/g, '');
+              setQuantity(
+                newValue === '' ? 1 : Math.max(1, parseInt(newValue, 10))
+              );
             }}
           />
           <button

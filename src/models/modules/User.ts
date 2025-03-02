@@ -16,4 +16,3 @@ export interface User {
   updatedAt: string;
   verified: boolean;
 }
-

@@ -118,7 +118,7 @@ const ViewCategory = ({
     <div>
       <Table
         columns={columns}
-        dataSource={currentCategories.map(category => ({
+        dataSource={currentCategories.map((category) => ({
           ...category,
           key: category.id, // Add a unique key for each category
         }))}

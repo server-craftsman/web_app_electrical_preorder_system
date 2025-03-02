@@ -84,9 +84,14 @@ export const ProductService = {
       );
     return response.data;
   },
-  delete: async (id: string) => {
+  delete(id: string) {
     return BaseService.remove<formatResponseSuccess<any>>({
       url: API_PATH.PRODUCT.DELETE.replace(':id', id),
+    });
+  },
+  deleteMultiple(queryParams: string) {
+    return BaseService.remove<formatResponseSuccess<any>>({
+      url: `${API_PATH.PRODUCT.DELETE_MULTIPLE}?${queryParams}`,
     });
   },
 };

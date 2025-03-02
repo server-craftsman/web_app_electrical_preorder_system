@@ -1,7 +1,5 @@
 const CartDetails = () => {
-  return (
-    <div>index</div>
-  )
-}
+  return <div>index</div>;
+};
 
 export default CartDetails;

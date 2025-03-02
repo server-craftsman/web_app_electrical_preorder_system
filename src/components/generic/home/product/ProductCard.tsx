@@ -1,11 +1,11 @@
-import React, { useState } from "react";
-import { GetAllProductResponseModel } from "../../../../models/api/response/product.res.model";
-import { formatCurrency } from "../../../../utils/helper";
-import { ROUTER_URL } from "../../../../const";
-import { useNavigate } from "react-router-dom";
-import { ShoppingCartOutlined } from "@ant-design/icons";
-import { useCart } from "../../../../contexts/CartContext";
-import { notification } from "antd";
+import React, { useState } from 'react';
+import { GetAllProductResponseModel } from '../../../../models/api/response/product.res.model';
+import { formatCurrency } from '../../../../utils/helper';
+import { ROUTER_URL } from '../../../../const';
+import { useNavigate } from 'react-router-dom';
+import { ShoppingCartOutlined } from '@ant-design/icons';
+import { useCart } from '../../../../contexts/CartContext';
+import { notification } from 'antd';
 interface ProductCardProps {
   product: GetAllProductResponseModel;
 }
@@ -21,7 +21,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   // Tính phần trăm giảm giá
   const discountPercentage =
     product.quantity > 0
-      ? Math.round(((product.price - product.price * 0.9) / product.price) * 100)
+      ? Math.round(
+          ((product.price - product.price * 0.9) / product.price) * 100
+        )
       : null;
 
   const discountedPrice = product.price * 0.9;
@@ -36,14 +38,13 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     });
 
     notification.config({
-      top: 73, 
+      top: 73,
     });
     notification.success({
-      message: "Thêm vào giỏ hàng thành công",
+      message: 'Thêm vào giỏ hàng thành công',
       description: `Đã thêm "${product.name}" vào giỏ hàng 🛒`,
-      placement: "topRight",
+      placement: 'topRight',
       duration: 3,
-
     });
   };
 
@@ -56,7 +57,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         onMouseLeave={handleMouseLeave}
       >
         <img
-          onClick={() => navigate(`${ROUTER_URL.COMMON.PRODUCT}/${product.slug}`)}
+          onClick={() =>
+            navigate(`${ROUTER_URL.COMMON.PRODUCT}/${product.slug}`)
+          }
           src={
             product.imageProducts.length > 1 && isHovered
               ? product.imageProducts[1].imageUrl
@@ -80,7 +83,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         {/* ✅ Nút thêm vào giỏ hàng */}
         <div
           className={`font-semibold absolute bottom-0 left-0 w-full bg-black text-white text-center py-2 transition-all duration-300 ease-in-out flex items-center justify-center gap-2 cursor-pointer
-            ${isHovered ? "opacity-100 translate-y-0" : "opacity-0 translate-y-full"}
+            ${isHovered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-full'}
             hover:bg-red-500
           `}
           onClick={handleAddToCart}
@@ -92,7 +95,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       {/* Content Section */}
       <div className="flex flex-col p-4 space-y-4 py-6">
         <h3
-          onClick={() => navigate(`${ROUTER_URL.COMMON.PRODUCT}/${product.slug}`)}
+          onClick={() =>
+            navigate(`${ROUTER_URL.COMMON.PRODUCT}/${product.slug}`)
+          }
           className="text-lg font-semibold text-left cursor-pointer hover:text-red-500 -mt-3 truncate w-full"
         >
           {product.name}
@@ -147,7 +152,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         </span>
       </div>
     </div>
-
   );
 };
 

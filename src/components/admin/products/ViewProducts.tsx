@@ -1,4 +1,4 @@
-import { Table } from 'antd';
+import { Table, Button } from 'antd';
 import Pagination from '../../pagination';
 import { useState, useEffect, useRef } from 'react';
 import { GetAllProductResponseModel } from '../../../models/api/response/product.res.model';
@@ -23,11 +23,9 @@ const ViewProducts = ({
   const [currentPage, setCurrentPage] = useState(1);
   const [products, setProducts] = useState<GetAllProductResponseModel[]>([]);
   const [totalProducts, setTotalProducts] = useState(0);
-  const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const pageSize = 10;
 
   const navigate = useNavigate();
-  const [isEditModalVisible, setIsEditModalVisible] = useState(false);
   const [selectedProductSlug, setSelectedProductSlug] = useState<string | null>(
     null
   );
@@ -66,28 +64,24 @@ const ViewProducts = ({
 
   const handleEditProduct = (slug: string) => {
     setSelectedProductSlug(slug);
-    setIsEditModalVisible(true);
+    // Call the ref method directly without checking isEditModalVisible first
     if (editProductRef.current) {
       editProductRef.current.handleOpenModal(slug);
     }
   };
 
   const handleProductUpdated = () => {
-    setIsEditModalVisible(false);
     fetchProducts(currentPage);
   };
 
   const handleDeleteProduct = (slug: string) => {
     setSelectedProductSlug(slug);
-    setIsDeleteModalVisible(true);
     if (deleteProductRef.current) {
       deleteProductRef.current.handleOpenModal(slug);
     }
   };
 
   const handleProductDeleted = () => {
-    setIsDeleteModalVisible(false);
-    // setSelectedProductSlug(null);
     fetchProducts(currentPage);
   };
 
@@ -150,14 +144,58 @@ const ViewProducts = ({
     },
   ];
 
+  const [ids, setIds] = useState<React.Key[]>([]);
+
+  const handleDeleteMultiple = async () => {
+    try {
+      if (ids.length === 0) {
+        helper.notificationMessage(
+          'Không có sản phẩm nào được chọn',
+          'warning'
+        );
+        return;
+      }
+
+      // Format the IDs as query parameters in the format ids=id1&ids=id2
+      const queryParams = ids.map((id) => `ids=${id}`).join('&');
+      await ProductService.deleteMultiple(queryParams);
+      helper.notificationMessage('Xóa sản phẩm thành công', 'success');
+      setIds([]);
+      fetchProducts(currentPage);
+    } catch (error) {
+      console.error('Failed to delete products:', error);
+      helper.notificationMessage('Xóa sản phẩm thất bại', 'error');
+    }
+  };
+
+  const rowSelection = {
+    selectedRowKeys: ids,
+    onChange: (newSelectedRowKeys: React.Key[]) => {
+      setIds(newSelectedRowKeys);
+    },
+  };
+
   return (
     <div>
+      {ids.length > 0 && (
+        <div className="mb-4 flex justify-end">
+          <Button
+            type="primary"
+            danger
+            onClick={handleDeleteMultiple}
+            className="bg-red-600 text-white"
+          >
+            Xóa {ids.length} sản phẩm đã chọn
+          </Button>
+        </div>
+      )}
       <Table
+        rowSelection={rowSelection}
         columns={columns}
         dataSource={products}
         pagination={false}
         locale={{ emptyText: 'Không có sản phẩm nào' }}
-        rowKey="productCode"
+        rowKey="id"
         footer={() => (
           <Pagination
             currentPage={currentPage}
@@ -166,20 +204,17 @@ const ViewProducts = ({
           />
         )}
       />
-      {isEditModalVisible && (
-        <EditProducts
-          ref={editProductRef}
-          onProductUpdated={handleProductUpdated}
-          slug={selectedProductSlug || ''}
-        />
-      )}
-      {isDeleteModalVisible && (
-        <ModalDelete
-          ref={deleteProductRef}
-          onProductDeleted={handleProductDeleted}
-          slug={selectedProductSlug || ''}
-        />
-      )}
+
+      <EditProducts
+        ref={editProductRef}
+        onProductUpdated={handleProductUpdated}
+        slug={selectedProductSlug || ''}
+      />
+      <ModalDelete
+        ref={deleteProductRef}
+        onProductDeleted={handleProductDeleted}
+        slug={selectedProductSlug || ''}
+      />
     </div>
   );
 };

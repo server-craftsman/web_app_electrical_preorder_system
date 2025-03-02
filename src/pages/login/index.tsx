@@ -43,7 +43,11 @@ const Login = () => {
       console.error('Error during social login initiation', error);
     }
   };
-
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && username && password) {
+      handleLogin();
+    }
+  };
   return (
     <div className="flex items-center justify-center w-full h-screen bg-white relative">
       <div className="flex w-full max-w-[1200px] shadow-2xl">
@@ -76,6 +80,7 @@ const Login = () => {
                     type="text"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
+                    onKeyDown={handleKeyDown}
                     placeholder=" "
                     className="w-full px-4 py-3 text-black border-2 border-gray-200 rounded-lg mb-5 outline-none transition-all duration-200 focus:border-red-500 peer"
                   />
@@ -89,6 +94,7 @@ const Login = () => {
                     type={showPassword ? 'text' : 'password'}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
+                    onKeyDown={handleKeyDown}
                     placeholder=" "
                     className="w-full px-4 py-3 text-black border-2 border-gray-200 rounded-lg outline-none transition-all duration-200 focus:border-red-500 peer"
                   />
@@ -158,7 +164,9 @@ const Login = () => {
                     }
                   }}
                 >
-                  {username && password ? 'Đăng nhập' : 'Vui lòng điền thông tin'}
+                  {username && password
+                    ? 'Đăng nhập'
+                    : 'Vui lòng điền thông tin'}
                 </button>
               </div>
 

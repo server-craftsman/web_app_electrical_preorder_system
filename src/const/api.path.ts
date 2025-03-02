@@ -16,6 +16,7 @@ export const API_PATH = {
     GET_BY_SLUG: '/products/:slug',
     UPDATE: '/products/:id',
     DELETE: '/products/:id',
+    DELETE_MULTIPLE: '/products',
   },
   CATEGORY: {
     BASE: '/categories',
@@ -24,6 +25,5 @@ export const API_PATH = {
   },
   CAMPAIGN: {
     BASE: '/campaigns',
-    
-  }
+  },
 };

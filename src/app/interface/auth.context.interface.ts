@@ -12,5 +12,7 @@ export interface AuthContextType {
   login: (params: loginParams) => void;
   logout: () => void;
   getCurrentUser: () => userInfo | null;
-  verifyToken: (params: { token: string }) => Promise<formatResponseSuccess<string>>;
+  verifyToken: (params: {
+    token: string;
+  }) => Promise<formatResponseSuccess<string>>;
 }

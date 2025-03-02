@@ -151,12 +151,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const logout = () => {
-    storage.clearUserData();  // Gọi hàm clearUserData thay vì clearLocalStorage
+    storage.clearUserData(); // Gọi hàm clearUserData thay vì clearLocalStorage
     setIsRoleSet(false);
     setRole(null);
     navigate(ROUTER_URL.COMMON.HOME);
   };
-
 
   const getCurrentUser = () => {
     return storage.getUserInfo();
@@ -165,8 +164,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const verifyToken = async (params: { token: string }) => {
     try {
       // Xóa `params` thừa khi gọi hàm
-      const response = await AuthService.verifyToken(params); 
-  
+      const response = await AuthService.verifyToken(params);
+
       if (response.status !== HTTP_STATUS.OK || !response.data) {
         throw new HttpException(
           `Unexpected response structure or status: ${response.status}`,
@@ -176,12 +175,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       return response.data;
     } catch (error) {
       throw new HttpException(
-        "Verify token failed",
+        'Verify token failed',
         HTTP_STATUS.INTERNAL_SERVER_ERROR
       );
     }
   };
-  
+
   return (
     <AuthContext.Provider
       value={{
