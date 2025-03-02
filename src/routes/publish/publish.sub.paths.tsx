@@ -7,9 +7,13 @@ import { MainLayout } from '../../layout/main-layout/main.layout';
 const Login = lazy(() => import('../../pages/login'));
 const Register = lazy(() => import('../../pages/register'));
 const Home = lazy(() => import('../../pages/home'));
-const ProductDetails = lazy(() => import('../../pages/publish/product_details'));
+const ProductDetails = lazy(
+  () => import('../../pages/publish/product_details')
+);
 const VerifyAccount = lazy(() => import('../../pages/verify/VerifyAccount'));
-const CartDetails = lazy(() => import('../../pages/publish/cart_details/index'));
+const CartDetails = lazy(
+  () => import('../../pages/publish/cart_details/index')
+);
 //======================================================
 //export public sub paths
 
@@ -29,7 +33,7 @@ export const publicSubPaths: Record<string, RouteObject[]> = {
         {
           element: <CartDetails />,
           path: ROUTER_URL.COMMON.ADD_TO_CART,
-        }
+        },
       ],
     },
   ],
@@ -40,7 +44,7 @@ export const publicSubPaths: Record<string, RouteObject[]> = {
     },
     {
       element: <VerifyAccount />,
-      path: "/verify",
+      path: '/verify',
     },
   ],
   [ROUTER_URL.REGISTER]: [

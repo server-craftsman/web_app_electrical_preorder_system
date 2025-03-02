@@ -1,4 +1,4 @@
-import { Table } from 'antd';
+import { Table, Button } from 'antd';
 import Pagination from '../../pagination';
 import { useState, useEffect, useRef } from 'react';
 import { GetAllProductResponseModel } from '../../../models/api/response/product.res.model';
@@ -144,14 +144,58 @@ const ViewProducts = ({
     },
   ];
 
+  const [ids, setIds] = useState<React.Key[]>([]);
+
+  const handleDeleteMultiple = async () => {
+    try {
+      if (ids.length === 0) {
+        helper.notificationMessage(
+          'Không có sản phẩm nào được chọn',
+          'warning'
+        );
+        return;
+      }
+
+      // Format the IDs as query parameters in the format ids=id1&ids=id2
+      const queryParams = ids.map((id) => `ids=${id}`).join('&');
+      await ProductService.deleteMultiple(queryParams);
+      helper.notificationMessage('Xóa sản phẩm thành công', 'success');
+      setIds([]);
+      fetchProducts(currentPage);
+    } catch (error) {
+      console.error('Failed to delete products:', error);
+      helper.notificationMessage('Xóa sản phẩm thất bại', 'error');
+    }
+  };
+
+  const rowSelection = {
+    selectedRowKeys: ids,
+    onChange: (newSelectedRowKeys: React.Key[]) => {
+      setIds(newSelectedRowKeys);
+    },
+  };
+
   return (
     <div>
+      {ids.length > 0 && (
+        <div className="mb-4 flex justify-end">
+          <Button
+            type="primary"
+            danger
+            onClick={handleDeleteMultiple}
+            className="bg-red-600 text-white"
+          >
+            Xóa {ids.length} sản phẩm đã chọn
+          </Button>
+        </div>
+      )}
       <Table
+        rowSelection={rowSelection}
         columns={columns}
         dataSource={products}
         pagination={false}
         locale={{ emptyText: 'Không có sản phẩm nào' }}
-        rowKey="productCode"
+        rowKey="id"
         footer={() => (
           <Pagination
             currentPage={currentPage}
@@ -160,7 +204,7 @@ const ViewProducts = ({
           />
         )}
       />
-      
+
       <EditProducts
         ref={editProductRef}
         onProductUpdated={handleProductUpdated}
@@ -170,7 +214,7 @@ const ViewProducts = ({
         ref={deleteProductRef}
         onProductDeleted={handleProductDeleted}
         slug={selectedProductSlug || ''}
-        />
+      />
     </div>
   );
 };

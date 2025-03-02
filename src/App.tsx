@@ -15,7 +15,9 @@ export const App = () => {
   const isLoading = useSelector((state: RootState) => state.loading);
 
   return (
-    <CartProvider> {/* Bọc toàn bộ ứng dụng */}
+    <CartProvider>
+      {' '}
+      {/* Bọc toàn bộ ứng dụng */}
       {isLoading && <Loading />}
       <Suspense>
         <RunRoutes />

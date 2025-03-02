@@ -32,6 +32,6 @@ export const ROUTER_URL = {
     HOME: '/',
     PRODUCT: '/product',
     GET_PRODUCT_DETAIL_BY_SLUG: '/product/:slug',
-    ADD_TO_CART: '/cart'
+    ADD_TO_CART: '/cart',
   },
 };

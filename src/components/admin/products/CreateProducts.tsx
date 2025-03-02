@@ -168,14 +168,14 @@ const CreateProducts = forwardRef<
         open={isModalVisible}
         onCancel={handleCancel}
         footer={[
-          <button className = "mr-2 bg-gradient-to-r rounded-xl from-gray-100 to-gray-200 hover:from-gray-200 hover:to-gray-300 text-black font-semibold py-2 px-4" onClick={handleCancel} style={{ marginLeft: "10px" }}>
+          <button
+            className="mr-2 bg-gradient-to-r rounded-xl from-gray-100 to-gray-200 hover:from-gray-200 hover:to-gray-300 text-black font-semibold py-2 px-4"
+            onClick={handleCancel}
+            style={{ marginLeft: '10px' }}
+          >
             Hủy bỏ
           </button>,
-          <button
-            className='btn-custom'
-            key="submit"
-            onClick={handleOk}
-          >
+          <button className="btn-custom" key="submit" onClick={handleOk}>
             Tạo sản phẩm
           </button>,
         ]}

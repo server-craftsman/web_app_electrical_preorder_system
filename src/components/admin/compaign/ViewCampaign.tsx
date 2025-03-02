@@ -116,27 +116,21 @@ const ViewCampaign = ({
       key: 'actions',
       render: (_: any, _record: CampaignResponseModel) => (
         <span className="flex space-x-2">
-            <button 
-            className="bg-blue-600 text-white p-2 rounded-lg shadow-lg hover:bg-blue-700"
-            >
-              <EyeOutlined className="text-xl" />
-            </button>
-            <button 
-            className="bg-green-600 text-white p-2 rounded-lg shadow-lg hover:bg-green-700"
-            >
-              <EditOutlined
-                className="text-xl"
-                // onClick={() => navigate(`${ROUTER_URL.CAMPAIGN_EDIT}/${record.id}`)}
-              />
-            </button>
-            <button 
-            className="bg-red-600 text-white p-2 rounded-lg shadow-lg hover:bg-red-700"
-            >
-              <DeleteOutlined
-                className="text-xl"
-                // onClick={() => setIsDeleteModalVisible(true)}
-              />
-            </button>
+          <button className="bg-blue-600 text-white p-2 rounded-lg shadow-lg hover:bg-blue-700">
+            <EyeOutlined className="text-xl" />
+          </button>
+          <button className="bg-green-600 text-white p-2 rounded-lg shadow-lg hover:bg-green-700">
+            <EditOutlined
+              className="text-xl"
+              // onClick={() => navigate(`${ROUTER_URL.CAMPAIGN_EDIT}/${record.id}`)}
+            />
+          </button>
+          <button className="bg-red-600 text-white p-2 rounded-lg shadow-lg hover:bg-red-700">
+            <DeleteOutlined
+              className="text-xl"
+              // onClick={() => setIsDeleteModalVisible(true)}
+            />
+          </button>
         </span>
       ),
     },

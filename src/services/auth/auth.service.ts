@@ -34,7 +34,7 @@ export const AuthService = {
       payload: params,
     });
   },
-  verifyToken(params: {token: string}) {
+  verifyToken(params: { token: string }) {
     return BaseService.post<formatResponseSuccess<string>>({
       url: API_PATH.USER.VERIFY_TOKEN,
       payload: params,

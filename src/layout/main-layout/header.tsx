@@ -16,7 +16,7 @@ export const Header = () => {
   const handleSearchClick = () => {
     setShowSearch(true);
   };
-  
+
   const handleCloseSearch = () => {
     setShowSearch(false);
   };
@@ -105,7 +105,10 @@ export const Header = () => {
                 />
               </svg>
             </button>
-            <Link to={ROUTER_URL.COMMON.ADD_TO_CART} className="relative p-2 hover:bg-gray-100 rounded-full transition-colors duration-200">
+            <Link
+              to={ROUTER_URL.COMMON.ADD_TO_CART}
+              className="relative p-2 hover:bg-gray-100 rounded-full transition-colors duration-200"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -126,8 +129,6 @@ export const Header = () => {
                 </span>
               )}
             </Link>
-
-
           </div>
 
           {/* Auth Buttons */}

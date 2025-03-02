@@ -30,4 +30,3 @@ const PreOrder = () => {
 };
 
 export default PreOrder;
-

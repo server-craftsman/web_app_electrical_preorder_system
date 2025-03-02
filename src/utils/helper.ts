@@ -84,7 +84,6 @@ export const formatCampaignStatus = (status: string) => {
   }
 };
 
-
 export const formatProductStatus = (status: string) => {
   switch (status.toLowerCase()) {
     case 'AVAILABLE':
@@ -99,7 +98,6 @@ export const formatProductStatus = (status: string) => {
       return 'bg-gray-500';
   }
 };
-
 
 export const formatRoleAccountColor = (role: string) => {
   switch (role) {

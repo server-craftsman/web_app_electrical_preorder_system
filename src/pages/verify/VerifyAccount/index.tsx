@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { useSearchParams, useNavigate } from "react-router-dom";
-import { message, Spin } from "antd";
-import { AuthService } from "../../../services/auth/auth.service";
+import React, { useEffect, useState } from 'react';
+import { useSearchParams, useNavigate } from 'react-router-dom';
+import { message, Spin } from 'antd';
+import { AuthService } from '../../../services/auth/auth.service';
 
 const VerifyAccount: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -10,32 +10,34 @@ const VerifyAccount: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log("🚀 Trang VerifyAccount.tsx được tải!");
+    console.log('🚀 Trang VerifyAccount.tsx được tải!');
 
     const verifyUser = async () => {
-      const token = searchParams.get("token"); // Đọc token từ query string
+      const token = searchParams.get('token'); // Đọc token từ query string
 
       if (!token) {
-        console.error("🔴 Không tìm thấy token trong URL!");
-        setError("Token không hợp lệ!");
+        console.error('🔴 Không tìm thấy token trong URL!');
+        setError('Token không hợp lệ!');
         setLoading(false);
         return;
       }
 
-      console.log("🔹 Token từ URL:", token);
+      console.log('🔹 Token từ URL:', token);
 
       try {
         const response = await AuthService.verifyToken({ token });
 
         if (response.status === 200) {
-          message.success("🎉 Xác minh thành công! Chuyển hướng đến đăng nhập...");
-          setTimeout(() => navigate("/login"), 2000);
+          message.success(
+            '🎉 Xác minh thành công! Chuyển hướng đến đăng nhập...'
+          );
+          setTimeout(() => navigate('/login'), 2000);
         } else {
-          setError("❌ Xác minh thất bại! Vui lòng thử lại.");
+          setError('❌ Xác minh thất bại! Vui lòng thử lại.');
         }
       } catch (error) {
-        console.error("⚠️ Lỗi khi gọi API xác minh:", error);
-        setError("Lỗi xác minh! Vui lòng thử lại sau.");
+        console.error('⚠️ Lỗi khi gọi API xác minh:', error);
+        setError('Lỗi xác minh! Vui lòng thử lại sau.');
       } finally {
         setLoading(false);
       }

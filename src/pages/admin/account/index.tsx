@@ -20,10 +20,17 @@ const Account = () => {
     <div>
       <div className="flex justify-between mb-4">
         <Search onSearch={(searchTerm) => console.log(searchTerm)} />
-        <button className="btn-submit" onClick={handleCreateUser}>Tạo tài khoản</button>
+        <button className="btn-submit" onClick={handleCreateUser}>
+          Tạo tài khoản
+        </button>
       </div>
       <DisplayAccount refresh={refresh} />
-      <Modal title="Tạo người dùng" open={isModalVisible} onCancel={handleClose} footer={null}>
+      <Modal
+        title="Tạo người dùng"
+        open={isModalVisible}
+        onCancel={handleClose}
+        footer={null}
+      >
         <CreateUser
           onUserCreated={() => {
             setRefresh((prev) => !prev);

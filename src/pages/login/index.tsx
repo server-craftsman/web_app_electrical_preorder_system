@@ -164,7 +164,9 @@ const Login = () => {
                     }
                   }}
                 >
-                  {username && password ? 'Đăng nhập' : 'Vui lòng điền thông tin'}
+                  {username && password
+                    ? 'Đăng nhập'
+                    : 'Vui lòng điền thông tin'}
                 </button>
               </div>
 

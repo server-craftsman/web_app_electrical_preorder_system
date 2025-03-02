@@ -15,7 +15,7 @@ const Account = ({ refresh }: { refresh: boolean }) => {
       const response = await UserService.getAll();
       setUsers(response.data.data.content as unknown as User[]);
     } catch (error) {
-      console.error("Lỗi khi tải danh sách người dùng:", error);
+      console.error('Lỗi khi tải danh sách người dùng:', error);
     }
   };
 
@@ -44,7 +44,9 @@ const Account = ({ refresh }: { refresh: boolean }) => {
       dataIndex: 'role',
       key: 'role',
       render: (text: string) => {
-        return <span className={helper.formatRoleAccountColor(text)}>{text}</span>;
+        return (
+          <span className={helper.formatRoleAccountColor(text)}>{text}</span>
+        );
       },
     },
     {
@@ -52,11 +54,11 @@ const Account = ({ refresh }: { refresh: boolean }) => {
       key: 'action',
       render: () => (
         <button
-            className="bg-red-600 text-white p-2 rounded-lg shadow-lg hover:bg-red-700"
-            // onClick={() => handleDeleteProduct(record.slug)}
-          >
-            <DeleteOutlined className="text-xl" />
-          </button>
+          className="bg-red-600 text-white p-2 rounded-lg shadow-lg hover:bg-red-700"
+          // onClick={() => handleDeleteProduct(record.slug)}
+        >
+          <DeleteOutlined className="text-xl" />
+        </button>
       ),
     },
   ];
