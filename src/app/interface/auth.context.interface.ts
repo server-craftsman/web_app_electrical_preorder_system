@@ -1,4 +1,4 @@
-import { UserRole } from '../enums/user.role';
+import { UserRole } from '../enums/user.enum';
 import { socialLoginCallbackParams } from '../../models/api/request/auth.req.model';
 import { loginParams } from '../../models/api/request/auth.req.model';
 import { userInfo } from '../../models/api/response/auth.res.model';

@@ -1,0 +1,6 @@
+export enum CampaignStatus {
+  SCHEDULED = 'SCHEDULED',
+  ACTIVE = 'ACTIVE',
+  COMPLETED = 'COMPLETED',
+  CANCELLED = 'CANCELLED',
+}

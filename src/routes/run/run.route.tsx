@@ -5,7 +5,7 @@ import { getUserInfo } from '../../utils/storage';
 import { useAuth } from '../../contexts/AuthContexts';
 // Import router path
 import { ROUTER_URL } from '../../const/router.path';
-import { UserRole } from '../../app/enums/user.role';
+import { UserRole } from '../../app/enums/user.enum';
 
 // Import guard routes
 import GuardProtectedRoute from '../protected/guard.protected.route';

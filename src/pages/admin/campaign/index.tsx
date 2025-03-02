@@ -1,17 +1,19 @@
 import { Modal } from 'antd';
 import { useState, useRef } from 'react';
-import CreateCampaign from '../../../components/admin/compaign/CreateCampaign';
+import CreateCampaign from '../../../components/admin/compaign/Create';
 import Search from '../../../components/search';
-import ViewCampaign from '../../../components/admin/compaign/ViewCampaign';
+import ViewCampaign from '../../../components/admin/compaign/Display';
 
 const Campaign = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const createCampaignRef = useRef<{ handleOpenModal: () => void } | null>(
     null
   );
-  const [refreshCampaigns, setRefreshCampaigns] = useState(false); // state to trigger refresh
+  const [refreshCampaigns, setRefreshCampaigns] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [refreshKey, setRefreshKey] = useState(0);
+  // Define as MutableRefObject
+  const formRef = useRef<any>(null);
 
   const handleCreateCampaign = () => {
     setIsModalVisible(true);
@@ -21,6 +23,10 @@ const Campaign = () => {
   };
 
   const handleCancel = () => {
+    // Reset form fields when modal is closed
+    if (formRef.current && formRef.current.resetFields) {
+      formRef.current.resetFields();
+    }
     setIsModalVisible(false);
   };
 
@@ -47,16 +53,17 @@ const Campaign = () => {
         searchTerm={searchTerm}
         refreshKey={refreshKey}
       />
-      {/* <ViewCategory  refresh={refreshCategories} searchTerm={searchTerm} refreshKey={refreshKey}/> */}
       <Modal
-        title="Tạo danh mục"
+        title="Tạo chiến dịch"
         open={isModalVisible}
         onCancel={handleCancel}
+        destroyOnClose={true}
         footer={null}
       >
         <CreateCampaign
           onCategoryCreated={handleCampaignCreated}
           onClose={handleCancel}
+          formRef={formRef}
         />
       </Modal>
     </div>
