@@ -76,7 +76,7 @@ const CustomerLayout = () => {
                 SẢN PHẨM
               </Link>
               <Link
-                to="/guide"
+                to={ROUTER_URL.CUSTOMER.GUIDE}
                 className="relative hover:text-red-600 transition-colors duration-300 before:absolute before:bottom-0 before:left-0 before:w-0 before:h-[2px] before:bg-red-600 before:transition-all before:duration-300 hover:before:w-full"
               >
                 HƯỚNG DẪN

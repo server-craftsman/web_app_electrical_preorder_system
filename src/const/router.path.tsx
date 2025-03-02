@@ -28,6 +28,7 @@ export const ROUTER_URL = {
     CHANGE_PASSWORD: '/customer/change-password',
     LOGOUT: '/customer/logout',
     ABOUT: '/customer/about',
+    GUIDE: '/customer/guide',
   },
   COMMON: {
     HOME: '/',

@@ -2,6 +2,7 @@ import { ROUTER_URL } from '../../const/router.path';
 import { RouteObject } from 'react-router-dom';
 import { lazy } from 'react';
 import AboutPage from '../../pages/customer/about';
+import GuidePage from '../../pages/customer/guide';
 
 //import customer pages
 const Overview = lazy(() => import('../../pages/customer/overview/index'));
@@ -34,6 +35,10 @@ export const customerSubPaths: Record<string, RouteObject[]> = {
     {
       path: ROUTER_URL.CUSTOMER.ABOUT,
       element: <AboutPage />,
+    },
+    {
+      path: ROUTER_URL.CUSTOMER.GUIDE,
+      element: <GuidePage />,
     },
     {
       path: ROUTER_URL.CUSTOMER.RETURN_ORDER,
