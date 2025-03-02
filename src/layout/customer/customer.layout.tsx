@@ -5,6 +5,7 @@ import { Footer } from '../main-layout/footer';
 import { useAuth } from '../../contexts/AuthContexts';
 import CustomerNavbar from './customer.navbar';
 import logo1 from '../../assets/Elecee_logo.jpg';
+import { ROUTER_URL } from '../../const/router.path';
 const { Header, Content } = Layout;
 
 const CustomerLayout = () => {
@@ -63,7 +64,7 @@ const CustomerLayout = () => {
                 TRANG CHỦ
               </Link>
               <Link
-                to="/about"
+                to={ROUTER_URL.CUSTOMER.ABOUT}
                 className="relative hover:text-red-600 transition-colors duration-300 before:absolute before:bottom-0 before:left-0 before:w-0 before:h-[2px] before:bg-red-600 before:transition-all before:duration-300 hover:before:w-full"
               >
                 GIỚI THIỆU
