@@ -8,3 +8,9 @@ export interface CreateUserRequestModel {
   role: string;
   active: boolean;
 }
+
+export interface ChangePasswordRequestModel {
+  id: string,
+  currentPassword: string,
+  newPassword: string,
+}

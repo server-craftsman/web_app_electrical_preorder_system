@@ -5,7 +5,7 @@ import {
   ResponseSuccessForList,
 } from '../../app/interface/response_success.interface';
 import { User } from '../../models/modules/User';
-import { CreateUserRequestModel } from '../../models/api/request/user.req.model';
+import { ChangePasswordRequestModel, CreateUserRequestModel } from '../../models/api/request/user.req.model';
 
 export const UserService = {
   getAll(params: any) {
@@ -20,4 +20,15 @@ export const UserService = {
       payload: params,
     });
   },
+  getById(id: string){
+    return BaseService.get<formatResponseSuccess<User>>({
+      url: API_PATH.USER.GET_USER_ID.replace(':id', id),
+    })
+  },
+  changePassword(userId: string, params: ChangePasswordRequestModel){
+    return BaseService.put<formatResponseSuccess<User>>({
+      url: API_PATH.USER.CHANGE_PASSWORD.replace(':id', userId), 
+      payload: params
+    })
+  }
 };
