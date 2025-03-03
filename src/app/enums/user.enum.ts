@@ -3,3 +3,9 @@ export enum UserRole {
   CUSTOMER = 'ROLE_CUSTOMER',
   STAFF = 'ROLE_STAFF',
 }
+
+export enum UserStatus {
+  ACTIVE = 'ACTIVE',
+  INACTIVE = 'INACTIVE',
+  BANNED = 'BANNED',
+}

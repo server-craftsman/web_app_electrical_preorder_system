@@ -13,3 +13,16 @@ export interface CampaignResponseModel {
   createdAt: string; // LocalDateTime
   updatedAt: string; // LocalDateTime
 }
+
+//=============campaign stage=================================
+export interface CampaignStageResponseModel {
+  id: string;
+  name: string;
+  startDate: string;
+  endDate: string;
+  quantitySold: number;
+  targetQuantity: number;
+  status: string;
+  createdAt: string;
+  updatedAt: string;
+}

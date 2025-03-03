@@ -8,3 +8,12 @@ export interface CreateCampaignRequestModel {
   status: string; // @NotBlank
   productId: string; // @NotBlank
 }
+
+//=============campaign stage=================================
+
+export interface CreateCampaignStageRequestModel {
+  name: string; // @NotBlank
+  startDate: string; // @NotNull, LocalDateTime
+  endDate: string; // @NotNull, LocalDateTime
+  targetQuantity: number; // @NotNull, @Min(0), Integer
+}
