@@ -253,7 +253,7 @@ axiosInstance.interceptors.response.use(
     if (response) {
       switch (response.status) {
         case HTTP_STATUS.UNAUTHORIZED:
-          storage.clearUserData();
+          storage.clearLocalStorage();
           setTimeout(() => {
             window.location.href = ROUTER_URL.LOGIN;
           }, 3000);
@@ -267,7 +267,7 @@ axiosInstance.interceptors.response.use(
             'Access denied. You do not have permission to perform this action.',
             'error'
           );
-          storage.clearUserData();
+          storage.clearLocalStorage();
           setTimeout(() => {
             window.location.href = ROUTER_URL.LOGIN;
           }, 3000);

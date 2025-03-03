@@ -182,7 +182,7 @@ const CreateCampaign: React.FC<CreateCampaignProps> = ({
       >
         <input
           type="datetime-local"
-          className="border p-2 w-full"
+          className="border rounded-lg p-2 w-full"
           onChange={handleDateChange}
         />
       </Form.Item>
@@ -194,7 +194,7 @@ const CreateCampaign: React.FC<CreateCampaignProps> = ({
       >
         <input
           type="datetime-local"
-          className="border p-2 w-full"
+          className="border rounded-lg p-2 w-full"
           onChange={handleDateChange}
         />
       </Form.Item>
@@ -225,16 +225,12 @@ const CreateCampaign: React.FC<CreateCampaignProps> = ({
       </Form.Item>
 
       {/* Hiển thị trạng thái theo ngày */}
-      <Form.Item label="Trạng thái chiến dịch">
-        <Tag
-          color={
-            status === CampaignStatus.SCHEDULED
-              ? 'blue'
-              : status === CampaignStatus.ACTIVE
-                ? 'green'
-                : 'red'
-          }
-        >
+      <Form.Item
+        label="Trạng thái chiến dịch"
+        className="flex items-center"
+        style={{ marginBottom: '16px' }}
+      >
+        <Tag color={helper.formatCampaignStatus(status) || 'default'}>
           {status}
         </Tag>
       </Form.Item>

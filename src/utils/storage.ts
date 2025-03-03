@@ -3,10 +3,11 @@ export const getItemInLocalStorage = (key: string) => localStorage.getItem(key);
 export const removeItemInLocalStorage = (key: string) =>
   localStorage.removeItem(key);
 
-export const clearUserData = () => {
-  localStorage.removeItem('role');
-  localStorage.removeItem('accessToken');
-  localStorage.removeItem('userInfo');
+export const clearLocalStorage = () => {
+  // localStorage.removeItem('role');
+  // localStorage.removeItem('accessToken');
+  // localStorage.removeItem('userInfo');
+  localStorage.clear();
 };
 
 export const setUserInfo = (userInfo: any) => {

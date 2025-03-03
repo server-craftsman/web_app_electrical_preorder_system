@@ -6,6 +6,10 @@
   @apply text-red-500;
 }
 
+.btn-cancel {
+  @apply mr-2 bg-gradient-to-r rounded-xl from-gray-100 to-gray-200 hover:from-gray-200 hover:to-gray-300 text-black font-semibold py-2 px-4;
+}
+
 .btn-custom {
   @apply text-white bg-red-500 border border-red-500 border-solid rounded-full px-4 py-2 hover:bg-red-600 transition;
 }

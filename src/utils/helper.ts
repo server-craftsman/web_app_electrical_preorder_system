@@ -1,5 +1,5 @@
 import { toast, ToastOptions } from 'react-toastify';
-
+import { CampaignStatus } from '../app/enums';
 //===========validate output
 export const notificationMessage = (
   message: string,
@@ -66,21 +66,33 @@ export const formatDateTimeWithTimezone = (date: Date) => {
   return formatDateTime(date) + ' ' + date.getTimezoneOffset();
 };
 
+export const formatDateFullOptions = (date: Date) => {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  const seconds = String(date.getSeconds()).padStart(2, '0');
+
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+};
+
 //===========format color
 export const formatCampaignStatus = (status: string) => {
-  switch (status.toLowerCase()) {
-    case 'DRAFT':
-      return '#FFA500'; // Orange
-    case 'SCHEDULED':
-      return '#28a745'; // Green
-    case 'ACTIVE':
-      return '#007bff'; // Blue
-    case 'COMPLETED':
-      return '#6f42c1'; // Purple
-    case 'CANCELLED':
-      return '#dc3545'; // Red
+  const baseClasses =
+    'inline-block text-white font-semibold font-bold rounded-lg px-4 py-2';
+
+  switch (status.toUpperCase()) {
+    case CampaignStatus.SCHEDULED:
+      return `${baseClasses} bg-yellow-500`;
+    case CampaignStatus.ACTIVE:
+      return `${baseClasses} bg-green-500`;
+    case CampaignStatus.COMPLETED:
+      return `${baseClasses} bg-blue-500`;
+    case CampaignStatus.CANCELLED:
+      return `${baseClasses} bg-red-500`;
     default:
-      return '#000000'; // Black (Default)
+      return `${baseClasses} bg-gray-400`;
   }
 };
 
