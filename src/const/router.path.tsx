@@ -12,6 +12,7 @@ export const ROUTER_URL = {
     PRODUCT_DETAIL: '/admin/product/:slug',
     CATEGORY: '/admin/category',
     CAMPAIGN: '/admin/campaign',
+    CAMPAIGN_DETAIL: '/admin/campaign/:id',
   },
   STAFF: {
     BASE: '/staff',

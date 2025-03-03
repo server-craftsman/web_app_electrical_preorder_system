@@ -14,10 +14,38 @@ export const CampaignService = {
       payload: params,
     });
   },
+  // role: 'admin',
   create(params: CreateCampaignRequestModel) {
     return BaseService.post<formatResponseSuccess<CampaignResponseModel>>({
       url: API_PATH.CAMPAIGN.BASE,
       payload: params,
     });
   },
+  // role: 'admin',
+  getById(id: string, params: any) {
+    return BaseService.get<formatResponseSuccess<CampaignResponseModel>>({
+      url: API_PATH.CAMPAIGN.GET_BY_ID.replace(':id', id),
+      payload: params,
+    });
+  },
+  // role: 'admin',
+  update(id: string, params: CreateCampaignRequestModel) {
+    return BaseService.put<formatResponseSuccess<CampaignResponseModel>>({
+      url: API_PATH.CAMPAIGN.UPDATE.replace(':id', id),
+      payload: params,
+    });
+  },
+  // role: 'admin',
+  delete(id: string) {
+    return BaseService.remove<formatResponseSuccess<CampaignResponseModel>>({
+      url: API_PATH.CAMPAIGN.DELETE.replace(':id', id),
+    });
+  },
+  // role: 'admin',
+  // deleteMultiple(ids: string[]) {
+  //   return BaseService.remove<formatResponseSuccess<CampaignResponseModel>>({
+  //     url: API_PATH.CAMPAIGN.DELETE.replace(':id', ''),
+  //     payload: ids,
+  //   });
+  // },
 };

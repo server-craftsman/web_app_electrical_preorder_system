@@ -1,64 +1,74 @@
-import { Modal } from 'antd';
-import { useState, useRef } from 'react';
-import CreateCampaign from '../../../components/admin/compaign/Create';
-import Search from '../../../components/search';
-import ViewCampaign from '../../../components/admin/compaign/Display';
+import React, { useState, useRef } from 'react';
+import { Modal, Button } from 'antd';
+import { PlusOutlined, ExportOutlined } from '@ant-design/icons';
+import CreateCampaign from '../../../components/admin/campaign/Create';
+import ViewCampaign from '../../../components/admin/campaign/Display';
+import Search from '../../../components/search/index';
 
-const Campaign = () => {
+const Campaign: React.FC = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const createCampaignRef = useRef<{ handleOpenModal: () => void } | null>(
-    null
-  );
   const [refreshCampaigns, setRefreshCampaigns] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [refreshKey, setRefreshKey] = useState(0);
-  // Define as MutableRefObject
   const formRef = useRef<any>(null);
 
   const handleCreateCampaign = () => {
     setIsModalVisible(true);
-    if (createCampaignRef.current) {
-      createCampaignRef.current.handleOpenModal();
-    }
   };
 
   const handleCancel = () => {
-    // Reset form fields when modal is closed
     if (formRef.current && formRef.current.resetFields) {
       formRef.current.resetFields();
     }
     setIsModalVisible(false);
   };
 
-  // Trigger refresh of categories
   const handleCampaignCreated = () => {
-    setRefreshCampaigns((prev) => !prev); // toggle to trigger useEffect in ViewCategory
+    setRefreshCampaigns(prev => !prev);
+    setIsModalVisible(false);
   };
 
   const handleSearch = (value: string) => {
     setSearchTerm(value);
-    setRefreshKey((prevKey) => prevKey + 1);
+    setRefreshKey(prevKey => prevKey + 1);
   };
 
   return (
-    <div>
-      <div className="flex justify-between mb-4">
-        <Search onSearch={handleSearch} />
-        <button onClick={handleCreateCampaign} className="btn-submit">
-          Tạo chiến dịch
-        </button>
+    <div className="p-6">
+      <div className="bg-black text-white p-4 flex justify-between items-center">
+        <div>
+          <h1 className="text-2xl font-bold">Campaigns</h1>
+          <p className="text-sm">Organize campaigns and reach your goals effectively here</p>
+        </div>
+        <div className="flex space-x-2">
+          <Button icon={<PlusOutlined />} className='btn-submit' onClick={handleCreateCampaign}>
+            Tạo chiến dịch
+          </Button>
+          <Button icon={<ExportOutlined />} className='py-5'>Export</Button>
+        </div>
       </div>
+      
+      <div className="mt-4 flex justify-between items-center mb-3">
+        <Search
+          placeholder="Search campaigns"
+          onSearch={handleSearch}
+        />
+      </div>
+
       <ViewCampaign
         refresh={refreshCampaigns}
         searchTerm={searchTerm}
         refreshKey={refreshKey}
       />
+
       <Modal
-        title="Tạo chiến dịch"
+        title="Tạo chiến dịch mới"
         open={isModalVisible}
         onCancel={handleCancel}
-        destroyOnClose={true}
         footer={null}
+        destroyOnClose={true}
+        style={{ top: 20, right: 20, position: 'absolute' }}
+        wrapClassName="right-modal"
       >
         <CreateCampaign
           onCategoryCreated={handleCampaignCreated}

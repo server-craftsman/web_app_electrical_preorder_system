@@ -4,11 +4,13 @@ import { SearchOutlined } from '@ant-design/icons';
 interface SearchProps {
   onSearch: (searchTerm: string) => void;
   placeholder?: string;
+  className?: string;
 }
 
 const Search: React.FC<SearchProps> = ({
   onSearch,
   placeholder = 'Tìm kiếm...',
+  className,
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -34,7 +36,7 @@ const Search: React.FC<SearchProps> = ({
         onChange={handleInputChange}
         onKeyDown={handleKeyPress}
         value={searchTerm}
-        className="w-64 h-12 rounded-l-full border-2 border-[black] bg-transparent px-6 text-gray-700 focus:outline-none focus:border-[#1a237e] transition-all focus:shadow-none"
+        className={`${className || 'w-64 h-12 rounded-l-full border-2 border-[black] bg-transparent px-6 text-gray-700 focus:outline-none focus:border-[#1a237e] transition-all focus:shadow-none'}`}
         style={{ boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}
       />
       <button

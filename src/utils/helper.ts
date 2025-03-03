@@ -69,15 +69,15 @@ export const formatDateTimeWithTimezone = (date: Date) => {
 //===========format color
 export const formatCampaignStatus = (status: string) => {
   switch (status.toLowerCase()) {
-    case 'draft':
+    case 'DRAFT':
       return '#FFA500'; // Orange
-    case 'scheduled':
+    case 'SCHEDULED':
       return '#28a745'; // Green
-    case 'active':
+    case 'ACTIVE':
       return '#007bff'; // Blue
-    case 'completed':
+    case 'COMPLETED':
       return '#6f42c1'; // Purple
-    case 'cancelled':
+    case 'CANCELLED':
       return '#dc3545'; // Red
     default:
       return '#000000'; // Black (Default)
@@ -87,15 +87,15 @@ export const formatCampaignStatus = (status: string) => {
 export const formatProductStatus = (status: string) => {
   switch (status.toLowerCase()) {
     case 'AVAILABLE':
-      return 'bg-green-500';
+      return 'bg-green-500 text-white rounded-lg px-4 py-2';
     case 'OUT_OF_STOCK':
-      return 'bg-yellow-500';
+      return 'bg-yellow-500 text-white rounded-lg px-4 py-2';
     case 'PREORDER':
-      return 'bg-blue-500';
+      return 'bg-blue-500 text-white rounded-lg px-4 py-2';
     case 'DISCONTINUED':
-      return 'bg-red-500';
+      return 'bg-red-500 text-white rounded-lg px-4 py-2';
     default:
-      return 'bg-gray-500';
+      return 'bg-gray-500 text-white rounded-lg px-4 py-2';
   }
 };
 

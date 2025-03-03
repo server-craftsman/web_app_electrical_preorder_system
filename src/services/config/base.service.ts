@@ -254,11 +254,13 @@ axiosInstance.interceptors.response.use(
       switch (response.status) {
         case HTTP_STATUS.UNAUTHORIZED:
           storage.clearUserData();
-          storage.removeItemInLocalStorage('accessToken');
           setTimeout(() => {
             window.location.href = ROUTER_URL.LOGIN;
           }, 3000);
-
+          helper.notificationMessage(
+            'Your session has expired. Please log in again.',
+            'error'
+          );
           break;
         case HTTP_STATUS.FORBIDDEN:
           helper.notificationMessage(

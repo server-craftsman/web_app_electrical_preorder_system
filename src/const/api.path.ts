@@ -25,5 +25,8 @@ export const API_PATH = {
   },
   CAMPAIGN: {
     BASE: '/campaigns',
+    UPDATE: '/campaigns/:id',
+    DELETE: '/campaigns/:id',
+    GET_BY_ID: '/campaigns/:id',
   },
 };

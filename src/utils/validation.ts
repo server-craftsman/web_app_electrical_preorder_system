@@ -1,4 +1,3 @@
-import { message } from 'antd';
 import { helper } from '.';
 
 export const checkURL = (url: string) => {

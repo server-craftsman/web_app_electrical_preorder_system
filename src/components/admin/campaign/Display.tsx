@@ -2,13 +2,14 @@ import { useState, useEffect } from 'react';
 import { Table, Tag } from 'antd';
 import Pagination from '../../pagination';
 import { CampaignService } from '../../../services/campaign/campaign.service';
-// import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom'; // Uncomment this line
 import { EditOutlined, DeleteOutlined, EyeOutlined } from '@ant-design/icons';
-// import { ROUTER_URL } from '../../../const';
 import { helper } from '../../../utils';
 import { CampaignResponseModel } from '../../../models/api/response/campaign.res.model';
 import { GetAllProductResponseModel } from '../../../models/api/response/product.res.model';
 import { formatCampaignStatus } from '../../../utils/helper';
+import { ROUTER_URL } from '../../../const';
+
 interface ViewCampaignProps {
   refresh: boolean;
   searchTerm: string;
@@ -23,10 +24,9 @@ const ViewCampaign = ({
   const [currentPage, setCurrentPage] = useState(1);
   const [campaigns, setCampaigns] = useState<CampaignResponseModel[]>([]);
   const [totalCampaigns, setTotalCampaigns] = useState(0);
-  // const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const pageSize = 10;
 
-  // const navigate = useNavigate();
+  const navigate = useNavigate(); // Use the navigate hook
 
   const fetchCampaigns = async (page: number) => {
     try {
@@ -72,7 +72,7 @@ const ViewCampaign = ({
       title: 'Ngày bắt đầu',
       dataIndex: 'startDate',
       key: 'startDate',
-      render: (text: string) => helper.formatDateTime(new Date(text)), // Chuyển đổi sang Date
+      render: (text: string) => helper.formatDateTime(new Date(text)),
     },
     {
       title: 'Ngày kết thúc',
@@ -80,7 +80,6 @@ const ViewCampaign = ({
       key: 'endDate',
       render: (text: string) => helper.formatDateTime(new Date(text)),
     },
-
     {
       title: 'Số lượng tối thiểu',
       dataIndex: 'minQuantity',
@@ -95,7 +94,7 @@ const ViewCampaign = ({
       title: 'Tổng giá trị',
       dataIndex: 'totalAmount',
       key: 'totalAmount',
-      render: (value: number) => helper.formatCurrency(value), // Giả sử có hàm format tiền tệ
+      render: (value: number) => helper.formatCurrency(value),
     },
     {
       title: 'Trạng thái',
@@ -114,22 +113,20 @@ const ViewCampaign = ({
     {
       title: 'Hành động',
       key: 'actions',
-      render: (_: any, _record: CampaignResponseModel) => (
+      render: (_: any, record: CampaignResponseModel) => (
         <span className="flex space-x-2">
-          <button className="bg-blue-600 text-white p-2 rounded-lg shadow-lg hover:bg-blue-700">
+          <button
+            className="bg-blue-600 text-white p-2 rounded-lg shadow-lg hover:bg-blue-700"
+            onClick={() => navigate(ROUTER_URL.ADMIN.CAMPAIGN_DETAIL.replace(':id', record.id))
+            } // Navigate to details page
+          >
             <EyeOutlined className="text-xl" />
           </button>
           <button className="bg-green-600 text-white p-2 rounded-lg shadow-lg hover:bg-green-700">
-            <EditOutlined
-              className="text-xl"
-              // onClick={() => navigate(`${ROUTER_URL.CAMPAIGN_EDIT}/${record.id}`)}
-            />
+            <EditOutlined className="text-xl" />
           </button>
           <button className="bg-red-600 text-white p-2 rounded-lg shadow-lg hover:bg-red-700">
-            <DeleteOutlined
-              className="text-xl"
-              // onClick={() => setIsDeleteModalVisible(true)}
-            />
+            <DeleteOutlined className="text-xl" />
           </button>
         </span>
       ),
@@ -142,7 +139,7 @@ const ViewCampaign = ({
         dataSource={campaigns}
         columns={columns}
         rowKey="id"
-        pagination={false} // Bỏ pagination mặc định để dùng custom pagination
+        pagination={false}
       />
       <Pagination
         currentPage={currentPage}

@@ -12,6 +12,7 @@ const StageHistory = lazy(
   () => import('../../pages/admin/stage_history/index')
 );
 const Campaign = lazy(() => import('../../pages/admin/campaign/index'));
+const CampaignDetails = lazy(() => import('../../pages/admin/campaign/details'));
 //======================================================
 
 //export admin sub paths
@@ -45,5 +46,9 @@ export const adminSubPaths: Record<string, RouteObject[]> = {
       element: <Campaign />,
       path: ROUTER_URL.ADMIN.CAMPAIGN,
     },
+    {
+      element: <CampaignDetails />,
+      path: ROUTER_URL.ADMIN.CAMPAIGN_DETAIL,
+    }
   ],
 };
