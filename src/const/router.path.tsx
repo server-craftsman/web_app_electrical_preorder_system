@@ -23,6 +23,8 @@ export const ROUTER_URL = {
     PROFILE: '/staff/profile',
     CHANGE_PASSWORD: '/staff/change-password',
     CATEGORY: '/staff/category',
+    PRODUCT: '/staff/product',
+    PRODUCT_DETAIL: '/staff/product/:slug',
   },
   CUSTOMER: {
     BASE: '/customer',

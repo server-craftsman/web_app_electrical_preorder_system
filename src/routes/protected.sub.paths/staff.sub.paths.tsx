@@ -7,6 +7,8 @@ import Order from '../../pages/staff/order';
 import Dashboard from '../../pages/staff/overview';
 import Profile from '../../pages/staff/profile';
 import Category from '../../pages/staff/category';
+import Product from '../../pages/staff/product';
+import DetailProduct from '../../components/staff/product/DetailProduct';
 // Import staff pages
 
 //======================================================
@@ -41,6 +43,14 @@ export const staffSubPaths: Record<string, RouteObject[]> = {
     {
       element: <Category />,
       path: ROUTER_URL.STAFF.CATEGORY
+    },
+    {
+      element: <Product />,
+      path: ROUTER_URL.STAFF.PRODUCT
+    },
+    {
+      element: <DetailProduct />,
+      path: ROUTER_URL.STAFF.PRODUCT_DETAIL
     }
   ],
 };

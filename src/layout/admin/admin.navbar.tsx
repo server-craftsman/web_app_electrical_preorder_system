@@ -138,7 +138,7 @@ const AdminNavbar: React.FC = () => {
 
   return (
     <div
-      className={`h-auto flex ${collapsed ? 'w-20' : 'w-[200px]'} transition-all bg-gray-900`}
+      className={`min-h-screen flex ${collapsed ? 'w-20' : 'w-[200px]'} transition-all bg-gray-900`}
     >
       <div className="flex flex-col items-center p-4 w-full relative">
         <div className="text-white text-lg font-bold mb-4">

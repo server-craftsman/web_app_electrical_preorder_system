@@ -47,7 +47,7 @@ const menuItems = [
     path: ROUTER_URL.STAFF.CATEGORY,
   },
   {
-    label: 'Tài Khoản',
+    label: 'Sản Phẩm',
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -60,12 +60,12 @@ const menuItems = [
         <path
           strokeLinecap="round"
           strokeLinejoin="round"
-          d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
+          d="m21 7.5-9-5.25L3 7.5m18 0-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9"
         />
       </svg>
     ),
-    key: 'account',
-    path: ROUTER_URL.STAFF.ACCOUNT,
+    key: 'product',
+    path: ROUTER_URL.STAFF.PRODUCT,
   },
   {
     label: 'Pre-order',
@@ -85,7 +85,7 @@ const menuItems = [
         />
       </svg>
     ),
-    key: 'product',
+    key: 'pre-order',
     path: ROUTER_URL.STAFF.PREORDER,
   },
   {
@@ -95,18 +95,18 @@ const menuItems = [
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
         viewBox="0 0 24 24"
-        strokeWidth={1.5}
+        stroke-width="1.5"
         stroke="currentColor"
         className="size-6"
       >
         <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="m20.25 7.5-.625 10.632a2.25 2.25 0 0 1-2.247 2.118H6.622a2.25 2.25 0 0 1-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z"
         />
       </svg>
     ),
-    key: 'category',
+    key: 'Order',
     path: ROUTER_URL.STAFF.ORDERS,
   },
   {
@@ -144,7 +144,7 @@ const menuItems = [
         <path
           strokeLinecap="round"
           strokeLinejoin="round"
-          d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+          d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z"
         />
       </svg>
     ),
@@ -159,7 +159,7 @@ const StaffNavbar: React.FC = () => {
 
   return (
     <div
-      className={`h-auto flex ${collapsed ? 'w-20' : 'w-[200px]'} transition-all bg-gray-900`}
+      className={`min-h-screen flex ${collapsed ? 'w-20' : 'w-[200px]'} transition-all bg-gray-900`}
     >
       <div className="flex flex-col items-center p-4 w-full relative">
         <div className="text-white text-lg font-bold mb-4">
