@@ -4,10 +4,8 @@ export const removeItemInLocalStorage = (key: string) =>
   localStorage.removeItem(key);
 
 export const clearLocalStorage = () => {
-  // localStorage.removeItem('role');
-  // localStorage.removeItem('accessToken');
-  // localStorage.removeItem('userInfo');
   localStorage.clear();
+ 
 };
 
 export const setUserInfo = (userInfo: any) => {

@@ -2,7 +2,7 @@ import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { App } from './App';
 import './index.css';
-// import { CartProvider } from "./contexts/CartContext";
+import { CartProvider } from "./contexts/CartContext";
 import { AuthProvider } from './contexts/AuthContexts';
 import { Provider } from 'react-redux';
 import { store } from './app/redux/store'; // Ensure this is the correct path to your store
@@ -17,9 +17,9 @@ if (rootElement) {
     <Provider store={store}>
       <BrowserRouter>
         <AuthProvider>
-          {/* <CartProvider> */}
+          <CartProvider>
           <App />
-          {/* </CartProvider> */}
+          </CartProvider>
         </AuthProvider>
       </BrowserRouter>
     </Provider>

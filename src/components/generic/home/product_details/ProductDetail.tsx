@@ -1,26 +1,21 @@
 import { useState, useEffect } from 'react';
 import { GetAllProductResponseModel } from '../../../../models/api/response/product.res.model';
 import { formatCurrency } from '../../../../utils/helper';
+import { useCart } from "../../../../contexts/CartContext";
+import { notification } from "antd";
 
 interface ProductDetailProps {
   product: GetAllProductResponseModel;
 }
 
 const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
+  const { addToCart } = useCart();
   const productImages =
     product.imageProducts.length > 0
       ? product.imageProducts.map((img) => img.imageUrl)
       : ['https://via.placeholder.com/500'];
 
-  // const discountPercentage =
-  // product.quantity > 0
-  //   ? Math.round(
-  //       ((product.price - product.price * 0.9) / product.price) * 100
-  //     )
-  //   : null;
-
   const discountedPrice = product.price;
-
   const [mainImage, setMainImage] = useState(productImages[0]);
   const [quantity, setQuantity] = useState(1);
   const [timeLeft, setTimeLeft] = useState({
@@ -29,6 +24,26 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
     minutes: 25,
     seconds: 7,
   });
+
+  const handleAddToCart = () => {
+    addToCart({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      imageUrl: product.imageProducts[0].imageUrl,
+      quantity: quantity,
+    });
+
+    notification.config({
+      top: 73,
+    });
+    notification.success({
+      message: "Thêm vào giỏ hàng thành công",
+      description: `Đã thêm "${product.name}" vào giỏ hàng 🛒`,
+      placement: "topRight",
+      duration: 3,
+    });
+  };
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -72,8 +87,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
               key={index}
               src={thumb}
               alt={`Thumb ${index + 1}`}
-              className={`w-16 h-16 rounded-md cursor-pointer transition-all duration-200 ${
-                mainImage === thumb
+              className={`w-16 h-16 rounded-md cursor-pointer transition-all duration-200 ${mainImage === thumb
                   ? 'border-2 border-blue-500 shadow-lg'
                   : 'border border-gray-300'
               }`}
@@ -141,13 +155,16 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
             onClick={() => setQuantity((prev) => prev + 1)}
           >
             +
-          </button>
+            </button>
         </div>
         <div className="flex space-x-4">
           <button className="px-6 py-3 bg-red-600 text-white rounded-md">
             Mua ngay
           </button>
-          <button className="px-6 py-3 border bg-yellow-500 text-white rounded-md">
+          <button
+            className="px-6 py-3 border bg-yellow-500 text-white rounded-md"
+            onClick={handleAddToCart}
+          >
             Thêm vào giỏ hàng
           </button>
         </div>

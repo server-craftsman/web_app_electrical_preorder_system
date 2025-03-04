@@ -151,10 +151,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const logout = () => {
-    storage.clearLocalStorage(); // Gọi hàm clearUserData thay vì clearLocalStorage
+    
+    storage.clearLocalStorage();
+    storage.removeItemInLocalStorage('role');
+    storage.removeItemInLocalStorage('accessToken');
+    storage.removeItemInLocalStorage('userInfo');
+    storage.removeItemInLocalStorage('cart');
     setIsRoleSet(false);
     setRole(null);
     navigate(ROUTER_URL.COMMON.HOME);
+    if (!localStorage.getItem('isReloaded')) {
+    localStorage.setItem('isReloaded', 'true');
+     window.location.reload();
+    }
   };
 
   const getCurrentUser = () => {
