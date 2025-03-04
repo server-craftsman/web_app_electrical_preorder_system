@@ -22,6 +22,7 @@ export const ROUTER_URL = {
     HISTORY: '/staff/history',
     PROFILE: '/staff/profile',
     CHANGE_PASSWORD: '/staff/change-password',
+    CATEGORY: '/staff/category',
   },
   CUSTOMER: {
     BASE: '/customer',

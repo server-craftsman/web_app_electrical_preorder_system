@@ -10,7 +10,8 @@ export const API_PATH = {
     CREATE: '/users/sign-up',
     VERIFY_TOKEN: '/users/verify',
     GET_USER_ID: '/users/:id',
-    CHANGE_PASSWORD: '/users/:id/password'
+    CHANGE_PASSWORD: '/users/:id/password',
+    UPDATE: '/users/:id',
   },
   PRODUCT: {
     GET_ALL: '/products',

@@ -5,7 +5,7 @@ import {
   ResponseSuccessForList,
 } from '../../app/interface/response_success.interface';
 import { User } from '../../models/modules/User';
-import { ChangePasswordRequestModel, CreateUserRequestModel } from '../../models/api/request/user.req.model';
+import { ChangePasswordRequestModel, CreateUserRequestModel, UpdateUserRequestModel } from '../../models/api/request/user.req.model';
 
 export const UserService = {
   getAll(params: any) {
@@ -28,6 +28,12 @@ export const UserService = {
   changePassword(userId: string, params: ChangePasswordRequestModel){
     return BaseService.put<formatResponseSuccess<User>>({
       url: API_PATH.USER.CHANGE_PASSWORD.replace(':id', userId), 
+      payload: params
+    })
+  },
+  update(userId: string, params: UpdateUserRequestModel) {
+    return BaseService.put<formatResponseSuccess<User>>({
+      url:API_PATH.USER.UPDATE.replace(':id', userId),
       payload: params
     })
   }

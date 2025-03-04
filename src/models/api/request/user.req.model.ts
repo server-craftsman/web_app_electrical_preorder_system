@@ -14,3 +14,9 @@ export interface ChangePasswordRequestModel {
   currentPassword: string,
   newPassword: string,
 }
+
+export interface UpdateUserRequestModel {
+  fullname: string;
+  address: string;
+  phoneNumber: string;
+}
