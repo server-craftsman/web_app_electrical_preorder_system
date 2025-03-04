@@ -5,19 +5,26 @@ import { CreateCampaignStageRequestModel } from '../../models/api/request/campai
 import { CampaignStageResponseModel } from '../../models/api/response/campaign.res.model';
 
 export const StageService = {
-  create(params: CreateCampaignStageRequestModel, id: string) {
+  create(id: string, params: CreateCampaignStageRequestModel) {
     return BaseService.post<formatResponseSuccess<CampaignStageResponseModel>>({
       url: API_PATH.CAMPAIGN_STAGE.BASE.replace(':id', id),
       payload: params,
     });
   },
-  getAll(params: any) {
+  getAll(id: string) {
     return BaseService.get<formatResponseSuccess<CampaignStageResponseModel>>({
-      url: API_PATH.CAMPAIGN_STAGE.BASE,
+      url: API_PATH.CAMPAIGN_STAGE.BASE.replace(':id', id),
+    });
+  },
+  getById(id: string, params: any) {
+    return BaseService.getById<
+      formatResponseSuccess<CampaignStageResponseModel>
+    >({
+      url: API_PATH.CAMPAIGN_STAGE.BASE.replace(':id', id),
       payload: params,
     });
   },
-  update(params: CreateCampaignStageRequestModel, id: string, stageId: string) {
+  update(id: string, stageId: string, params: CreateCampaignStageRequestModel) {
     return BaseService.put<formatResponseSuccess<CampaignStageResponseModel>>({
       url: API_PATH.CAMPAIGN_STAGE.UPDATE.replace(':id', id).replace(
         ':stageId',
@@ -26,7 +33,7 @@ export const StageService = {
       payload: params,
     });
   },
-  delete(params: any, id: string, stageId: string) {
+  delete(id: string, stageId: string, params: any) {
     return BaseService.remove<formatResponseSuccess<null>>({
       url: API_PATH.CAMPAIGN_STAGE.DELETE.replace(':id', id).replace(
         ':stageId',

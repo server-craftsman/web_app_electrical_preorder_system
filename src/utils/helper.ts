@@ -1,5 +1,7 @@
 import { toast, ToastOptions } from 'react-toastify';
 import { CampaignStatus } from '../app/enums';
+import moment from 'moment';
+
 //===========validate output
 export const notificationMessage = (
   message: string,
@@ -75,6 +77,10 @@ export const formatDateFullOptions = (date: Date) => {
   const seconds = String(date.getSeconds()).padStart(2, '0');
 
   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+};
+
+export const convertToMoment = (date: string) => {
+  return moment(date);
 };
 
 //===========format color

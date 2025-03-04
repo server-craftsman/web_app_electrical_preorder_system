@@ -5,13 +5,13 @@ import {
   ExportOutlined,
   ShoppingOutlined,
   HistoryOutlined,
-  AppstoreOutlined,
+  // AppstoreOutlined,
 } from '@ant-design/icons';
 import CreateCampaign from '../../../components/admin/campaign/Create';
 import ViewCampaign from '../../../components/admin/campaign/Display';
 import Search from '../../../components/search/index';
 import CampaignHistory from './history';
-import CampaignStage from './stage';
+// import CampaignStage from './stage';
 
 const CampaignManagement: React.FC = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -48,7 +48,7 @@ const CampaignManagement: React.FC = () => {
 
   const tabs = [
     { key: '1', label: 'Campaigns', icon: <ShoppingOutlined /> },
-    { key: '2', label: 'Campaign Stage', icon: <AppstoreOutlined /> },
+    // { key: '2', label: 'Campaign Stage', icon: <AppstoreOutlined /> },
     { key: '3', label: 'Histories', icon: <HistoryOutlined /> },
   ];
 
@@ -118,7 +118,7 @@ const CampaignManagement: React.FC = () => {
               />
             </div>
           )}
-          {activeTab === '2' && <CampaignStage />}
+          {/* {activeTab === '2' && <CampaignStage />} */}
           {activeTab === '3' && <CampaignHistory />}
         </div>
       </div>
