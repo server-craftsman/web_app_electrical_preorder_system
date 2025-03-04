@@ -5,7 +5,7 @@ import PreOrder from '../../pages/staff/pre-oder';
 import StageHistory from '../../pages/staff/stage_history';
 import Order from '../../pages/staff/order';
 import Dashboard from '../../pages/staff/overview';
-
+import Profile from '../../pages/staff/profile';
 // Import staff pages
 
 //======================================================
@@ -32,6 +32,10 @@ export const staffSubPaths: Record<string, RouteObject[]> = {
     {
       element: <PreOrder />,
       path: ROUTER_URL.STAFF.PREORDER,
+    },
+    {
+      element: <Profile />,
+      path: ROUTER_URL.STAFF.PROFILE
     },
   ],
 };

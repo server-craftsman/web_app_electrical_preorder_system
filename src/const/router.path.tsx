@@ -20,6 +20,8 @@ export const ROUTER_URL = {
     ORDERS: '/staff/orders',
     PREORDER: '/staff/preorder',
     HISTORY: '/staff/history',
+    PROFILE: '/staff/profile',
+    CHANGE_PASSWORD: '/staff/change-password',
   },
   CUSTOMER: {
     BASE: '/customer',

@@ -12,4 +12,5 @@ export interface userInfo {
   iat: number;
   exp: number;
   jti: string;
+  id: string;
 }
