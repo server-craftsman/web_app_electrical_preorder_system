@@ -70,7 +70,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               ? product.imageProducts[1].altText
               : product.imageProducts[0].altText
           }
-          className="w-full h-full object-position transition-transform duration-300 ease-in-out hover:scale-110"
+          className="w-full h-full object-position object-center object-cover transition-transform duration-300 ease-in-out hover:scale-110"
         />
         {discountPercentage && (
           <span className="absolute top-2 left-2 bg-red-500 text-white px-2 py-1 text-xs font-bold rounded">

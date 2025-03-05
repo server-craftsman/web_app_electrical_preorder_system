@@ -6,6 +6,7 @@ import GuidePage from '../../pages/customer/guide';
 
 //================= PUBLIC SUB PATHS =================
 import { MainLayout } from '../../layout/main-layout/main.layout';
+import ProductsPage from '../../pages/publish/products';
 const Login = lazy(() => import('../../pages/login'));
 const Register = lazy(() => import('../../pages/register'));
 const Home = lazy(() => import('../../pages/home'));
@@ -27,6 +28,10 @@ export const publicSubPaths: Record<string, RouteObject[]> = {
         {
           element: <Home />,
           path: ROUTER_URL.COMMON.HOME,
+        },
+        {
+          element: <ProductsPage />,
+          path: ROUTER_URL.COMMON.PRODUCT,
         },
         {
           element: <ProductDetails />,

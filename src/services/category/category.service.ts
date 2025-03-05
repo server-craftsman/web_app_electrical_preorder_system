@@ -1,6 +1,6 @@
 import { API_PATH } from './../../const/api.path';
 import { BaseService } from './../config/base.service';
-import { formatResponseSuccess } from './../../app/interface/response_success.interface';
+import { formatResponseSuccess, ResponseSuccessForList } from './../../app/interface/response_success.interface';
 import { GetAllCategoryResponseModel } from '../../models/api/response/category.res.model';
 import {
   CreateCategoryRequestModel,
@@ -9,7 +9,7 @@ import {
 import { UpdateCategoryResponse } from '../../models/api/response/category.res.model';
 export const CategoryService = {
   getAll(params: Record<string, unknown>) {
-    return BaseService.get<formatResponseSuccess<GetAllCategoryResponseModel>>({
+    return BaseService.get<ResponseSuccessForList<GetAllCategoryResponseModel>>({
       url: API_PATH.CATEGORY.BASE,
       payload: params,
     });

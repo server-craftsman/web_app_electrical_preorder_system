@@ -76,7 +76,7 @@ export const Header = () => {
           <Link to="/about" className="tab-custom">
             GIỚI THIỆU
           </Link>
-          <Link to="/products" className="tab-custom">
+          <Link to="/product" className="tab-custom">
             SẢN PHẨM
           </Link>
           <Link to="/guide" className="tab-custom">
