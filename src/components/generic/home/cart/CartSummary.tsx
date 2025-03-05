@@ -1,6 +1,7 @@
 import React from "react";
 import { useCart } from "../../../../contexts/CartContext";
 import { Button } from "antd";
+import { useNavigate } from "react-router-dom"; 
 
 interface CartSummaryProps {
     selectedItems: string[]; 
@@ -8,6 +9,7 @@ interface CartSummaryProps {
 
 const CartSummary: React.FC<CartSummaryProps> = ({ selectedItems }) => {
     const { cartItems } = useCart();
+    const navigate = useNavigate(); 
 
     const totalPrice = cartItems
         .filter(item => selectedItems.includes(item.id)) 
@@ -33,7 +35,7 @@ const CartSummary: React.FC<CartSummaryProps> = ({ selectedItems }) => {
             <Button
                 type="primary"
                 className="w-full mt-4 bg-black text-white py-2"
-                onClick={() => alert("Tiến hành thanh toán")}
+                onClick={() => navigate("/checkout")} 
                 disabled={selectedItems.length === 0} 
             >
                 Tiến hành thanh toán
@@ -42,7 +44,7 @@ const CartSummary: React.FC<CartSummaryProps> = ({ selectedItems }) => {
             <Button
                 type="text"
                 className="w-full mt-2 text-gray-700 underline"
-                onClick={() => alert("Tiếp tục mua sắm")}
+                onClick={() => navigate("/product")} 
             >
                 Tiếp tục mua sắm
             </Button>

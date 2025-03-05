@@ -14,20 +14,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const [isHovered, setIsHovered] = useState(false);
   const navigate = useNavigate();
   const { addToCart } = useCart();
-
   const handleMouseEnter = () => setIsHovered(true);
   const handleMouseLeave = () => setIsHovered(false);
-
-  // Tính phần trăm giảm giá
-  const discountPercentage =
-    product.quantity > 0
-      ? Math.round(
-          ((product.price - product.price * 0.9) / product.price) * 100
-        )
-      : null;
-
-  const discountedPrice = product.price * 0.9;
-
   const handleAddToCart = () => {
     addToCart({
       id: product.id,
@@ -52,7 +40,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     <div className="bg-white shadow-md rounded-md overflow-hidden w-[258px] h-auto">
       {/* Image Section */}
       <div
-        className="relative h-[200px] flex justify-center items-center overflow-hidden object-cover cursor-pointer"
+        className="relative h-[240px] flex justify-center items-center overflow-hidden object-cover cursor-pointer"
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
@@ -70,17 +58,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               ? product.imageProducts[1].altText
               : product.imageProducts[0].altText
           }
-          className="w-full h-full object-position object-center object-cover transition-transform duration-300 ease-in-out hover:scale-110"
+           className="w-full h-full object-position transition-transform duration-300 ease-in-out hover:scale-110"
         />
-        {discountPercentage && (
-          <span className="absolute top-2 left-2 bg-red-500 text-white px-2 py-1 text-xs font-bold rounded">
-            Giảm {discountPercentage}%
-          </span>
-        )}
-        <span className="absolute top-2 right-2 bg-blue-500 text-white px-2 py-1 text-xs font-bold rounded">
-          Trả góp 0%
-        </span>
-        {/* ✅ Nút thêm vào giỏ hàng */}
         <div
           className={`font-semibold absolute bottom-0 left-0 w-full bg-black text-white text-center py-2 transition-all duration-300 ease-in-out flex items-center justify-center gap-2 cursor-pointer
             ${isHovered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-full'}
@@ -103,10 +82,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           {product.name}
         </h3>
         <div className="flex justify-between items-center">
+
           <span className="text-red-500 font-bold text-base">
-            {formatCurrency(discountedPrice)}
-          </span>
-          <span className="text-gray-500 line-through text-sm">
             {formatCurrency(product.price)}
           </span>
         </div>

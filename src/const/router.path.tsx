@@ -41,6 +41,8 @@ export const ROUTER_URL = {
     PRODUCT: '/product',
     GET_PRODUCT_DETAIL_BY_SLUG: '/product/:slug',
     ADD_TO_CART: '/cart',
+    CHECKOUT: '/checkout',
+    PAYMENTS: '/payment-success',
     ABOUT: '/about',
     GUIDE: '/guide',
   },
