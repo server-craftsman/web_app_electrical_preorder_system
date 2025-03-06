@@ -12,6 +12,7 @@ export const API_PATH = {
     GET_USER_ID: '/users/:id',
     CHANGE_PASSWORD: '/users/:id/password',
     UPDATE: '/users/:id',
+    DELETE: '/users/:id',
   },
   PRODUCT: {
     GET_ALL: '/products',
@@ -20,6 +21,7 @@ export const API_PATH = {
     UPDATE: '/products/:id',
     DELETE: '/products/:id',
     DELETE_MULTIPLE: '/products',
+    SEARCH: '/products/search',
   },
   CATEGORY: {
     BASE: '/categories',

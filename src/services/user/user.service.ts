@@ -6,7 +6,6 @@ import {
 } from '../../app/interface/response_success.interface';
 import { User } from '../../models/modules/User';
 import { ChangePasswordRequestModel, CreateUserRequestModel, UpdateUserRequestModel } from '../../models/api/request/user.req.model';
-
 export const UserService = {
   getAll(params: any) {
     return BaseService.get<ResponseSuccessForList<User>>({
@@ -36,5 +35,10 @@ export const UserService = {
       url:API_PATH.USER.UPDATE.replace(':id', userId),
       payload: params
     })
+  },
+  delete(userId: string) {
+    return BaseService.remove<formatResponseSuccess<any>>({
+      url: API_PATH.USER.DELETE.replace(':id', userId),
+    });
   }
 };

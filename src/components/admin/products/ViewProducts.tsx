@@ -36,13 +36,12 @@ const ViewProducts = ({
     null
   );
 
-  const fetchProducts = async (page: number) => {
+  const fetchProducts = async (page: number, searchTerm: string) => {
     try {
-      const response = await ProductService.getAll({
-        searchTerm,
-        page: page - 1, // Adjust if API uses 1-based indexing
-        size: pageSize,
-      });
+      const response = searchTerm
+        ? await ProductService.search(searchTerm, page - 1, pageSize)
+        : await ProductService.getAll({ page: page - 1, size: pageSize });
+
       const content = response?.data?.data?.content;
       const total = response?.data?.data?.page?.totalElements;
 
@@ -71,7 +70,7 @@ const ViewProducts = ({
   };
 
   const handleProductUpdated = () => {
-    fetchProducts(currentPage);
+    fetchProducts(currentPage, searchTerm);
   };
 
   const handleDeleteProduct = (slug: string) => {
@@ -82,7 +81,7 @@ const ViewProducts = ({
   };
 
   const handleProductDeleted = () => {
-    fetchProducts(currentPage);
+    fetchProducts(currentPage, searchTerm);
   };
 
   useEffect(() => {
@@ -90,8 +89,8 @@ const ViewProducts = ({
   }, [refreshKey]);
 
   useEffect(() => {
-    fetchProducts(currentPage);
-  }, [currentPage, refresh, refreshKey]);
+    fetchProducts(currentPage, searchTerm);
+  }, [currentPage, refresh, refreshKey, searchTerm]);
 
   const columns = [
     { title: 'Mã sản phẩm', dataIndex: 'productCode', key: 'productCode' },
@@ -161,7 +160,7 @@ const ViewProducts = ({
       await ProductService.deleteMultiple(queryParams);
       helper.notificationMessage('Xóa sản phẩm thành công', 'success');
       setIds([]);
-      fetchProducts(currentPage);
+      fetchProducts(currentPage, searchTerm);
     } catch (error) {
       console.error('Failed to delete products:', error);
       helper.notificationMessage('Xóa sản phẩm thất bại', 'error');

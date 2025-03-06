@@ -4,6 +4,7 @@ import { RouteObject } from 'react-router-dom';
 
 //import admin page
 import DetailProducts from '../../components/admin/products/DetailProducts';
+import DetailAccount from '../../components/admin/account/DetailAccount';
 const Dashboard = lazy(() => import('../../pages/admin/overview/index'));
 const Account = lazy(() => import('../../pages/admin/account/index'));
 const AdminProduct = lazy(() => import('../../pages/admin/products/index'));
@@ -49,6 +50,10 @@ export const adminSubPaths: Record<string, RouteObject[]> = {
     {
       element: <CampaignDetails />,
       path: ROUTER_URL.ADMIN.CAMPAIGN_DETAIL,
+    },
+    {
+      element:<DetailAccount />,
+      path: ROUTER_URL.ADMIN.ACCOUNT_DETAIL,
     }
   ],
 };
