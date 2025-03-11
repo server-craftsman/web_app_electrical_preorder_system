@@ -36,11 +36,7 @@ const CreateCategory = forwardRef<CreateCategoryProps, CreateCategoryProps>(
       try {
         const { name } = form.getFieldsValue();
         const newCategory = {
-          name,
-          id: '',
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
-          deleted: false,
+          name
         };
 
         const createdCategory = await CategoryService.create(newCategory);

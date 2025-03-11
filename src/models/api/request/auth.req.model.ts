@@ -10,6 +10,4 @@ export interface socialLoginCallbackParams {
 export interface loginParams {
   username: string;
   password: string;
-  googleAccountId?: string;
-  fullName?: string;
 }

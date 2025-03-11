@@ -124,8 +124,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const login = async (params: loginParams) => {
     try {
-      params.googleAccountId = '';
-      params.fullName = '';
 
       const response = await AuthService.login(params);
       if (response.status !== HTTP_STATUS.OK || !response.data) {
