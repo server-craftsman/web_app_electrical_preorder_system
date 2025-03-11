@@ -13,12 +13,22 @@ interface ViewProductProps {
   refresh: boolean;
   searchTerm: string;
   refreshKey: number;
+  sortBy: string;
+  sortDirection: string;
+  category: string;
+  minPrice?: number;
+  maxPrice?: number;
 }
 
 const ViewProducts = ({
   refresh,
   searchTerm,
   refreshKey,
+  sortBy,
+  sortDirection,
+  category,
+  minPrice,
+  maxPrice,
 }: ViewProductProps) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [products, setProducts] = useState<GetAllProductResponseModel[]>([]);
@@ -36,11 +46,18 @@ const ViewProducts = ({
     null
   );
 
-  const fetchProducts = async (page: number, searchTerm: string) => {
+  const fetchProducts = async (searchTerm: string) => {
     try {
-      const response = searchTerm
-        ? await ProductService.search(searchTerm, page - 1, pageSize)
-        : await ProductService.getAll({ page: page - 1, size: pageSize });
+      const response = await ProductService.getAll({
+        page: currentPage - 1,
+        size: pageSize,
+        query: searchTerm || undefined,
+        sortBy,
+        sortDirection,
+        category: category || undefined,
+        minPrice,
+        maxPrice,
+      });
 
       const content = response?.data?.data?.content;
       const total = response?.data?.data?.page?.totalElements;
@@ -70,7 +87,7 @@ const ViewProducts = ({
   };
 
   const handleProductUpdated = () => {
-    fetchProducts(currentPage, searchTerm);
+    fetchProducts(searchTerm);
   };
 
   const handleDeleteProduct = (slug: string) => {
@@ -81,16 +98,16 @@ const ViewProducts = ({
   };
 
   const handleProductDeleted = () => {
-    fetchProducts(currentPage, searchTerm);
+    fetchProducts(searchTerm);
   };
 
   useEffect(() => {
     setCurrentPage(1); // Reset to first page on search or refresh
-  }, [refreshKey]);
+  }, [refreshKey, sortBy, sortDirection, category, minPrice, maxPrice]);
 
   useEffect(() => {
-    fetchProducts(currentPage, searchTerm);
-  }, [currentPage, refresh, refreshKey, searchTerm]);
+    fetchProducts(searchTerm);
+  }, [currentPage, searchTerm, refresh, refreshKey, sortBy, sortDirection, category, minPrice, maxPrice]);
 
   const columns = [
     { title: 'Mã sản phẩm', dataIndex: 'productCode', key: 'productCode' },
@@ -160,7 +177,7 @@ const ViewProducts = ({
       await ProductService.deleteMultiple(queryParams);
       helper.notificationMessage('Xóa sản phẩm thành công', 'success');
       setIds([]);
-      fetchProducts(currentPage, searchTerm);
+      fetchProducts(searchTerm);
     } catch (error) {
       console.error('Failed to delete products:', error);
       helper.notificationMessage('Xóa sản phẩm thất bại', 'error');

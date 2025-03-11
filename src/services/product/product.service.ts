@@ -94,10 +94,10 @@ export const ProductService = {
       url: `${API_PATH.PRODUCT.DELETE_MULTIPLE}?${queryParams}`,
     });
   },
-  search(query: string, page: number = 0, size: number = 10) {
-    return BaseService.get<ResponseSuccessForList<GetAllProductResponseModel>>({
-      url: API_PATH.PRODUCT.SEARCH,
-      payload: { query, page, size },
-    });
-  },
+  // search(query: string, page: number = 0, size: number = 10) {
+  //   return BaseService.get<ResponseSuccessForList<GetAllProductResponseModel>>({
+  //     url: API_PATH.PRODUCT.SEARCH,
+  //     payload: { query, page, size },
+  //   });
+  // },
 };
