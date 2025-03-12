@@ -22,9 +22,9 @@ export const CategoryService = {
       }
     );
   },
-  update(params: UpdateCategoryRequestModel) {
+  update( id: string, params: UpdateCategoryRequestModel) {
     return BaseService.put<formatResponseSuccess<UpdateCategoryResponse>>({
-      url: API_PATH.CATEGORY.UPDATE.replace(':id', params.id),
+      url: API_PATH.CATEGORY.UPDATE.replace(':id', id),
       payload: params,
     });
   },

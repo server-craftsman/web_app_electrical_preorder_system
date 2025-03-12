@@ -4,6 +4,5 @@ export interface CreateCategoryRequestModel {
 }
 
 export interface UpdateCategoryRequestModel {
-  id: string;
   name: string;
 }

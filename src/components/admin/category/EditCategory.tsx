@@ -14,7 +14,6 @@ const EditCategory = ({ category, onEditSuccess }: EditCategoryProps) => {
   // Populate form with category data
   useEffect(() => {
     form.setFieldsValue({
-      id: category.id,
       name: category.name,
     });
   }, []);
@@ -22,10 +21,11 @@ const EditCategory = ({ category, onEditSuccess }: EditCategoryProps) => {
   const handleSubmit = async () => {
     try {
       const values = form.getFieldsValue();
-      const updatedCategory = await CategoryService.update({
-        ...values,
-        id: category.id,
-      });
+      const updatedCategory = await 
+      CategoryService.update(
+        category.id,
+        values
+      );
       if (updatedCategory) {
         onEditSuccess();
       }
