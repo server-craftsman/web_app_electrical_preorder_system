@@ -2,7 +2,7 @@ import { useState } from 'react';
 import DisplayProfile from '../../../components/staff/setting/DisplayProfile';
 import ChangePassword from '../../../components/staff/setting/ChangePassword';
 
-const Index = () => {
+const Profile = () => {
   const [activeTab, setActiveTab] = useState<'profile' | 'password'>('profile');
 
   return (
@@ -27,4 +27,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default Profile;

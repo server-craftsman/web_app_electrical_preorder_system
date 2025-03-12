@@ -18,7 +18,7 @@ const StaffLayout = () => {
     items: [
       {
         key: 'profile',
-        label: <Link to="/profile">Hồ sơ</Link>,
+        label: <Link to="/staff/profile">Hồ sơ</Link>,
       },
       {
         key: 'logout',

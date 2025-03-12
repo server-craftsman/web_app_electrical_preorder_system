@@ -18,7 +18,7 @@ const AdminLayout = () => {
     items: [
       {
         key: 'profile',
-        label: <Link to="/profile">Hồ sơ</Link>,
+        label: <Link to="/admin/profile">Hồ sơ</Link>,
       },
       {
         key: 'logout',
