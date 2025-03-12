@@ -1,132 +1,182 @@
-import React, { useState } from 'react';
-import { GetAllProductResponseModel } from '../../../../models/api/response/product.res.model';
-import { formatCurrency } from '../../../../utils/helper';
-import { ROUTER_URL } from '../../../../const';
-import { useNavigate } from 'react-router-dom';
-import { ShoppingCartOutlined } from '@ant-design/icons';
-import { useCart } from '../../../../contexts/CartContext';
-import { notification } from 'antd';
+import React, { useState, useEffect } from "react";
+import { GetAllProductResponseModel } from "../../../../models/api/response/product.res.model";
+import { formatCurrency } from "../../../../utils/helper";
+import { ROUTER_URL } from "../../../../const";
+import { useNavigate } from "react-router-dom";
+import { ShoppingCartOutlined } from "@ant-design/icons";
+import { useCart } from "../../../../contexts/CartContext";
+import { notification } from "antd";
+import { CalendarOutlined } from '@ant-design/icons';
+import { CampaignService } from "../../../../services/campaign/campaign.service";
+import { CampaignResponseModel } from "../../../../models/api/response/campaign.res.model";
 interface ProductCardProps {
   product: GetAllProductResponseModel;
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const [campaign, setCampaign] = useState<CampaignResponseModel | null>(null);
+  const [countdown, setCountdown] = useState<{
+    days: number;
+    hours: number;
+    minutes: number;
+    seconds: number;
+  } | null>(null);
   const navigate = useNavigate();
   const { addToCart } = useCart();
-  const handleMouseEnter = () => setIsHovered(true);
-  const handleMouseLeave = () => setIsHovered(false);
-  const handleAddToCart = () => {
-    addToCart({
-      id: product.id,
-      name: product.name,
-      price: product.price,
-      imageUrl: product.imageProducts[0].imageUrl,
-      quantity: 1,
-    });
 
-    notification.config({
-      top: 73,
-    });
-    notification.success({
-      message: 'Thêm vào giỏ hàng thành công',
-      description: `Đã thêm "${product.name}" vào giỏ hàng 🛒`,
-      placement: 'topRight',
-      duration: 3,
-    });
-  };
+  useEffect(() => {
+    const fetchCampaigns = async () => {
+      try {
+        const response = await CampaignService.getAll({});
+        console.log("Dữ liệu từ API:", response.data);
+
+        if (Array.isArray(response.data?.data?.content)) {
+          const campaignData = response.data.data.content.find(
+            (camp: CampaignResponseModel) => camp.product.id === product.id
+          );
+          setCampaign(campaignData || null);
+        } else {
+          console.error("Dữ liệu trả về không đúng định dạng:", response.data);
+        }
+      } catch (error) {
+        console.error("Lỗi khi lấy dữ liệu campaign:", error);
+      }
+    };
+
+    fetchCampaigns();
+  }, [product.id]);
+
+  useEffect(() => {
+    if (!campaign || !campaign.startDate) return;
+
+    const targetDate = new Date(campaign.startDate).getTime();
+
+    const updateCountdown = () => {
+      const now = new Date().getTime();
+      const timeLeft = targetDate - now;
+
+      if (timeLeft <= 0) {
+        setCountdown(null);
+        return;
+      }
+
+      setCountdown({
+        days: Math.floor(timeLeft / (1000 * 60 * 60 * 24)),
+        hours: Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+        minutes: Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60)),
+        seconds: Math.floor((timeLeft % (1000 * 60)) / 1000),
+      });
+    };
+
+    updateCountdown();
+    const interval = setInterval(updateCountdown, 1000);
+
+    return () => clearInterval(interval);
+  }, [campaign]);
 
   return (
     <div className="bg-white shadow-md rounded-md overflow-hidden w-[258px] h-auto">
-      {/* Image Section */}
+      {/* Hình ảnh sản phẩm */}
       <div
         className="relative h-[240px] flex justify-center items-center overflow-hidden object-cover cursor-pointer"
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
       >
         <img
-          onClick={() =>
-            navigate(`${ROUTER_URL.COMMON.PRODUCT}/${product.slug}`)
-          }
+          onClick={() => navigate(`${ROUTER_URL.COMMON.PRODUCT}/${product.slug}`)}
           src={
             product.imageProducts.length > 1 && isHovered
               ? product.imageProducts[1].imageUrl
               : product.imageProducts[0].imageUrl
           }
-          alt={
-            product.imageProducts.length > 1 && isHovered
-              ? product.imageProducts[1].altText
-              : product.imageProducts[0].altText
-          }
-           className="w-full h-full object-position transition-transform duration-300 ease-in-out hover:scale-110"
+          alt={product.name}
+          className="w-full h-full object-cover transition-transform duration-300 ease-in-out hover:scale-110"
         />
+        {/* Thêm vào giỏ hàng */}
         <div
-          className={`font-semibold absolute bottom-0 left-0 w-full bg-black text-white text-center py-2 transition-all duration-300 ease-in-out flex items-center justify-center gap-2 cursor-pointer
-            ${isHovered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-full'}
-            hover:bg-red-500
-          `}
-          onClick={handleAddToCart}
+          className={`font-semibold absolute bottom-0 left-0 w-full bg-black text-white text-center py-2 transition-all duration-300 ease-in-out flex items-center justify-center gap-2 cursor-pointer ${isHovered ? "opacity-100 translate-y-0" : "opacity-0 translate-y-full"
+            } hover:bg-red-500`}
+          onClick={() => {
+            addToCart({
+              id: product.id,
+              name: product.name,
+              price: product.price,
+              imageUrl: product.imageProducts[0].imageUrl,
+              quantity: 1,
+            });
+            notification.success({
+              message: "Thêm vào giỏ hàng thành công",
+              description: `Đã thêm "${product.name}" vào giỏ hàng 🛒`,
+              placement: "topRight",
+              duration: 3,
+            });
+          }}
         >
           <ShoppingCartOutlined className="text-lg" /> Thêm vào giỏ hàng
         </div>
       </div>
 
-      {/* Content Section */}
+      {/* Nội dung sản phẩm */}
       <div className="flex flex-col p-4 space-y-4 py-6">
         <h3
-          onClick={() =>
-            navigate(`${ROUTER_URL.COMMON.PRODUCT}/${product.slug}`)
-          }
+          onClick={() => navigate(`${ROUTER_URL.COMMON.PRODUCT}/${product.slug}`)}
           className="text-lg font-semibold text-left cursor-pointer hover:text-red-500 -mt-3 truncate w-full"
         >
           {product.name}
         </h3>
         <div className="flex justify-between items-center">
-
           <span className="text-red-500 font-bold text-base">
             {formatCurrency(product.price)}
           </span>
         </div>
+
+        {/* Đếm ngược khuyến mãi */}
+        {campaign && (
+          <div className="text-black-800 p-2 rounded-md text-xs">
+            <div className="font-semibold text-center flex items-center justify-center gap-2 -mt-3">
+              <CalendarOutlined className="text-xl text-black-600" />
+              <span>Dự kiến ra mắt:</span>
+            </div>
+
+            <div className="flex flex-col mt-2 text-center text-base">
+              <p>{new Date(campaign.startDate).toLocaleTimeString()}</p>
+            </div>
+            <div className="flex flex-col mt-2 text-center bg-blue-500 text-white px-3 py-1 rounded-md text-xl">
+              <p>{new Date(campaign.startDate).toLocaleDateString()}</p>
+            </div>
+            {/* Đếm ngược dạng cột dọc */}
+            {countdown ? (
+              <div className="flex items-center justify-center space-x-2 text-center font-bold text-lg mt-2">
+                <div className="flex flex-col">
+                  <span>{countdown.days}</span>
+                  <p className="text-sm font-normal">Ngày</p>
+                </div>
+                <span className="text-xl">:</span>
+                <div className="flex flex-col">
+                  <span>{countdown.hours}</span>
+                  <p className="text-sm font-normal">Giờ</p>
+                </div>
+                <span className="text-xl">:</span>
+                <div className="flex flex-col">
+                  <span>{countdown.minutes}</span>
+                  <p className="text-sm font-normal">Phút</p>
+                </div>
+                <span className="text-xl">:</span>
+                <div className="flex flex-col">
+                  <span>{countdown.seconds}</span>
+                  <p className="text-sm font-normal">Giây</p>
+                </div>
+              </div>
+            ) : (
+              <div className="text-center text-sm mt-2 font-bold">Đã ra mắt</div>
+            )}
+          </div>
+        )}
+
         <p className="text-gray-700 text-xs h-[50px] overflow-hidden">
           {product.description.slice(0, 50)}...
         </p>
-        <div className="flex justify-between items-center text-gray-500 text-xs">
-          <span>Số lượng: {product.quantity}</span>
-          <span>Mã SP: {product.productCode}</span>
-        </div>
-      </div>
-      <div className="flex justify-between items-center text-yellow-500 text-xs p-4 -mt-6">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="currentColor"
-          viewBox="0 0 24 24"
-          strokeWidth={1.5}
-          stroke="currentColor"
-          className="size-6"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z"
-          />
-        </svg>
-        <span className="flex items-center text-red-500">
-          Yêu thích
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="w-4 h-4 ml-1 animate-zoomInOut hover:animate-spin"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
-            />
-          </svg>
-        </span>
       </div>
     </div>
   );

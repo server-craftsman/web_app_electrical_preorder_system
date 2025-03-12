@@ -44,13 +44,7 @@ const CheckoutSummary: React.FC = () => {
                 <span>{totalPrice.toLocaleString()}đ</span>
             </div>
 
-            <Button
-                type="primary"
-                className="w-full mt-4 bg-black text-white py-2"
-                onClick={() => alert("Đặt hàng thành công!")}
-            >
-                Đặt hàng
-            </Button>
+          
         </div>
     );
 };

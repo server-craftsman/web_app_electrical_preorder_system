@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { GetAllProductResponseModel } from '../../../../models/api/response/product.res.model';
 import { formatCurrency } from '../../../../utils/helper';
 import { useCart } from "../../../../contexts/CartContext";
@@ -15,15 +15,8 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
       ? product.imageProducts.map((img) => img.imageUrl)
       : ['https://via.placeholder.com/500'];
 
-  const discountedPrice = product.price;
   const [mainImage, setMainImage] = useState(productImages[0]);
   const [quantity, setQuantity] = useState(1);
-  const [timeLeft, setTimeLeft] = useState({
-    days: 6,
-    hours: 11,
-    minutes: 25,
-    seconds: 7,
-  });
 
   const handleAddToCart = () => {
     addToCart({
@@ -34,9 +27,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
       quantity: quantity,
     });
 
-    notification.config({
-      top: 73,
-    });
+    notification.config({ top: 73 });
     notification.success({
       message: "Thêm vào giỏ hàng thành công",
       description: `Đã thêm "${product.name}" vào giỏ hàng 🛒`,
@@ -44,31 +35,6 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
       duration: 3,
     });
   };
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeLeft((prevTime) => {
-        let { days, hours, minutes, seconds } = prevTime;
-        if (seconds > 0) seconds--;
-        else if (minutes > 0) {
-          minutes--;
-          seconds = 59;
-        } else if (hours > 0) {
-          hours--;
-          minutes = 59;
-          seconds = 59;
-        } else if (days > 0) {
-          days--;
-          hours = 23;
-          minutes = 59;
-          seconds = 59;
-        } else clearInterval(timer);
-        return { days, hours, minutes, seconds };
-      });
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, []);
 
   return (
     <div className="max-w-full mx-auto p-10 grid grid-cols-1 md:grid-cols-2 gap-12">
@@ -104,14 +70,10 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
           <span className="text-yellow-500">★★★★★</span>
           <span className="text-gray-600">(1 đánh giá)</span>
         </div>
-        {/* <div className="text-red-500 text-2xl font-bold">{product.price}đ</div> */}
 
         <div className="flex items-center justify-between mt-2">
           <div>
             <span className="text-red-500 font-bold text-3xl">
-              {formatCurrency(discountedPrice)}
-            </span>
-            <span className="text-gray-500 line-through ml-2 text-lg">
               {formatCurrency(product.price)}
             </span>
           </div>
@@ -119,14 +81,12 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
         <ul className="list-disc list-inside space-y-2 text-gray-700">
           {product.description}
         </ul>
-        <div className="bg-yellow-100 p-3 rounded-md text-yellow-700">
+        
+       <div className="bg-yellow-100 p-3 rounded-md text-yellow-700">
           <strong>Lưu ý:</strong> Sản phẩm Pre-Order không hoàn cọc, thời gian
           lấy hàng lâu hơn bình thường.
         </div>
-        <div className="bg-red-100 p-3 rounded-md text-red-700">
-          <strong>Khuyến mãi kết thúc sau:</strong> {timeLeft.days}D :{' '}
-          {timeLeft.hours}H : {timeLeft.minutes}M : {timeLeft.seconds}S
-        </div>
+
         <div className="text-gray-700">
           <strong>Số lượng:</strong>
         </div>
@@ -155,7 +115,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
             onClick={() => setQuantity((prev) => prev + 1)}
           >
             +
-            </button>
+          </button>
         </div>
         <div className="flex space-x-4">
           <button className="px-6 py-3 bg-red-600 text-white rounded-md">
