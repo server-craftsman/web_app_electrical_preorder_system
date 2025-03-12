@@ -19,7 +19,8 @@ import { ROUTER_URL } from '../const/router.path';
 import { UserRole, HTTP_STATUS } from '../app/enums';
 import { AuthContextType } from '../app/interface/auth.context.interface';
 import { JwtPayload } from 'jwt-decode';
-
+import { getFCMToken } from "../services/config/firebaseConfig";
+import { UserService } from "../services/user/user.service";
 interface DecodedToken extends JwtPayload {
   role: UserRole;
   sub: string;
@@ -29,6 +30,7 @@ interface DecodedToken extends JwtPayload {
   iat: number;
   exp: number;
   jti: string;
+  id: string;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -138,6 +140,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         const userInfo = decodeAccessToken(accessToken);
         storage.setUserInfo(userInfo as userInfo);
         setRole(userInfo.role as UserRole);
+
+        // 👉 Lấy Firebase token từ `firebaseConfig.ts`
+      const fcmToken = await getFCMToken();
+      if (fcmToken) {
+        // 👉 Gọi UserService để đăng ký token
+        await UserService.deviceToken(userInfo.id, fcmToken);
+        console.log("FCM token registered successfully");
+      }
+      
         navigate(getDefaultPath(userInfo.role as UserRole));
       }
     } catch (error) {

@@ -40,5 +40,11 @@ export const UserService = {
     return BaseService.remove<formatResponseSuccess<any>>({
       url: API_PATH.USER.DELETE.replace(':id', userId),
     });
-  }
+  },
+  deviceToken(userId: string, token: string) {    
+    return BaseService.post<formatResponseSuccess<any>>({
+        url: API_PATH.USER.REGISTER_DEVICE_TOKEN.replace(':id', userId),
+        payload: { token },
+    });
+},
 };
