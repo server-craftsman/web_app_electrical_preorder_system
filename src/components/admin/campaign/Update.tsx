@@ -89,31 +89,43 @@ const UpdateCampaign: React.FC<UpdateCampaignProps> = ({
     return CampaignStatus.ACTIVE;
   };
 
-  // Modified update handler to preserve time when formatting dates
+  // Modified update handler to adjust to UTC-7 timezone
   const handleUpdate = async (values: any) => {
     try {
-      // Improved date formatting function that preserves exact hours and minutes
-      const formatDateWithPreservedTime = (dateStr: string) => {
+      // Improved date formatting function that adjusts to UTC-7 timezone
+      const formatDateWithUTC7 = (dateStr: string) => {
         if (!dateStr) return null;
 
-        // Parse the date string exactly as provided by the datetime-local input
-        const date = new Date(dateStr);
+        // Parse the date string from the datetime-local input
+        const localDate = new Date(dateStr);
 
-        const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const day = String(date.getDate()).padStart(2, '0');
-        const hours = String(date.getHours()).padStart(2, '0');
-        const minutes = String(date.getMinutes()).padStart(2, '0');
-        const seconds = String(date.getSeconds()).padStart(2, '0');
+        // Calculate UTC-7 offset (7 hours behind UTC)
+        const utcMinus7Offset = -7 * 60 * 60 * 1000; // 7 hours in milliseconds
 
-        // Format: "2025-03-12T11:00:00.000Z" with exact hours preserved
+        // Get the local timezone offset in milliseconds
+        const localOffset = localDate.getTimezoneOffset() * 60 * 1000;
+
+        // Create a new date adjusted to UTC-7
+        const utc7Date = new Date(
+          localDate.getTime() - localOffset + utcMinus7Offset
+        );
+
+        // Format the date in ISO format
+        const year = utc7Date.getUTCFullYear();
+        const month = String(utc7Date.getUTCMonth() + 1).padStart(2, '0');
+        const day = String(utc7Date.getUTCDate()).padStart(2, '0');
+        const hours = String(utc7Date.getUTCHours()).padStart(2, '0');
+        const minutes = String(utc7Date.getUTCMinutes()).padStart(2, '0');
+        const seconds = String(utc7Date.getUTCSeconds()).padStart(2, '0');
+
+        // Format: "2025-03-12T11:00:00.000Z" with UTC-7 adjustment
         return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.000Z`;
       };
 
       const updateData = {
         ...values,
-        startDate: formatDateWithPreservedTime(values.startDate),
-        endDate: formatDateWithPreservedTime(values.endDate),
+        startDate: formatDateWithUTC7(values.startDate),
+        endDate: formatDateWithUTC7(values.endDate),
         productId: values.productId || campaign.product?.id,
         status: values.status || status,
       };
