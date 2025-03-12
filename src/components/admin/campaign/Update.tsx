@@ -61,6 +61,7 @@ const UpdateCampaign: React.FC<UpdateCampaignProps> = ({
     fetchProducts();
   }, []);
 
+  // Modified date formatting function to preserve hours and minutes
   const formatDateForInput = (dateString: string) => {
     return moment(dateString).format('YYYY-MM-DDTHH:mm');
   };
@@ -88,14 +89,31 @@ const UpdateCampaign: React.FC<UpdateCampaignProps> = ({
     return CampaignStatus.ACTIVE;
   };
 
+  // Modified update handler to preserve time when formatting dates
   const handleUpdate = async (values: any) => {
     try {
+      // Improved date formatting function that preserves exact hours and minutes
+      const formatDateWithPreservedTime = (dateStr: string) => {
+        if (!dateStr) return null;
+
+        // Parse the date string exactly as provided by the datetime-local input
+        const date = new Date(dateStr);
+
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+        const seconds = String(date.getSeconds()).padStart(2, '0');
+
+        // Format: "2025-03-12T11:00:00.000Z" with exact hours preserved
+        return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.000Z`;
+      };
+
       const updateData = {
         ...values,
-        startDate: values.startDate
-          ? new Date(values.startDate).toISOString()
-          : null,
-        endDate: values.endDate ? new Date(values.endDate).toISOString() : null,
+        startDate: formatDateWithPreservedTime(values.startDate),
+        endDate: formatDateWithPreservedTime(values.endDate),
         productId: values.productId || campaign.product?.id,
         status: values.status || status,
       };

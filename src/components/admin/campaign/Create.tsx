@@ -81,14 +81,32 @@ const CreateCampaign: React.FC<CreateCampaignProps> = ({
 
   const handleSubmit = async (values: any) => {
     try {
+      // Improved date formatting function that preserves exact hours and minutes
+      const formatDateWithPreservedTime = (dateStr: string) => {
+        if (!dateStr) return null;
+
+        // Parse the date string exactly as provided by the datetime-local input
+        const date = new Date(dateStr);
+
+        // Create ISO string but ensure we don't modify the time during timezone conversion
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+        const seconds = String(date.getSeconds()).padStart(2, '0');
+
+        // Format: "2025-03-12T11:00:00.000Z" with exact hours preserved
+        return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.000Z`;
+      };
+
       const formattedValues = {
         ...values,
-        startDate: values.startDate
-          ? new Date(values.startDate).toISOString()
-          : null,
-        endDate: values.endDate ? new Date(values.endDate).toISOString() : null,
+        startDate: formatDateWithPreservedTime(values.startDate),
+        endDate: formatDateWithPreservedTime(values.endDate),
         status: status,
       };
+
       const response = await CampaignService.create(formattedValues);
       if (response) {
         helper.notificationMessage(
