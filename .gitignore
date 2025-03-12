@@ -29,4 +29,3 @@ tsconfig.node.tsbuildinfo
 node_modules
 build
 dist
-public
