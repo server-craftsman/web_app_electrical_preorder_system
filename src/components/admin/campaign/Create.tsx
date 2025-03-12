@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Form, Input, InputNumber, Select, message, Tag } from 'antd';
-import { CampaignService } from '../../../services/campaign/campaign.service'; // Gọi API
+import { Form, Input, InputNumber, Select, message, Row, Col } from 'antd';
+import { CampaignService } from '../../../services/campaign/campaign.service';
 import { ProductService } from '../../../services/product/product.service';
 import { helper } from '../../../utils';
 import { CampaignStatus } from '../../../app/enums';
@@ -122,11 +122,36 @@ const CreateCampaign: React.FC<CreateCampaignProps> = ({
         required: true,
         message: 'Vui lòng chọn ngày bắt đầu',
       },
+      {
+        validator: (_: any, value: string) => {
+          if (!value) return Promise.resolve();
+          const startDate = new Date(value);
+          const now = new Date();
+          if (startDate < now) {
+            return Promise.reject('Ngày bắt đầu không được ở quá khứ');
+          }
+          return Promise.resolve();
+        },
+      },
     ],
     endDate: [
       {
         required: true,
         message: 'Vui lòng chọn ngày kết thúc',
+      },
+      {
+        validator: (_: any, value: string) => {
+          if (!value) return Promise.resolve();
+          const endDate = new Date(value);
+          const startDate = new Date(form.getFieldValue('startDate'));
+          if (!form.getFieldValue('startDate')) {
+            return Promise.resolve();
+          }
+          if (endDate <= startDate) {
+            return Promise.reject('Ngày kết thúc phải sau ngày bắt đầu');
+          }
+          return Promise.resolve();
+        },
       },
     ],
     minQuantity: [
@@ -161,100 +186,183 @@ const CreateCampaign: React.FC<CreateCampaignProps> = ({
   };
 
   return (
-    <Form
-      layout="vertical"
-      form={form}
-      onFinish={handleSubmit}
-      onTouchCancel={handleCancel}
-    >
-      <Form.Item
-        name="name"
-        label="Tên chiến dịch"
-        rules={validateForm.name as Rule[]}
+    <div className="p-1">
+      <Form
+        layout="vertical"
+        form={form}
+        onFinish={handleSubmit}
+        onTouchCancel={handleCancel}
       >
-        <Input />
-      </Form.Item>
+        <div className="bg-white rounded-lg p-2 mb-1">
+          <h3 className="text-lg font-medium mb-4">Thông tin cơ bản</h3>
 
-      <Form.Item
-        name="startDate"
-        label="Ngày bắt đầu"
-        rules={validateForm.startDate as Rule[]}
-      >
-        <input
-          type="datetime-local"
-          className="border rounded-lg p-2 w-full"
-          onChange={handleDateChange}
-        />
-      </Form.Item>
+          <Form.Item
+            name="name"
+            label={
+              <span className="flex items-center">
+                Tên chiến dịch <span className="text-red-500 ml-1">*</span>
+              </span>
+            }
+            rules={validateForm.name as Rule[]}
+          >
+            <Input className="rounded-md" />
+          </Form.Item>
 
-      <Form.Item
-        name="endDate"
-        label="Ngày kết thúc"
-        rules={validateForm.endDate as Rule[]}
-      >
-        <input
-          type="datetime-local"
-          className="border rounded-lg p-2 w-full"
-          onChange={handleDateChange}
-        />
-      </Form.Item>
+          <Row gutter={16}>
+            <Col span={12}>
+              <Form.Item
+                name="startDate"
+                label={
+                  <span className="flex items-center">
+                    Ngày bắt đầu <span className="text-red-500 ml-1">*</span>
+                  </span>
+                }
+                rules={validateForm.startDate as Rule[]}
+              >
+                <input
+                  type="datetime-local"
+                  className="border rounded-lg p-2 w-full"
+                  onChange={handleDateChange}
+                />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                name="endDate"
+                label={
+                  <span className="flex items-center">
+                    Ngày kết thúc <span className="text-red-500 ml-1">*</span>
+                  </span>
+                }
+                rules={validateForm.endDate as Rule[]}
+              >
+                <input
+                  type="datetime-local"
+                  className="border rounded-lg p-2 w-full"
+                  onChange={handleDateChange}
+                />
+              </Form.Item>
+            </Col>
+          </Row>
+        </div>
 
-      <Form.Item
-        name="minQuantity"
-        label="Số lượng tối thiểu"
-        rules={validateForm.minQuantity as Rule[]}
-      >
-        <InputNumber min={0} className="w-full" />
-      </Form.Item>
+        <div className="bg-white rounded-lg p-2 mb-2">
+          <h3 className="text-lg font-medium mb-2">
+            Thông tin số lượng và sản phẩm
+          </h3>
 
-      <Form.Item
-        name="maxQuantity"
-        label="Số lượng tối đa"
-        rules={validateForm.maxQuantity as Rule[]}
-        dependencies={['minQuantity']}
-      >
-        <InputNumber min={0} className="w-full" />
-      </Form.Item>
+          <Row gutter={20}>
+            <Col span={10}>
+              <Form.Item
+                name="minQuantity"
+                label={
+                  <span className="flex items-center">
+                    Số lượng tối thiểu{' '}
+                    <span className="text-red-500 ml-1">*</span>
+                  </span>
+                }
+                rules={validateForm.minQuantity as Rule[]}
+              >
+                <InputNumber min={0} className="w-full rounded-md" />
+              </Form.Item>
+            </Col>
+            <Col span={9}>
+              <Form.Item
+                name="maxQuantity"
+                label={
+                  <span className="flex items-center">
+                    Số lượng tối đa <span className="text-red-500 ml-1">*</span>
+                  </span>
+                }
+                rules={validateForm.maxQuantity as Rule[]}
+                dependencies={['minQuantity']}
+              >
+                <InputNumber min={0} className="w-full rounded-md" />
+              </Form.Item>
+            </Col>
+            <Col span={10}>
+              <Form.Item
+                name="totalAmount"
+                label={
+                  <span className="flex items-center">
+                    Tổng số tiền <span className="text-red-500 ml-1">*</span>
+                  </span>
+                }
+                rules={validateForm.totalAmount as Rule[]}
+              >
+                <InputNumber
+                  min={0}
+                  className="w-full rounded-md"
+                  formatter={(value) =>
+                    `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                  }
+                />
+              </Form.Item>
+            </Col>
+          </Row>
 
-      <Form.Item
-        name="totalAmount"
-        label="Tổng số tiền"
-        rules={validateForm.totalAmount as Rule[]}
-      >
-        <InputNumber min={0} className="w-full" />
-      </Form.Item>
+          <Row gutter={16}>
+            <Col span={12}>
+              <Form.Item
+                name="productId"
+                label={
+                  <span className="flex items-center">
+                    Chọn sản phẩm <span className="text-red-500 ml-1">*</span>
+                  </span>
+                }
+                rules={validateForm.productId as Rule[]}
+              >
+                <Select
+                  placeholder="Chọn sản phẩm"
+                  className="rounded-md"
+                  showSearch
+                  optionFilterProp="children"
+                >
+                  {products.map((product) => (
+                    <Select.Option key={product.id} value={product.id}>
+                      {product.name}
+                    </Select.Option>
+                  ))}
+                </Select>
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                name="status"
+                label={
+                  <span className="flex items-center">
+                    Trạng thái chiến dịch
+                  </span>
+                }
+                initialValue={status}
+              >
+                <Select
+                  className="rounded-md"
+                  onChange={(value) => setStatus(value)}
+                >
+                  {Object.values(CampaignStatus).map((statusOption) => (
+                    <Select.Option key={statusOption} value={statusOption}>
+                      {/* <Tag color={helper.formatCampaignStatus(statusOption)}> */}
+                      {statusOption}
+                      {/* </Tag> */}
+                    </Select.Option>
+                  ))}
+                </Select>
+              </Form.Item>
+            </Col>
+          </Row>
+        </div>
 
-      {/* Hiển thị trạng thái theo ngày */}
-      <Form.Item
-        label="Trạng thái chiến dịch"
-        className="flex items-center"
-        style={{ marginBottom: '16px' }}
-      >
-        <Tag color={helper.formatCampaignStatus(status) || 'default'}>
-          {status}
-        </Tag>
-      </Form.Item>
-
-      <Form.Item
-        name="productId"
-        label="Chọn sản phẩm"
-        rules={validateForm.productId as Rule[]}
-      >
-        <Select placeholder="Chọn sản phẩm">
-          {products.map((product) => (
-            <Select.Option key={product.id} value={product.id}>
-              {product.name}
-            </Select.Option>
-          ))}
-        </Select>
-      </Form.Item>
-
-      <Form.Item>
-        <button className="btn-custom" type="submit">
-          Tạo chiến dịch
-        </button>
-      </Form.Item>
-    </Form>
+        <div className="flex justify-end space-x-4 mt-4">
+          <button className="btn-cancel" onClick={handleCancel}>
+            Hủy
+          </button>
+          <button className="btn-custom" type="submit">
+            Tạo chiến dịch
+          </button>
+        </div>
+      </Form>
+    </div>
   );
 };
 
