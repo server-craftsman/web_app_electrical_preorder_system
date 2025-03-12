@@ -3,13 +3,13 @@ import { getMessaging, getToken } from "firebase/messaging";
 
 // Cấu hình Firebase (thay bằng thông tin của bạn)
 const firebaseConfig = {
-  apiKey: "AIzaSyCPxbkOVDLMP07WzeI7FRsdm5QN4Wfd_PI",
-  authDomain: "wsd392-b6560.firebaseapp.com",
-  projectId: "wsd392-b6560",
-  storageBucket: "wsd392-b6560.firebasestorage.app",
-  messagingSenderId: "100999484571",
-  appId: "1:100999484571:web:2b5fab89d15a112c11e23e",
-  measurementId: "G-86HNXX9CNM"
+  apiKey: import.meta.env.VITE_API_KEY,
+  authDomain: import.meta.env.VITE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_APP_ID,
+  measurementId: import.meta.env.VITE_MEASUREMENT_ID,
 };
 
 // Khởi tạo Firebase

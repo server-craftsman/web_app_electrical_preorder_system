@@ -14,6 +14,7 @@
   "dependencies": {
     "@react-oauth/google": "^0.12.1",
     "@reduxjs/toolkit": "^2.5.0",
+    "@types/firebase": "^2.4.32",
     "antd": "^5.24.0",
     "axios": "^1.7.9",
     "electrical-preorder-system": "file:",
