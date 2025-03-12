@@ -13,6 +13,8 @@ export const API_PATH = {
     CHANGE_PASSWORD: '/users/:id/password',
     UPDATE: '/users/:id',
     DELETE: '/users/:id',
+    // REGISTER_DEVICE_TOKEN: (userId: string) => `/users/${userId}/device-token`,
+    REGISTER_DEVICE_TOKEN: '/users/:id/device-token',
   },
   PRODUCT: {
     GET_ALL: '/products',
@@ -40,5 +42,11 @@ export const API_PATH = {
     UPDATE: '/campaigns/:id/stages/:stageId',
     DELETE: '/campaigns/:id/stages/:stageId',
     GET_BY_ID: '/campaign-stages/:id',
+  },
+  NOTIFICATIONS: {
+    BASE: "/notifications",
+    SEND: "/notifications/send",
+    MARK_AS_READ: (notificationId: string) => `/notifications/${notificationId}`,
+    GET_BY_USER: (userId: string) => `/notifications/${userId}`,
   },
 };
