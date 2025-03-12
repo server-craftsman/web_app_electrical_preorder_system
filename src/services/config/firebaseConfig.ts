@@ -14,20 +14,34 @@ const firebaseConfig = {
 
 // Khởi tạo Firebase
 const app = initializeApp(firebaseConfig);
-const messaging = getMessaging(app);
+const messaging = typeof window !== 'undefined' && 'serviceWorker' in navigator ? getMessaging(app) : null;
 
 // Hàm lấy token FCM
 export const getFCMToken = async () => {
+  if (!messaging) {
+    console.warn("Messaging is not supported in this environment");
+    return null;
+  }
+  
   try {
     const permission = await Notification.requestPermission();
     if (permission === "granted") {
-      const token = await getToken(messaging, { vapidKey: "BASP0DjCqiyUkuqJurDUAId_SJC-fPOQXX0vOo8NYcS8QdH4-bekGtftaBFQ_6UyGcC2n0dxzfu5792lEcLSJUA" });
-      console.log("FCM Token:", token);
-      return token;
+      try {
+        const token = await getToken(messaging, { 
+          vapidKey: import.meta.env.VITE_VAPID_KEY 
+        });
+        console.log("FCM Token:", token);
+        return token;
+      } catch (tokenError) {
+        console.error("Error getting FCM token", tokenError);
+        return null;
+      }
     } else {
       console.warn("User denied permission for notifications.");
+      return null;
     }
   } catch (error) {
-    console.error("Error getting FCM token", error);
+    console.error("Error requesting notification permission", error);
+    return null;
   }
 };
