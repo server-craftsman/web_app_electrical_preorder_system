@@ -39,20 +39,27 @@ const CreateCampaign: React.FC<CreateCampaignProps> = ({
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await ProductService.getAll({}); // Lấy danh sách sản phẩm
-        const content = response?.data?.data?.content;
-        const productList = Array.isArray(content)
-          ? content.map((p: any) => ({
+        const response = await ProductService.getAll({
+          page: 0,
+          size: 100, // Fetch more products for the dropdown
+          sortBy: 'createdAt',
+          sortDirection: 'desc',
+        });
+
+        if (response?.data?.data?.content) {
+          const productList = (response.data.data.content as any).map(
+            (p: any) => ({
               id: p.id,
               name: p.name,
-            }))
-          : [];
-        setProducts(productList);
+            })
+          );
+          setProducts(productList);
+        } else {
+          setProducts([]);
+        }
       } catch (error) {
         message.error('Không thể tải danh sách sản phẩm!');
         console.error(error);
-      } finally {
-        console.log('fetch data success!');
       }
     };
     fetchProducts();
@@ -87,16 +94,18 @@ const CreateCampaign: React.FC<CreateCampaignProps> = ({
 
         // Parse the date string from the datetime-local input
         const localDate = new Date(dateStr);
-        
+
         // Calculate UTC-7 offset (7 hours behind UTC)
         const utcMinus7Offset = -7 * 60 * 60 * 1000; // 7 hours in milliseconds
-        
+
         // Get the local timezone offset in milliseconds
         const localOffset = localDate.getTimezoneOffset() * 60 * 1000;
-        
+
         // Create a new date adjusted to UTC-7
-        const utc7Date = new Date(localDate.getTime() - localOffset + utcMinus7Offset);
-        
+        const utc7Date = new Date(
+          localDate.getTime() - localOffset + utcMinus7Offset
+        );
+
         // Format the date in ISO format
         const year = utc7Date.getUTCFullYear();
         const month = String(utc7Date.getUTCMonth() + 1).padStart(2, '0');
@@ -104,7 +113,7 @@ const CreateCampaign: React.FC<CreateCampaignProps> = ({
         const hours = String(utc7Date.getUTCHours()).padStart(2, '0');
         const minutes = String(utc7Date.getUTCMinutes()).padStart(2, '0');
         const seconds = String(utc7Date.getUTCSeconds()).padStart(2, '0');
-        
+
         // Format: "2025-03-12T11:00:00.000Z" with UTC-7 adjustment
         return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.000Z`;
       };

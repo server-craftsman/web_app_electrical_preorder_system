@@ -9,8 +9,9 @@ import { CreateCampaignRequestModel } from '../../models/api/request/campaign.re
 
 export const CampaignService = {
   getAll(params: any) {
+    const url = `${API_PATH.CAMPAIGN.BASE}?page=${params.page || 0}&size=${params.size || 10}&sort=${params.sort || 'startDate'}&direction=${params.direction || 'desc'}`;
     return BaseService.get<ResponseSuccessForList<CampaignResponseModel>>({
-      url: API_PATH.CAMPAIGN.BASE,
+      url,
       payload: params,
     });
   },
