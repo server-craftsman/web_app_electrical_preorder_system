@@ -1,22 +1,56 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { GetAllProductResponseModel } from '../../../../models/api/response/product.res.model';
 import { formatCurrency } from '../../../../utils/helper';
-import { useCart } from "../../../../contexts/CartContext";
-import { notification } from "antd";
+import { useCart } from '../../../../contexts/CartContext';
+import { notification } from 'antd';
+import { ProductService } from '../../../../services/product/product.service';
+import { useParams } from 'react-router-dom';
 
-interface ProductDetailProps {
-  product: GetAllProductResponseModel;
-}
-
-const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
+const ProductDetail: React.FC = () => {
+  const { slug } = useParams();
   const { addToCart } = useCart();
+  const [product, setProduct] = useState<GetAllProductResponseModel | null>(
+    null
+  );
+  const [mainImage, setMainImage] = useState('');
+  const [quantity, setQuantity] = useState(1);
+
+  useEffect(() => {
+    const fetchProductDetails = async () => {
+      try {
+        if (slug) {
+          const response = await ProductService.getBySlug(slug);
+          const productData = response.data.data
+            .product as GetAllProductResponseModel;
+          setProduct(productData);
+          // Set main image only if product has images
+          if (productData?.imageProducts?.length > 0) {
+            setMainImage(productData.imageProducts[0].imageUrl);
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching product details:', error);
+        notification.error({
+          message: 'Lỗi',
+          description: 'Không thể tải thông tin sản phẩm',
+        });
+      }
+    };
+
+    fetchProductDetails();
+  }, [slug]);
+
+  if (!product) {
+    return <div>Loading...</div>;
+  }
+
   const productImages =
-    product.imageProducts.length > 0
+    product?.imageProducts?.length > 0
       ? product.imageProducts.map((img) => img.imageUrl)
       : ['https://via.placeholder.com/500'];
 
-  const [mainImage, setMainImage] = useState(productImages[0]);
-  const [quantity, setQuantity] = useState(1);
+  // const [mainImage, setMainImage] = useState(productImages[0]);
+  // const [quantity, setQuantity] = useState(1);
 
   const handleAddToCart = () => {
     addToCart({
@@ -29,9 +63,9 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
 
     notification.config({ top: 73 });
     notification.success({
-      message: "Thêm vào giỏ hàng thành công",
+      message: 'Thêm vào giỏ hàng thành công',
       description: `Đã thêm "${product.name}" vào giỏ hàng 🛒`,
-      placement: "topRight",
+      placement: 'topRight',
       duration: 3,
     });
   };
@@ -53,7 +87,8 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
               key={index}
               src={thumb}
               alt={`Thumb ${index + 1}`}
-              className={`w-16 h-16 rounded-md cursor-pointer transition-all duration-200 ${mainImage === thumb
+              className={`w-16 h-16 rounded-md cursor-pointer transition-all duration-200 ${
+                mainImage === thumb
                   ? 'border-2 border-blue-500 shadow-lg'
                   : 'border border-gray-300'
               }`}
@@ -81,8 +116,8 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
         <ul className="list-disc list-inside space-y-2 text-gray-700">
           {product.description}
         </ul>
-        
-       <div className="bg-yellow-100 p-3 rounded-md text-yellow-700">
+
+        <div className="bg-yellow-100 p-3 rounded-md text-yellow-700">
           <strong>Lưu ý:</strong> Sản phẩm Pre-Order không hoàn cọc, thời gian
           lấy hàng lâu hơn bình thường.
         </div>

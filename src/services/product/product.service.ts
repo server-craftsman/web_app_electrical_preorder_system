@@ -3,6 +3,7 @@ import { API_PATH } from '../../const';
 import {
   formatResponseSuccess,
   ResponseSuccessForList,
+  ResponseProductDetailSuccess,
 } from '../../app/interface/response_success.interface';
 import {
   CreateProductResponseModel,
@@ -16,8 +17,9 @@ import {
 
 export const ProductService = {
   getAll(params: any) {
+    const url = `${API_PATH.PRODUCT.GET_ALL}?page=${params.page || 0}&size=${params.size || 10}`;
     return BaseService.get<ResponseSuccessForList<GetAllProductResponseModel>>({
-      url: API_PATH.PRODUCT.GET_ALL,
+      url: url,
       payload: params,
     });
   },
@@ -29,7 +31,9 @@ export const ProductService = {
   },
 
   getBySlug(slug: string) {
-    return BaseService.get<formatResponseSuccess<GetAllProductResponseModel>>({
+    return BaseService.get<
+      ResponseProductDetailSuccess<GetAllProductResponseModel>
+    >({
       url: API_PATH.PRODUCT.GET_BY_SLUG.replace(':slug', slug),
     });
   },

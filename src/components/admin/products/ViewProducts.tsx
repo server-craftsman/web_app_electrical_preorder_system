@@ -52,9 +52,9 @@ const ViewProducts = ({
         page: currentPage - 1,
         size: pageSize,
         query: searchTerm || undefined,
-        sortBy,
-        sortDirection,
-        category: category || undefined,
+        sortBy: sortBy || 'createdAt', // Default sort by creation date if not specified
+        sortDirection: sortDirection || 'desc', // Default sort direction
+        categoryId: category || undefined,
         minPrice,
         maxPrice,
       });
@@ -73,8 +73,6 @@ const ViewProducts = ({
       console.error('Failed to fetch products:', error);
       setProducts([]);
       setTotalProducts(0);
-    } finally {
-      console.log('fetchProducts');
     }
   };
 
@@ -107,7 +105,17 @@ const ViewProducts = ({
 
   useEffect(() => {
     fetchProducts(searchTerm);
-  }, [currentPage, searchTerm, refresh, refreshKey, sortBy, sortDirection, category, minPrice, maxPrice]);
+  }, [
+    currentPage,
+    searchTerm,
+    refresh,
+    refreshKey,
+    sortBy,
+    sortDirection,
+    category,
+    minPrice,
+    maxPrice,
+  ]);
 
   const columns = [
     { title: 'Mã sản phẩm', dataIndex: 'productCode', key: 'productCode' },

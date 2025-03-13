@@ -1,14 +1,15 @@
-import React, { useState, useEffect } from "react";
-import { GetAllProductResponseModel } from "../../../../models/api/response/product.res.model";
-import { formatCurrency } from "../../../../utils/helper";
-import { ROUTER_URL } from "../../../../const";
-import { useNavigate } from "react-router-dom";
-import { ShoppingCartOutlined } from "@ant-design/icons";
-import { useCart } from "../../../../contexts/CartContext";
-import { notification } from "antd";
+import React, { useState, useEffect } from 'react';
+import { GetAllProductResponseModel } from '../../../../models/api/response/product.res.model';
+import { formatCurrency } from '../../../../utils/helper';
+import { ROUTER_URL } from '../../../../const';
+import { useNavigate } from 'react-router-dom';
+import { ShoppingCartOutlined } from '@ant-design/icons';
+import { useCart } from '../../../../contexts/CartContext';
+import { notification } from 'antd';
 import { CalendarOutlined } from '@ant-design/icons';
-import { CampaignService } from "../../../../services/campaign/campaign.service";
-import { CampaignResponseModel } from "../../../../models/api/response/campaign.res.model";
+import { ProductService } from '../../../../services/product/product.service';
+// import { CampaignService } from "../../../../services/campaign/campaign.service";
+import { CampaignResponseModel } from '../../../../models/api/response/campaign.res.model';
 interface ProductCardProps {
   product: GetAllProductResponseModel;
 }
@@ -25,27 +26,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const navigate = useNavigate();
   const { addToCart } = useCart();
 
-  useEffect(() => {
-    const fetchCampaigns = async () => {
-      try {
-        const response = await CampaignService.getAll({});
-        console.log("Dữ liệu từ API:", response.data);
-
-        if (Array.isArray(response.data?.data?.content)) {
-          const campaignData = response.data.data.content.find(
-            (camp: CampaignResponseModel) => camp.product.id === product.id
-          );
-          setCampaign(campaignData || null);
-        } else {
-          console.error("Dữ liệu trả về không đúng định dạng:", response.data);
-        }
-      } catch (error) {
-        console.error("Lỗi khi lấy dữ liệu campaign:", error);
-      }
-    };
-
-    fetchCampaigns();
-  }, [product.id]);
+  
 
   useEffect(() => {
     if (!campaign || !campaign.startDate) return;
@@ -63,7 +44,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
       setCountdown({
         days: Math.floor(timeLeft / (1000 * 60 * 60 * 24)),
-        hours: Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+        hours: Math.floor(
+          (timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+        ),
         minutes: Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60)),
         seconds: Math.floor((timeLeft % (1000 * 60)) / 1000),
       });
@@ -84,7 +67,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         onMouseLeave={() => setIsHovered(false)}
       >
         <img
-          onClick={() => navigate(`${ROUTER_URL.COMMON.PRODUCT}/${product.slug}`)}
+          onClick={() =>
+            navigate(`${ROUTER_URL.COMMON.PRODUCT}/${product.slug}`)
+          }
           src={
             product.imageProducts.length > 1 && isHovered
               ? product.imageProducts[1].imageUrl
@@ -95,8 +80,11 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         />
         {/* Thêm vào giỏ hàng */}
         <div
-          className={`font-semibold absolute bottom-0 left-0 w-full bg-black text-white text-center py-2 transition-all duration-300 ease-in-out flex items-center justify-center gap-2 cursor-pointer ${isHovered ? "opacity-100 translate-y-0" : "opacity-0 translate-y-full"
-            } hover:bg-red-500`}
+          className={`font-semibold absolute bottom-0 left-0 w-full bg-black text-white text-center py-2 transition-all duration-300 ease-in-out flex items-center justify-center gap-2 cursor-pointer ${
+            isHovered
+              ? 'opacity-100 translate-y-0'
+              : 'opacity-0 translate-y-full'
+          } hover:bg-red-500`}
           onClick={() => {
             addToCart({
               id: product.id,
@@ -106,9 +94,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               quantity: 1,
             });
             notification.success({
-              message: "Thêm vào giỏ hàng thành công",
+              message: 'Thêm vào giỏ hàng thành công',
               description: `Đã thêm "${product.name}" vào giỏ hàng 🛒`,
-              placement: "topRight",
+              placement: 'topRight',
               duration: 3,
             });
           }}
@@ -120,7 +108,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       {/* Nội dung sản phẩm */}
       <div className="flex flex-col p-4 space-y-4 py-6">
         <h3
-          onClick={() => navigate(`${ROUTER_URL.COMMON.PRODUCT}/${product.slug}`)}
+          onClick={() =>
+            navigate(`${ROUTER_URL.COMMON.PRODUCT}/${product.slug}`)
+          }
           className="text-lg font-semibold text-left cursor-pointer hover:text-red-500 -mt-3 truncate w-full"
         >
           {product.name}
@@ -169,7 +159,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                 </div>
               </div>
             ) : (
-              <div className="text-center text-sm mt-2 font-bold">Đã ra mắt</div>
+              <div className="text-center text-sm mt-2 font-bold">
+                Đã ra mắt
+              </div>
             )}
           </div>
         )}

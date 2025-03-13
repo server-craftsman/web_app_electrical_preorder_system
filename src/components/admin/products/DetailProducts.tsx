@@ -18,7 +18,7 @@ const DetailProducts = () => {
     if (!initialSlug) return;
     try {
       const response = await ProductService.getBySlug(initialSlug);
-      setProduct(response?.data.data);
+      setProduct(response?.data.data.product as GetAllProductResponseModel);
     } catch (error) {
       console.error('Lỗi khi tải sản phẩm:', error);
       setProduct(null);
