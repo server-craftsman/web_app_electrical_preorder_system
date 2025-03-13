@@ -12,7 +12,7 @@ const ProductDetails: React.FC = () => {
     const fetchProduct = async () => {
       try {
         const response = await ProductService.getBySlug(slug || '');
-        setProduct(response.data.data);
+        setProduct(response.data.data.product as any);
       } catch (error) {
         console.error('Error fetching product:', error);
       }
@@ -20,11 +20,7 @@ const ProductDetails: React.FC = () => {
     fetchProduct();
   }, [slug]);
 
-  return product ? (
-    <ProductDetail product={product} />
-  ) : (
-    <div>Product not found</div>
-  );
+  return product ? <ProductDetail /> : <div>Product not found</div>;
 };
 
 export default ProductDetails;

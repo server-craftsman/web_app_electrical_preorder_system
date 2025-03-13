@@ -26,7 +26,7 @@ const ModalDelete = forwardRef<
     const response = await ProductService.getBySlug(slug);
     const product = response.data.data;
     if (product) {
-      setProductId(product.id);
+      setProductId(product.product?.id || '');
     }
   };
 

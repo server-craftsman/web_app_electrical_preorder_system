@@ -43,19 +43,19 @@ const EditProducts = forwardRef<
       const response = await ProductService.getBySlug(slug);
       const product = response?.data?.data;
       if (product) {
-        setProductId(product.id); // Lưu productId từ API
+        setProductId(product.product?.id || '');
 
         form.setFieldsValue({
-          productCode: product.productCode,
-          name: product.name,
-          description: product.description,
-          quantity: product.quantity,
-          price: product.price,
-          position: product.position || 0,
-          category: product.category?.id,
+          productCode: product.product?.productCode,
+          name: product.product?.name,
+          description: product.product?.description,
+          quantity: product.product?.quantity,
+          price: product.product?.price,
+          position: product.product?.position || 0,
+          category: product.product?.category?.id,
         });
         setFileList(
-          product.imageProducts?.map((img) => ({
+          product.product?.imageProducts?.map((img) => ({
             name: img.altText || 'Product Image',
             url: img.imageUrl,
           })) || []

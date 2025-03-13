@@ -7,16 +7,15 @@ import { ShoppingCartOutlined } from '@ant-design/icons';
 import { useCart } from '../../../../contexts/CartContext';
 import { notification } from 'antd';
 import { CalendarOutlined } from '@ant-design/icons';
-import { ProductService } from '../../../../services/product/product.service';
-// import { CampaignService } from "../../../../services/campaign/campaign.service";
 import { CampaignResponseModel } from '../../../../models/api/response/campaign.res.model';
 interface ProductCardProps {
   product: GetAllProductResponseModel;
+  campaign?: CampaignResponseModel;
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+const ProductCard: React.FC<ProductCardProps> = ({ product, campaign }) => {
   const [isHovered, setIsHovered] = useState(false);
-  const [campaign, setCampaign] = useState<CampaignResponseModel | null>(null);
+  // const [campaign, setCampaign] = useState<CampaignResponseModel | null>(null);
   const [countdown, setCountdown] = useState<{
     days: number;
     hours: number;
@@ -26,10 +25,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const navigate = useNavigate();
   const { addToCart } = useCart();
 
-  
-
   useEffect(() => {
-    if (!campaign || !campaign.startDate) return;
+    if (!campaign || !campaign.startDate || !campaign.endDate) return;
 
     const targetDate = new Date(campaign.startDate).getTime();
 
