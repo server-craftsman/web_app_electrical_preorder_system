@@ -2,7 +2,6 @@ import { API_PATH } from '../../const';
 import { BaseService } from '../config/base.service';
 import {
   formatResponseSuccess,
-  ResponseSuccessForList,
   ResponseUserManagerSuccess,
 } from '../../app/interface/response_success.interface';
 import { User } from '../../models/modules/User';
