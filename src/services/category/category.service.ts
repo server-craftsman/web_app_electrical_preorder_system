@@ -1,6 +1,9 @@
 import { API_PATH } from './../../const/api.path';
 import { BaseService } from './../config/base.service';
-import { formatResponseSuccess, ResponseSuccessForList } from './../../app/interface/response_success.interface';
+import {
+  formatResponseSuccess,
+  ResponseSuccessForList,
+} from './../../app/interface/response_success.interface';
 import { GetAllCategoryResponseModel } from '../../models/api/response/category.res.model';
 import {
   CreateCategoryRequestModel,
@@ -9,7 +12,7 @@ import {
 import { UpdateCategoryResponse } from '../../models/api/response/category.res.model';
 export const CategoryService = {
   getAll(params: Record<string, unknown>) {
-    return BaseService.get<ResponseSuccessForList<GetAllCategoryResponseModel>>({
+    return BaseService.get<formatResponseSuccess<GetAllCategoryResponseModel>>({
       url: API_PATH.CATEGORY.BASE,
       payload: params,
     });
@@ -22,7 +25,7 @@ export const CategoryService = {
       }
     );
   },
-  update( id: string, params: UpdateCategoryRequestModel) {
+  update(id: string, params: UpdateCategoryRequestModel) {
     return BaseService.put<formatResponseSuccess<UpdateCategoryResponse>>({
       url: API_PATH.CATEGORY.UPDATE.replace(':id', id),
       payload: params,
