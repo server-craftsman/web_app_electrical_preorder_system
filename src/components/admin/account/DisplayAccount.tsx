@@ -8,7 +8,13 @@ import { helper } from '../../../utils';
 import { ROUTER_URL } from '../../../const';
 import { useNavigate } from 'react-router-dom';
 
-const Account = ({ refresh, searchTerm }: { refresh: boolean; searchTerm: string }) => {
+const Account = ({
+  refresh,
+  searchTerm,
+}: {
+  refresh: boolean;
+  searchTerm: string;
+}) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [users, setUsers] = useState<User[]>([]);
   const [activeKey, setActiveKey] = useState('1'); // State lưu tab hiện tại
@@ -17,8 +23,12 @@ const Account = ({ refresh, searchTerm }: { refresh: boolean; searchTerm: string
 
   const fetchUsers = async () => {
     try {
-      const response = await UserService.getAll({ searchTerm: searchTerm || '' });
-      setUsers(response.data.data.content as unknown as User[]);
+      const response = await UserService.getAll({
+        searchTerm: searchTerm || '',
+        page: currentPage - 1, // Adjust for zero-based page index
+        size: 10,
+      });
+      setUsers(response.data.data.users as unknown as User[]);
     } catch (error) {
       console.error('Lỗi khi tải danh sách người dùng:', error);
     }
@@ -84,19 +94,19 @@ const Account = ({ refresh, searchTerm }: { refresh: boolean; searchTerm: string
     render: (_: any, record: User) => (
       <span className="flex space-x-2">
         <button
-            className="bg-blue-600 text-white p-2 rounded-lg shadow-lg hover:bg-blue-700"
-            onClick={() =>
-              navigate(ROUTER_URL.ADMIN.ACCOUNT_DETAIL.replace(':id', record.id))
-            }
-          >
-            <EyeOutlined className="text-xl" />
-          </button>
-      <button
-        className="bg-red-600 text-white p-2 rounded-lg shadow-lg hover:bg-red-700"
-        onClick={() => handleDeleteAccount(record.id)}
-      >
-        <DeleteOutlined className="text-xl" />
-      </button>
+          className="bg-blue-600 text-white p-2 rounded-lg shadow-lg hover:bg-blue-700"
+          onClick={() =>
+            navigate(ROUTER_URL.ADMIN.ACCOUNT_DETAIL.replace(':id', record.id))
+          }
+        >
+          <EyeOutlined className="text-xl" />
+        </button>
+        <button
+          className="bg-red-600 text-white p-2 rounded-lg shadow-lg hover:bg-red-700"
+          onClick={() => handleDeleteAccount(record.id)}
+        >
+          <DeleteOutlined className="text-xl" />
+        </button>
       </span>
     ),
   };
@@ -114,9 +124,12 @@ const Account = ({ refresh, searchTerm }: { refresh: boolean; searchTerm: string
         <EyeOutlined className="text-xl" />
       </button>
     ),
-  }
+  };
   // Nếu đang ở tab "Tài khoản hoạt động", thêm cột "Hành động"
-  const columns = activeKey === '1' ? [...baseColumns, actionColumn] : [...baseColumns, notactionColumns];
+  const columns =
+    activeKey === '1'
+      ? [...baseColumns, actionColumn]
+      : [...baseColumns, notactionColumns];
 
   const activeUsers = users.filter((user) => user.status === 'ACTIVE');
   const inactiveUsers = users.filter((user) => user.status === 'INACTIVE');
