@@ -41,17 +41,7 @@ const DetailProducts = () => {
     fetchProductDetail();
   }, [fetchProductDetail, initialSlug]);
 
-  if (!product)
-    return (
-      <div className="flex items-center justify-center h-64">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500 mx-auto mb-4"></div>
-          <Text className="text-gray-500 text-lg">
-            Đang tải thông tin sản phẩm...
-          </Text>
-        </div>
-      </div>
-    );
+  if (!product) return <h1>Không tìm thấy sản phẩm</h1>;
 
   return (
     <div className="bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen p-8">

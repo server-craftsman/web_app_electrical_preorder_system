@@ -199,7 +199,7 @@ const ViewCampaign = ({
       render: (_: any, record: CampaignResponseModel) => (
         <span className="flex space-x-2">
           <button
-            className="bg-blue-600 text-white p-2 rounded-lg shadow-lg hover:bg-blue-700"
+            className="flex items-center justify-center w-9 h-9 rounded-full bg-indigo-50 text-indigo-600 hover:bg-indigo-100 transition-all duration-200"
             onClick={() =>
               navigate(
                 ROUTER_URL.ADMIN.CAMPAIGN_DETAIL.replace(':id', record.id)
@@ -209,16 +209,18 @@ const ViewCampaign = ({
             <EyeOutlined className="text-xl" />
           </button>
           <button
-            className="bg-green-600 text-white p-2 rounded-lg shadow-lg hover:bg-green-700"
+            className="flex items-center justify-center w-9 h-9 rounded-full bg-indigo-50 text-indigo-600 hover:bg-indigo-100 transition-all duration-200"
             onClick={() => handleEdit(record)}
+            title="Chỉnh sửa"
           >
-            <EditOutlined className="text-xl" />
+            <EditOutlined className="text-lg" />
           </button>
           <button
-            className="bg-red-600 text-white p-2 rounded-lg shadow-lg hover:bg-red-700"
+            className="flex items-center justify-center w-9 h-9 rounded-full bg-red-50 text-red-600 hover:bg-red-100 transition-all duration-200"
             onClick={() => handleDelete(record)}
+            title="Xóa"
           >
-            <DeleteOutlined className="text-xl" />
+            <DeleteOutlined className="text-lg" />
           </button>
         </span>
       ),
