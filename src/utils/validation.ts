@@ -44,6 +44,6 @@ export const limitMemoryFile = (file: File) => {
   const isLt5M = file.size / 1024 / 1024 < 5;
   if (!isLt5M) {
     helper.notificationMessage('Kích thước tệp lớn hơn 5MB', 'error');
-  };
+  }
   return false;
 };

@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
-import { useAuth } from "../../../contexts/AuthContexts";
-import { UserService } from "../../../services/user/user.service";
-import { User } from "../../../models/modules/User";
-import UpdateProfile from "./UpdateProfile";
+import { useState, useEffect } from 'react';
+import { useAuth } from '../../../contexts/AuthContexts';
+import { UserService } from '../../../services/user/user.service';
+import { User } from '../../../models/modules/User';
+import UpdateProfile from './UpdateProfile';
 
 const DisplayProfile = () => {
   const { getCurrentUser } = useAuth();
@@ -20,11 +20,11 @@ const DisplayProfile = () => {
             const userData = response.data?.data || response.data;
             setProfile(userData);
           } else {
-            console.error("Failed to fetch user profile:", response);
+            console.error('Failed to fetch user profile:', response);
           }
         })
         .catch((error: Error) =>
-          console.error("Error fetching user profile:", error)
+          console.error('Error fetching user profile:', error)
         );
     }
   };
@@ -49,7 +49,9 @@ const DisplayProfile = () => {
         <div>
           <h2 className="text-2xl font-semibold">{profile.fullname}</h2>
           <p className="text-gray-500">{profile.role}</p>
-          <p className={`text-sm font-medium ${profile.status === "active" ? "text-red-600" : "text-green-600"}`}>
+          <p
+            className={`text-sm font-medium ${profile.status === 'active' ? 'text-red-600' : 'text-green-600'}`}
+          >
             {profile.status.charAt(0).toUpperCase() + profile.status.slice(1)}
           </p>
         </div>
@@ -57,23 +59,41 @@ const DisplayProfile = () => {
 
       {/* Personal Information */}
       <div className="mt-6">
-        <h3 className="text-lg font-semibold text-gray-700">Personal Information</h3>
+        <h3 className="text-lg font-semibold text-gray-700">
+          Personal Information
+        </h3>
         <div className="grid grid-cols-2 gap-4 mt-4">
           <div>
-            <label className="text-gray-600 text-sm font-medium">Username</label>
-            <p className="border p-2 rounded-md bg-gray-100">{profile.username}</p>
+            <label className="text-gray-600 text-sm font-medium">
+              Username
+            </label>
+            <p className="border p-2 rounded-md bg-gray-100">
+              {profile.username}
+            </p>
           </div>
           <div>
-            <label className="text-gray-600 text-sm font-medium">Full Name</label>
-            <p className="border p-2 rounded-md bg-gray-100">{profile.fullname}</p>
+            <label className="text-gray-600 text-sm font-medium">
+              Full Name
+            </label>
+            <p className="border p-2 rounded-md bg-gray-100">
+              {profile.fullname}
+            </p>
           </div>
           <div>
-            <label className="text-gray-600 text-sm font-medium">Email address</label>
-            <p className="border p-2 rounded-md bg-gray-100">{profile.email || "N/A"}</p>
+            <label className="text-gray-600 text-sm font-medium">
+              Email address
+            </label>
+            <p className="border p-2 rounded-md bg-gray-100">
+              {profile.email || 'N/A'}
+            </p>
           </div>
           <div>
-            <label className="text-gray-600 text-sm font-medium">Phone Number</label>
-            <p className="border p-2 rounded-md bg-gray-100">{profile.phoneNumber}</p>
+            <label className="text-gray-600 text-sm font-medium">
+              Phone Number
+            </label>
+            <p className="border p-2 rounded-md bg-gray-100">
+              {profile.phoneNumber}
+            </p>
           </div>
         </div>
       </div>
@@ -81,20 +101,32 @@ const DisplayProfile = () => {
       {/* Address Information */}
       <div className="mt-6">
         <h3 className="text-lg font-semibold text-gray-700">Address</h3>
-        <p className="border p-2 rounded-md bg-gray-100">{profile.address || "Not Provided"}</p>
+        <p className="border p-2 rounded-md bg-gray-100">
+          {profile.address || 'Not Provided'}
+        </p>
       </div>
 
       {/* System Information */}
       <div className="mt-6">
-        <h3 className="text-lg font-semibold text-gray-700">System Information</h3>
+        <h3 className="text-lg font-semibold text-gray-700">
+          System Information
+        </h3>
         <div className="grid grid-cols-2 gap-4 mt-4">
           <div>
-            <label className="text-gray-600 text-sm font-medium">Created At</label>
-            <p className="border p-2 rounded-md bg-gray-100">{new Date(profile.createdAt).toLocaleString()}</p>
+            <label className="text-gray-600 text-sm font-medium">
+              Created At
+            </label>
+            <p className="border p-2 rounded-md bg-gray-100">
+              {new Date(profile.createdAt).toLocaleString()}
+            </p>
           </div>
           <div>
-            <label className="text-gray-600 text-sm font-medium">Updated At</label>
-            <p className="border p-2 rounded-md bg-gray-100">{new Date(profile.updatedAt).toLocaleString()}</p>
+            <label className="text-gray-600 text-sm font-medium">
+              Updated At
+            </label>
+            <p className="border p-2 rounded-md bg-gray-100">
+              {new Date(profile.updatedAt).toLocaleString()}
+            </p>
           </div>
         </div>
       </div>
@@ -111,9 +143,7 @@ const DisplayProfile = () => {
             viewBox="0 0 20 20"
             fill="currentColor"
           >
-            <path
-              d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"
-            />
+            <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
           </svg>
         </button>
       </div>

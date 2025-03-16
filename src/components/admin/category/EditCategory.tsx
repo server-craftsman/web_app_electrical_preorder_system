@@ -21,11 +21,7 @@ const EditCategory = ({ category, onEditSuccess }: EditCategoryProps) => {
   const handleSubmit = async () => {
     try {
       const values = form.getFieldsValue();
-      const updatedCategory = await 
-      CategoryService.update(
-        category.id,
-        values
-      );
+      const updatedCategory = await CategoryService.update(category.id, values);
       if (updatedCategory) {
         onEditSuccess();
       }

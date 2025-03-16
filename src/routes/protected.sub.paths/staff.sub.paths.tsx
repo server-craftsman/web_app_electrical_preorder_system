@@ -38,19 +38,19 @@ export const staffSubPaths: Record<string, RouteObject[]> = {
     },
     {
       element: <Profile />,
-      path: ROUTER_URL.STAFF.PROFILE
+      path: ROUTER_URL.STAFF.PROFILE,
     },
     {
       element: <Category />,
-      path: ROUTER_URL.STAFF.CATEGORY
+      path: ROUTER_URL.STAFF.CATEGORY,
     },
     {
       element: <Product />,
-      path: ROUTER_URL.STAFF.PRODUCT
+      path: ROUTER_URL.STAFF.PRODUCT,
     },
     {
       element: <DetailProduct />,
-      path: ROUTER_URL.STAFF.PRODUCT_DETAIL
-    }
+      path: ROUTER_URL.STAFF.PRODUCT_DETAIL,
+    },
   ],
 };

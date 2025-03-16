@@ -18,7 +18,9 @@ const CartDetails = lazy(
   () => import('../../pages/publish/cart_details/index')
 );
 const Checkout = lazy(() => import('../../pages/publish/check_out/index'));
-const PaymentSuccess =  lazy(() => import('../../pages/publish/check_out/testcheckout'));
+const PaymentSuccess = lazy(
+  () => import('../../pages/publish/check_out/testcheckout')
+);
 //======================================================
 //export public sub paths
 

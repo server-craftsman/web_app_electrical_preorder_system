@@ -8,7 +8,7 @@ const DetailAccount = () => {
   const [profile, setProfile] = useState<User | null>(null);
   const navigate = useNavigate();
 
-  console.log("Current ID from useParams:", id);
+  console.log('Current ID from useParams:', id);
 
   const fetchDetail = () => {
     if (id) {
@@ -18,11 +18,11 @@ const DetailAccount = () => {
             const userData = response.data?.data || response.data;
             setProfile(userData);
           } else {
-            console.error("Failed to fetch user profile:", response);
+            console.error('Failed to fetch user profile:', response);
           }
         })
         .catch((error: Error) =>
-          console.error("Error fetching user profile:", error)
+          console.error('Error fetching user profile:', error)
         );
     }
   };
@@ -32,7 +32,9 @@ const DetailAccount = () => {
   }, [id]);
 
   if (!profile)
-    return <p className="text-center text-gray-500">Không tìm thấy tài khoản.</p>;
+    return (
+      <p className="text-center text-gray-500">Không tìm thấy tài khoản.</p>
+    );
 
   return (
     <div className="max-w-4xl mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg">
@@ -45,7 +47,9 @@ const DetailAccount = () => {
       </button>
 
       {/* Tiêu đề */}
-      <h2 className="text-2xl font-bold text-gray-800 mb-4">Chi tiết tài khoản</h2>
+      <h2 className="text-2xl font-bold text-gray-800 mb-4">
+        Chi tiết tài khoản
+      </h2>
 
       {/* Thông tin tài khoản */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -71,7 +75,9 @@ const DetailAccount = () => {
         </div>
         <div className="bg-gray-100 p-4 rounded-lg">
           <p className="text-gray-600">Trạng thái:</p>
-          <p className={`font-semibold ${profile.status === 'ACTIVE' ? 'text-green-600' : 'text-red-600'}`}>
+          <p
+            className={`font-semibold ${profile.status === 'ACTIVE' ? 'text-green-600' : 'text-red-600'}`}
+          >
             {profile.status === 'ACTIVE' ? 'Hoạt động' : 'Không hoạt động'}
           </p>
         </div>
@@ -81,17 +87,23 @@ const DetailAccount = () => {
         </div>
         <div className="bg-gray-100 p-4 rounded-lg">
           <p className="text-gray-600">Xác minh:</p>
-          <p className={`font-semibold ${profile.verified ? 'text-green-600' : 'text-red-600'}`}>
+          <p
+            className={`font-semibold ${profile.verified ? 'text-green-600' : 'text-red-600'}`}
+          >
             {profile.verified ? 'Đã xác minh' : 'Chưa xác minh'}
           </p>
         </div>
         <div className="bg-gray-100 p-4 rounded-lg">
           <p className="text-gray-600">Ngày tạo:</p>
-          <p className="font-semibold">{new Date(profile.createdAt).toLocaleString()}</p>
+          <p className="font-semibold">
+            {new Date(profile.createdAt).toLocaleString()}
+          </p>
         </div>
         <div className="bg-gray-100 p-4 rounded-lg">
           <p className="text-gray-600">Cập nhật lần cuối:</p>
-          <p className="font-semibold">{new Date(profile.updatedAt).toLocaleString()}</p>
+          <p className="font-semibold">
+            {new Date(profile.updatedAt).toLocaleString()}
+          </p>
         </div>
       </div>
     </div>

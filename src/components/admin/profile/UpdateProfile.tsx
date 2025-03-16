@@ -10,7 +10,11 @@ interface UpdateProfileProps {
   onUpdated: () => void;
 }
 
-const UpdateProfile: React.FC<UpdateProfileProps> = ({ visible, onClose, onUpdated}) => {
+const UpdateProfile: React.FC<UpdateProfileProps> = ({
+  visible,
+  onClose,
+  onUpdated,
+}) => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
 
@@ -32,42 +36,43 @@ const UpdateProfile: React.FC<UpdateProfileProps> = ({ visible, onClose, onUpdat
   }, [userId, form]);
 
   const isValidUUID = (id: string) => {
-    return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
+    return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(
+      id
+    );
   };
-  
+
   const handleUpdate = async () => {
     try {
       if (!userId) {
-        message.error("User ID is missing!");
+        message.error('User ID is missing!');
         return;
       }
-  
+
       if (!isValidUUID(userId)) {
-        message.error("Invalid User ID format!"); // Thông báo lỗi nếu ID không hợp lệ
+        message.error('Invalid User ID format!'); // Thông báo lỗi nếu ID không hợp lệ
         return;
       }
-  
+
       setLoading(true);
       const values = await form.validateFields();
-  
+
       const updatedData = {
         fullname: values.fullname,
         address: values.address,
         phoneNumber: values.phoneNumber,
       };
-  
+
       await UserService.update(userId, updatedData);
-      helper.notificationMessage("Profile updated successfully!", "success")
+      helper.notificationMessage('Profile updated successfully!', 'success');
       onUpdated(); // Fetch lại dữ liệu mới
       onClose(); // Đóng modal
     } catch (error) {
-      message.error("Failed to update profile!");
-      helper.notificationMessage("Failed to update profile!", "warning")
+      message.error('Failed to update profile!');
+      helper.notificationMessage('Failed to update profile!', 'warning');
     } finally {
       setLoading(false);
     }
   };
-  
 
   return (
     <Modal
@@ -78,7 +83,12 @@ const UpdateProfile: React.FC<UpdateProfileProps> = ({ visible, onClose, onUpdat
         <Button key="cancel" onClick={onClose}>
           Cancel
         </Button>,
-        <Button key="update" type="primary" loading={loading} onClick={handleUpdate}>
+        <Button
+          key="update"
+          type="primary"
+          loading={loading}
+          onClick={handleUpdate}
+        >
           Update
         </Button>,
       ]}
@@ -91,18 +101,12 @@ const UpdateProfile: React.FC<UpdateProfileProps> = ({ visible, onClose, onUpdat
         >
           <Input />
         </Form.Item>
-        
-        <Form.Item
-          label="Address"
-          name="address"
-        >
+
+        <Form.Item label="Address" name="address">
           <Input />
         </Form.Item>
 
-        <Form.Item
-          label="Phone Number"
-          name="phoneNumber"
-        >
+        <Form.Item label="Phone Number" name="phoneNumber">
           <Input />
         </Form.Item>
       </Form>

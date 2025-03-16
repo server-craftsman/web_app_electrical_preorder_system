@@ -44,9 +44,10 @@ export const API_PATH = {
     GET_BY_ID: '/campaign-stages/:id',
   },
   NOTIFICATIONS: {
-    BASE: "/notifications",
-    SEND: "/notifications/send",
-    MARK_AS_READ: (notificationId: string) => `/notifications/${notificationId}`,
+    BASE: '/notifications',
+    SEND: '/notifications/send',
+    MARK_AS_READ: (notificationId: string) =>
+      `/notifications/${notificationId}`,
     GET_BY_USER: (userId: string) => `/notifications/${userId}`,
   },
   ORDER: {

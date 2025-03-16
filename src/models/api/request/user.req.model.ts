@@ -10,9 +10,9 @@ export interface CreateUserRequestModel {
 }
 
 export interface ChangePasswordRequestModel {
-  id: string,
-  currentPassword: string,
-  newPassword: string,
+  id: string;
+  currentPassword: string;
+  newPassword: string;
 }
 
 export interface UpdateUserRequestModel {

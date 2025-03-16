@@ -7,13 +7,19 @@ import { GetAllCategoryResponseModel } from '../../../models/api/response/catego
 
 const ProductsPage: React.FC = () => {
   const [products, setProducts] = useState<GetAllProductResponseModel[]>([]);
-  const [categories, setCategories] = useState<GetAllCategoryResponseModel[]>([]);
-  const [category, setCategory] = useState<GetAllCategoryResponseModel | null>(null);
+  const [categories, setCategories] = useState<GetAllCategoryResponseModel[]>(
+    []
+  );
+  const [category, setCategory] = useState<GetAllCategoryResponseModel | null>(
+    null
+  );
   const [searchTerm, setSearchTerm] = useState('');
-  const [filteredProducts, setFilteredProducts] = useState<GetAllProductResponseModel[]>([]);
+  const [filteredProducts, setFilteredProducts] = useState<
+    GetAllProductResponseModel[]
+  >([]);
 
-  // API ở đây 
-  
+  // API ở đây
+
   useEffect(() => {
     ProductService.getAll({})
       .then((response) => {
@@ -33,7 +39,7 @@ const ProductsPage: React.FC = () => {
     CategoryService.getAll({})
       .then((response) => {
         const categoryList = response?.data?.data;
-        
+
         if (Array.isArray(categoryList)) {
           setCategories(categoryList);
         } else {
@@ -54,7 +60,9 @@ const ProductsPage: React.FC = () => {
     }
 
     if (category) {
-      filtered = filtered.filter((product) => product?.category?.id === category.id);
+      filtered = filtered.filter(
+        (product) => product?.category?.id === category.id
+      );
     }
 
     setFilteredProducts(filtered);
@@ -85,7 +93,8 @@ const ProductsPage: React.FC = () => {
               className="border px-4 py-2 rounded-lg w-full"
               value={category?.id || ''}
               onChange={(e) => {
-                const selectedCategory = categories?.find((c) => c.id === e.target.value) || null;
+                const selectedCategory =
+                  categories?.find((c) => c.id === e.target.value) || null;
                 setCategory(selectedCategory);
               }}
             >
@@ -102,9 +111,13 @@ const ProductsPage: React.FC = () => {
         {/* Danh sách */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
           {filteredProducts.length > 0 ? (
-            filteredProducts.map((product) => <ProductCard key={product.id} product={product} />)
+            filteredProducts.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))
           ) : (
-            <p className="text-center text-gray-500 col-span-4">Không tìm thấy sản phẩm nào.</p>
+            <p className="text-center text-gray-500 col-span-4">
+              Không tìm thấy sản phẩm nào.
+            </p>
           )}
         </div>
       </div>

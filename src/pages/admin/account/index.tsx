@@ -30,7 +30,7 @@ const Account = () => {
   return (
     <div>
       <div className="flex justify-between mb-4">
-        <Search onSearch={handleSearch} placeholder='Tìm kiếm tài khoản' />
+        <Search onSearch={handleSearch} placeholder="Tìm kiếm tài khoản" />
         <button className="btn-submit" onClick={handleCreateUser}>
           Tạo tài khoản
         </button>

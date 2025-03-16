@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState } from 'react';
 import DisplayProduct from '../../../components/staff/product/DisplayProduct';
 import Search from '../../../components/search';
 
@@ -14,16 +14,16 @@ const Product = () => {
 
   return (
     <div>
-        <div className="flex justify-between mb-4">
+      <div className="flex justify-between mb-4">
         <Search onSearch={handleSearch} placeholder="Tìm kiếm sản phẩm..." />
       </div>
-      <DisplayProduct 
-      refresh={refreshProducts}
-      searchTerm={searchTerm}
-      refreshKey={refreshKey}
+      <DisplayProduct
+        refresh={refreshProducts}
+        searchTerm={searchTerm}
+        refreshKey={refreshKey}
       />
     </div>
-  )
-}
+  );
+};
 
 export default Product;

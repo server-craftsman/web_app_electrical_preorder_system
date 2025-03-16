@@ -36,7 +36,7 @@ const CreateCategory = forwardRef<CreateCategoryProps, CreateCategoryProps>(
       try {
         const { name } = form.getFieldsValue();
         const newCategory = {
-          name
+          name,
         };
 
         const createdCategory = await CategoryService.create(newCategory);
@@ -74,10 +74,10 @@ const CreateCategory = forwardRef<CreateCategoryProps, CreateCategoryProps>(
     const validateForm = {
       name: [
         {
-        required: true,
-        message: 'Vui lòng nhập tên danh mục!',
-      },
-    ],
+          required: true,
+          message: 'Vui lòng nhập tên danh mục!',
+        },
+      ],
     };
 
     return (

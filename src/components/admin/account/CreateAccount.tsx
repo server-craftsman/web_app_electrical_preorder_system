@@ -12,7 +12,11 @@ interface CreateUserProps {
   formRef?: React.MutableRefObject<any>; // Add form reference prop
 }
 
-const CreateUser: React.FC<CreateUserProps> = ({ onUserCreated, onClose, formRef }) => {
+const CreateUser: React.FC<CreateUserProps> = ({
+  onUserCreated,
+  onClose,
+  formRef,
+}) => {
   const [form] = Form.useForm();
   const [roles, setRoles] = useState<string[]>([]);
 
@@ -40,7 +44,10 @@ const CreateUser: React.FC<CreateUserProps> = ({ onUserCreated, onClose, formRef
       };
 
       await UserService.create(userData);
-      helper.notificationMessage('Người dùng đã được tạo thành công!', 'success');
+      helper.notificationMessage(
+        'Người dùng đã được tạo thành công!',
+        'success'
+      );
       form.resetFields();
       onUserCreated();
       onClose();
@@ -136,7 +143,8 @@ const CreateUser: React.FC<CreateUserProps> = ({ onUserCreated, onClose, formRef
       },
       {
         pattern: /^(0|\+84)[3|5|7|8|9][0-9]{8}$/,
-        message: 'Số điện thoại không hợp lệ (Định dạng: 0xxxxxxxxx hoặc +84xxxxxxxxx)',
+        message:
+          'Số điện thoại không hợp lệ (Định dạng: 0xxxxxxxxx hoặc +84xxxxxxxxx)',
       },
     ],
     address: [
@@ -158,7 +166,12 @@ const CreateUser: React.FC<CreateUserProps> = ({ onUserCreated, onClose, formRef
   };
 
   return (
-    <Form layout="vertical" form={form} onFinish={handleSubmit} validateTrigger={['onChange', 'onBlur']}>
+    <Form
+      layout="vertical"
+      form={form}
+      onFinish={handleSubmit}
+      validateTrigger={['onChange', 'onBlur']}
+    >
       <Form.Item
         name="username"
         label="Tên đăng nhập"
@@ -190,7 +203,8 @@ const CreateUser: React.FC<CreateUserProps> = ({ onUserCreated, onClose, formRef
         label="Mật khẩu"
         rules={validateForm.password as Rule[]}
         tooltip={{
-          title: 'Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ thường, chữ hoa, số và ký tự đặc biệt',
+          title:
+            'Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ thường, chữ hoa, số và ký tự đặc biệt',
           icon: <InfoCircleOutlined />,
         }}
         hasFeedback
@@ -206,7 +220,7 @@ const CreateUser: React.FC<CreateUserProps> = ({ onUserCreated, onClose, formRef
       >
         <Input placeholder="Nhập họ và tên" />
       </Form.Item>
-      
+
       <Form.Item
         name="phoneNumber"
         label="Số điện thoại"
@@ -219,7 +233,7 @@ const CreateUser: React.FC<CreateUserProps> = ({ onUserCreated, onClose, formRef
       >
         <Input placeholder="Nhập số điện thoại" />
       </Form.Item>
-      
+
       <Form.Item
         name="address"
         label="Địa chỉ"
@@ -228,7 +242,7 @@ const CreateUser: React.FC<CreateUserProps> = ({ onUserCreated, onClose, formRef
       >
         <Input placeholder="Nhập địa chỉ" />
       </Form.Item>
-      
+
       <Form.Item
         name="role"
         label="Vai trò"

@@ -1,5 +1,4 @@
 export interface CreateOrderRequestModel {
-    campaignId: string;
-    quantity: number;
+  campaignId: string;
+  quantity: number;
 }
-

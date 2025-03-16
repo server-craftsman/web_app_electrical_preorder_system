@@ -41,8 +41,15 @@ const ChangePassword = () => {
         newPassword: formData.newPassword,
       };
       await UserService.changePassword(userId, params);
-      helper.notificationMessage('Bạn đã thay đổi mật khẩu thành công!', 'success');
-      setFormData({ currentPassword: '', newPassword: '', confirmPassword: '' });
+      helper.notificationMessage(
+        'Bạn đã thay đổi mật khẩu thành công!',
+        'success'
+      );
+      setFormData({
+        currentPassword: '',
+        newPassword: '',
+        confirmPassword: '',
+      });
     } catch (error) {
       setError('Failed to change password. Please try again.');
     } finally {
@@ -57,7 +64,9 @@ const ChangePassword = () => {
       {success && <p className="text-green-500 text-sm">{success}</p>}
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="block text-gray-600 text-sm font-medium">Current Password</label>
+          <label className="block text-gray-600 text-sm font-medium">
+            Current Password
+          </label>
           <input
             type="password"
             name="currentPassword"
@@ -68,7 +77,9 @@ const ChangePassword = () => {
           />
         </div>
         <div>
-          <label className="block text-gray-600 text-sm font-medium">New Password</label>
+          <label className="block text-gray-600 text-sm font-medium">
+            New Password
+          </label>
           <input
             type="password"
             name="newPassword"
@@ -79,7 +90,9 @@ const ChangePassword = () => {
           />
         </div>
         <div>
-          <label className="block text-gray-600 text-sm font-medium">Confirm New Password</label>
+          <label className="block text-gray-600 text-sm font-medium">
+            Confirm New Password
+          </label>
           <input
             type="password"
             name="confirmPassword"

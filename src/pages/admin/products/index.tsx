@@ -16,7 +16,9 @@ const Products = () => {
   const [sortBy, setSortBy] = useState('position');
   const [sortDirection, setSortDirection] = useState('asc');
   const [category, setCategory] = useState('');
-  const [categories, setCategories] = useState<GetAllCategoryResponseModel[]>([]);
+  const [categories, setCategories] = useState<GetAllCategoryResponseModel[]>(
+    []
+  );
   const [minPrice, setMinPrice] = useState<number | undefined>();
   const [maxPrice, setMaxPrice] = useState<number | undefined>();
 
@@ -56,7 +58,7 @@ const Products = () => {
     <div>
       <div className="flex justify-between mb-4">
         <Search onSearch={handleSearch} placeholder="Tìm kiếm sản phẩm..." />
-        
+
         {/* Sắp xếp */}
         <select
           value={sortBy}

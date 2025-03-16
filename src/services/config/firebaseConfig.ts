@@ -1,5 +1,5 @@
-import { initializeApp } from "firebase/app";
-import { getMessaging, getToken } from "firebase/messaging";
+import { initializeApp } from 'firebase/app';
+import { getMessaging, getToken } from 'firebase/messaging';
 
 // Cấu hình Firebase (thay bằng thông tin của bạn)
 const firebaseConfig = {
@@ -14,34 +14,37 @@ const firebaseConfig = {
 
 // Khởi tạo Firebase
 const app = initializeApp(firebaseConfig);
-const messaging = typeof window !== 'undefined' && 'serviceWorker' in navigator ? getMessaging(app) : null;
+const messaging =
+  typeof window !== 'undefined' && 'serviceWorker' in navigator
+    ? getMessaging(app)
+    : null;
 
 // Hàm lấy token FCM
 export const getFCMToken = async () => {
   if (!messaging) {
-    console.warn("Messaging is not supported in this environment");
+    console.warn('Messaging is not supported in this environment');
     return null;
   }
-  
+
   try {
     const permission = await Notification.requestPermission();
-    if (permission === "granted") {
+    if (permission === 'granted') {
       try {
-        const token = await getToken(messaging, { 
-          vapidKey: import.meta.env.VITE_VAPID_KEY 
+        const token = await getToken(messaging, {
+          vapidKey: import.meta.env.VITE_VAPID_KEY,
         });
-        console.log("FCM Token:", token);
+        console.log('FCM Token:', token);
         return token;
       } catch (tokenError) {
-        console.error("Error getting FCM token", tokenError);
+        console.error('Error getting FCM token', tokenError);
         return null;
       }
     } else {
-      console.warn("User denied permission for notifications.");
+      console.warn('User denied permission for notifications.');
       return null;
     }
   } catch (error) {
-    console.error("Error requesting notification permission", error);
+    console.error('Error requesting notification permission', error);
     return null;
   }
 };

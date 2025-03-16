@@ -13,8 +13,12 @@ const AdminCategory = lazy(() => import('../../pages/admin/category/index'));
 const StageHistory = lazy(
   () => import('../../pages/admin/stage_history/index')
 );
-const CampaignManagement = lazy(() => import('../../pages/admin/campaign/index'));
-const CampaignDetails = lazy(() => import('../../pages/admin/campaign/details'));
+const CampaignManagement = lazy(
+  () => import('../../pages/admin/campaign/index')
+);
+const CampaignDetails = lazy(
+  () => import('../../pages/admin/campaign/details')
+);
 //======================================================
 
 //export admin sub paths
@@ -53,12 +57,12 @@ export const adminSubPaths: Record<string, RouteObject[]> = {
       path: ROUTER_URL.ADMIN.CAMPAIGN_DETAIL,
     },
     {
-      element:<DetailAccount />,
+      element: <DetailAccount />,
       path: ROUTER_URL.ADMIN.ACCOUNT_DETAIL,
     },
     {
       element: <Profile />,
       path: ROUTER_URL.ADMIN.PROFILE,
-    }
+    },
   ],
 };

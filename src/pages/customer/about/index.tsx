@@ -15,9 +15,16 @@ const AboutPage: React.FC = () => {
         </h1>
         <p className="text-xl font-bold text-gray-700 leading-relaxed mb-8 max-w-3xl mx-auto">
           Elecee là nền tảng mua sắm đồ công nghệ theo hình thức
-          <span className="text-green-500 font-semibold"> <strong>Pre-Order</strong></span>. Chúng
-          tôi kết nối bạn với những sản phẩm công nghệ mới nhất với mức giá{' '}
-          <span className="text-green-500 font-semibold"><strong>ưu đãi nhất</strong></span>.
+          <span className="text-green-500 font-semibold">
+            {' '}
+            <strong>Pre-Order</strong>
+          </span>
+          . Chúng tôi kết nối bạn với những sản phẩm công nghệ mới nhất với mức
+          giá{' '}
+          <span className="text-green-500 font-semibold">
+            <strong>ưu đãi nhất</strong>
+          </span>
+          .
         </p>
 
         {/* {Trang chính} */}

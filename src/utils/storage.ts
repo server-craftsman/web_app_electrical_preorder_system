@@ -5,7 +5,6 @@ export const removeItemInLocalStorage = (key: string) =>
 
 export const clearLocalStorage = () => {
   localStorage.clear();
- 
 };
 
 export const setUserInfo = (userInfo: any) => {
