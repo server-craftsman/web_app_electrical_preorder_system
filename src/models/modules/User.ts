@@ -5,7 +5,8 @@ export interface User {
   email: string | null;
   googleAccountId: string | null;
   phoneNumber: string | null;
-  password: string;
+  password: string | null;
+  avatar?: string | null;
   status: string;
   role: string;
   token: string | null;

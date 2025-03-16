@@ -10,6 +10,7 @@ import {
   CreateUserRequestModel,
   UpdateUserRequestModel,
 } from '../../models/api/request/user.req.model';
+
 export const UserService = {
   getAll(params: any) {
     const url = `${API_PATH.USER.GET_ALL}?page=${params.page || 0}&size=${params.size || 10}`;
@@ -40,6 +41,22 @@ export const UserService = {
       url: API_PATH.USER.UPDATE.replace(':id', userId),
       payload: params,
     });
+  },
+  updateWithAvatar(userId: string, userData: UpdateUserRequestModel, avatarFile?: File) {
+    const formData = new FormData();
+    
+    // Add the user data as a JSON string in the 'updateUserRequest' field
+    formData.append('updateUserRequest', JSON.stringify(userData));
+    
+    // Add the avatar file if provided
+    if (avatarFile) {
+      formData.append('avatar', avatarFile);
+    }
+    
+    return BaseService.updateUser<formatResponseSuccess<User>>(
+      API_PATH.USER.UPDATE.replace(':id', userId),
+      formData
+    );
   },
   delete(userId: string) {
     return BaseService.remove<formatResponseSuccess<any>>({

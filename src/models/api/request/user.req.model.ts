@@ -19,4 +19,5 @@ export interface UpdateUserRequestModel {
   fullname: string;
   address: string;
   phoneNumber: string;
+  avatar?: string;
 }

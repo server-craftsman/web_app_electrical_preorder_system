@@ -221,6 +221,23 @@ export const BaseService = {
         if (toggleLoading) toggleLoading(false);
       });
   },
+  updateUser: async <T = Record<string, unknown>>(
+    url: string,
+    formData: FormData,
+    isLoading: boolean = true,
+    toggleLoading?: (isLoading: boolean) => void
+  ): Promise<PromiseState<T>> => {
+    if (toggleLoading) store.dispatch(toggleLoading(isLoading) as any);
+    return axiosInstance
+      .put<T, PromiseState<T>>(`${url}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+      .finally(() => {
+        if (toggleLoading) toggleLoading(false);
+      });
+  },
 };
 
 export interface PromiseState<T = unknown> extends AxiosResponse<T> {

@@ -13,4 +13,5 @@ export interface userInfo {
   exp: number;
   jti: string;
   id: string;
+  avatar?: string;
 }

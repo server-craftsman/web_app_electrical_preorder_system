@@ -1,10 +1,14 @@
 import { Link } from 'react-router-dom';
 import logo1 from '../../assets/Elecee_logo.jpg';
 import { ROUTER_URL } from '../../const/router.path';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../../contexts/AuthContexts';
 import { UserRole } from '../../app/enums';
 import { useCart } from '../../contexts/CartContext';
+import { Avatar, Dropdown, Spin } from 'antd';
+import { UserOutlined } from '@ant-design/icons';
+import { User } from '../../models/modules/User';
+import { UserService } from '../../services/user/user.service';
 
 export const Header = () => {
   const { cartItems } = useCart();
@@ -12,6 +16,11 @@ export const Header = () => {
   const [showSearch, setShowSearch] = useState(false);
   const { getCurrentUser, logout, role } = useAuth();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [userProfile, setUserProfile] = useState<User | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  // Use a ref to track if the profile has been fetched
+  const profileFetchedRef = useRef(false);
 
   const handleSearchClick = () => {
     setShowSearch(true);
@@ -29,8 +38,41 @@ export const Header = () => {
     }
   }, [showSearch]);
 
-  const isLoggedIn = !!getCurrentUser();
   const userInfo = getCurrentUser();
+  const isLoggedIn = !!userInfo;
+  const userId = userInfo?.id;
+
+  // Fetch user profile only once when component mounts or userId changes
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      // Skip if already fetched or no userId
+      if (!userId || profileFetchedRef.current) return;
+
+      setLoading(true);
+      try {
+        const response = await UserService.getById(userId);
+        if (response && response.data) {
+          const userData = response.data?.data || response.data;
+          setUserProfile(userData);
+          // Mark as fetched
+          profileFetchedRef.current = true;
+        }
+      } catch (error) {
+        console.error('Failed to fetch user profile:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUserProfile();
+
+    // Reset the ref when userId changes
+    return () => {
+      if (userId !== userInfo?.id) {
+        profileFetchedRef.current = false;
+      }
+    };
+  }, [userId]); // Only depend on userId
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -49,8 +91,22 @@ export const Header = () => {
     }
   };
 
+  // Get the appropriate profile link based on user role
+  const getProfileLink = () => {
+    switch (role) {
+      case UserRole.ADMIN:
+        return ROUTER_URL.ADMIN.PROFILE;
+      case UserRole.STAFF:
+        return ROUTER_URL.STAFF.PROFILE;
+      case UserRole.CUSTOMER:
+        return ROUTER_URL.CUSTOMER.PROFILE;
+      default:
+        return '/profile';
+    }
+  };
+
   const getAvatar = () => {
-    return 'https://res.cloudinary.com/dsqbxgh88/image/upload/v1732626514/j8kpw2s84uwmoyxdokgq.jpg';
+    return userProfile?.avatar || null;
   };
 
   return (
@@ -134,86 +190,113 @@ export const Header = () => {
           {/* Auth Buttons */}
           <div className="flex items-center justify-center space-x-1">
             {isLoggedIn ? (
-              <div className="relative">
-                <button
-                  className="flex items-center space-x-2 focus:outline-none"
-                  onClick={toggleDropdown}
-                >
-                  <img
-                    src={getAvatar()}
-                    alt="Avatar"
-                    className="w-8 h-8 rounded-full"
-                  />
-                  <span className="text-gray-600">{userInfo?.fullName}</span>
-                </button>
-                {isDropdownOpen && (
-                  <div className="absolute right-0 mt-2 w-60 bg-white border border-gray-200 rounded-md shadow-md p-4">
-                    <div className="flex items-center space-x-2 px-3 mb-2">
-                      <img
-                        src={getAvatar()}
-                        alt="Avatar"
-                        className="w-10 h-10 rounded-full"
-                      />
-                      <div>
-                        <div className="font-medium text-gray-800">
-                          {userInfo?.fullName}
-                        </div>
-                        <div className="text-sm text-gray-500">0869872830</div>
-                      </div>
-                    </div>
-                    <div className="flex flex-col space-y-1 mt-4">
-                      <Link
-                        to={getOverviewLink()}
-                        className="flex items-center text-base font-medium text-gray-800 hover:text-gray-600 transition-colors"
-                      >
-                        <svg
-                          data-slot="icon"
-                          fill="none"
-                          stroke-width="1.5"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                          xmlns="http://www.w3.org/2000/svg"
-                          aria-hidden="true"
-                          className="w-7 h-7 mr-2"
-                        >
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25ZM13.5 6a2.25 2.25 0 0 1 2.25-2.25H18A2.25 2.25 0 0 1 20.25 6v2.25A2.25 2.25 0 0 1 18 10.5h-2.25a2.25 2.25 0 0 1-2.25-2.25V6ZM13.5 15.75a2.25 2.25 0 0 1 2.25-2.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-2.25A2.25 2.25 0 0 1 13.5 18v-2.25Z"
-                          ></path>
-                        </svg>
-                        Tổng quan
-                      </Link>
-                      <Link
-                        to={ROUTER_URL.PROFILE}
-                        className="flex items-center text-base font-medium text-gray-800 hover:text-gray-600 transition-colors"
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          strokeWidth={1.5}
-                          stroke="currentColor"
-                          className="w-7 h-7 mr-2"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+              <Dropdown
+                menu={{
+                  items: [
+                    {
+                      key: 'userInfo',
+                      label: (
+                        <div className="px-4 py-3 flex items-center space-x-3 border-b border-gray-100">
+                          <Avatar
+                            src={getAvatar()}
+                            icon={<UserOutlined />}
+                            size={40}
+                            className="border border-gray-200"
                           />
-                        </svg>
-                        Thông tin tài khoản
-                      </Link>
-                    </div>
-                    <button
-                      className="w-full mt-2 text-center text-base font-medium text-white bg-red-600 hover:bg-red-700 transition-colors px-3 py-2 rounded-md"
-                      onClick={logout}
-                    >
-                      Đăng xuất
-                    </button>
-                  </div>
-                )}
-              </div>
+                          <div>
+                            <div className="font-medium">
+                              {userProfile?.fullname || userInfo?.fullName}
+                            </div>
+                            <div className="text-sm text-gray-500">
+                              {userProfile?.phoneNumber || '0869872830'}
+                            </div>
+                          </div>
+                        </div>
+                      ),
+                      style: { padding: 0 },
+                    },
+                    {
+                      key: 'overview',
+                      label: (
+                        <Link
+                          to={getOverviewLink()}
+                          className="flex items-center space-x-3"
+                        >
+                          <span className="text-gray-700">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="h-5 w-5"
+                              viewBox="0 0 20 20"
+                              fill="currentColor"
+                            >
+                              <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                            </svg>
+                          </span>
+                          <span>Tổng quan</span>
+                        </Link>
+                      ),
+                    },
+                    {
+                      key: 'profile',
+                      label: (
+                        <Link
+                          to={getProfileLink()}
+                          className="flex items-center space-x-3"
+                        >
+                          <span className="text-gray-700">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="h-5 w-5"
+                              viewBox="0 0 20 20"
+                              fill="currentColor"
+                            >
+                              <path
+                                fillRule="evenodd"
+                                d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                                clipRule="evenodd"
+                              />
+                            </svg>
+                          </span>
+                          <span>Thông tin tài khoản</span>
+                        </Link>
+                      ),
+                    },
+                    {
+                      key: 'logout',
+                      label: (
+                        <button
+                          onClick={logout}
+                          className="w-full text-center py-2 bg-red-600 hover:bg-red-700 text-white font-medium transition-colors rounded"
+                        >
+                          Đăng xuất
+                        </button>
+                      ),
+                      style: { padding: '0 16px', marginTop: '8px' },
+                    },
+                  ],
+                }}
+                placement="bottomRight"
+                arrow={true}
+                open={isDropdownOpen}
+                onOpenChange={toggleDropdown}
+                trigger={['click']}
+              >
+                <div className="flex items-center gap-3 cursor-pointer hover:bg-gray-50 px-3 py-1 rounded-full transition-all duration-200">
+                  {loading ? (
+                    <Spin size="small" />
+                  ) : (
+                    <Avatar
+                      src={getAvatar()}
+                      icon={<UserOutlined />}
+                      size="default"
+                      className="border border-gray-200"
+                    />
+                  )}
+                  <span className="font-medium text-gray-800">
+                    {userProfile?.fullname || userInfo?.fullName}
+                  </span>
+                </div>
+              </Dropdown>
             ) : (
               <>
                 <Link to={ROUTER_URL.LOGIN} className="btn-custom-secondary">

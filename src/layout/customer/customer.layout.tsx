@@ -1,17 +1,22 @@
 import { Link, Outlet } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { Layout } from 'antd';
+import { Layout, Spin, Dropdown, Avatar } from 'antd';
+import { UserOutlined } from '@ant-design/icons';
 import { Footer } from '../main-layout/footer';
 import { useAuth } from '../../contexts/AuthContexts';
 import CustomerNavbar from './customer.navbar';
 import logo1 from '../../assets/Elecee_logo.jpg';
 import { ROUTER_URL } from '../../const/router.path';
+import { UserService } from '../../services/user/user.service';
+import { User } from '../../models/modules/User';
 const { Header, Content } = Layout;
 
 const CustomerLayout = () => {
   const [showSearch, setShowSearch] = useState(false);
   const { getCurrentUser, logout } = useAuth();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [userProfile, setUserProfile] = useState<User | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const handleSearchClick = () => {
     setShowSearch(true);
@@ -29,15 +34,42 @@ const CustomerLayout = () => {
     }
   }, [showSearch]);
 
-  const isLoggedIn = !!getCurrentUser();
-  const userInfo = getCurrentUser();
+  const currentUser = getCurrentUser();
+  const isLoggedIn = !!currentUser;
 
-  const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
+  // Fetch user profile including avatar
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      if (currentUser?.id) {
+        setLoading(true);
+        try {
+          const response = await UserService.getById(currentUser.id);
+          if (response && response.data) {
+            const userData = response.data?.data || response.data;
+            setUserProfile(userData);
+          }
+        } catch (error) {
+          console.error('Failed to fetch user profile:', error);
+        } finally {
+          setLoading(false);
+        }
+      }
+    };
+
+    if (isLoggedIn) {
+      fetchUserProfile();
+    }
+  }, [currentUser?.id, isLoggedIn]);
+
+  const toggleDropdown = (flag: boolean) => {
+    setIsDropdownOpen(flag);
   };
 
   const getAvatar = () => {
-    return 'https://res.cloudinary.com/dsqbxgh88/image/upload/v1732626514/j8kpw2s84uwmoyxdokgq.jpg';
+    return (
+      userProfile?.avatar ||
+      'https://res.cloudinary.com/dsqbxgh88/image/upload/v1732626514/j8kpw2s84uwmoyxdokgq.jpg'
+    );
   };
   return (
     <Layout className="min-h-screen flex flex-col">
@@ -125,49 +157,100 @@ const CustomerLayout = () => {
               {/* Auth Buttons */}
               <div className="flex items-center justify-center space-x-1">
                 {isLoggedIn ? (
-                  <div className="relative">
-                    <button
-                      className="flex items-center space-x-2 focus:outline-none"
-                      onClick={toggleDropdown}
-                    >
-                      <img
-                        src={getAvatar()}
-                        alt="Avatar"
-                        className="w-8 h-8 rounded-full"
-                      />
-                      <span className="text-gray-600">
-                        {userInfo?.fullName}
+                  <Dropdown
+                    menu={{
+                      items: [
+                        {
+                          key: 'userInfo',
+                          label: (
+                            <div className="px-4 py-3 flex items-center space-x-3 border-b border-gray-100">
+                              <Avatar
+                                src={getAvatar()}
+                                icon={<UserOutlined />}
+                                size={40}
+                                className="border border-gray-200"
+                              />
+                              <div>
+                                <div className="font-medium">
+                                  {userProfile?.fullname ||
+                                    currentUser?.fullName}
+                                </div>
+                                <div className="text-sm text-gray-500">
+                                  {userProfile?.phoneNumber || '0869872830'}
+                                </div>
+                              </div>
+                            </div>
+                          ),
+                          style: { padding: 0 },
+                        },
+                        {
+                          key: 'profile',
+                          label: (
+                            <Link
+                              to={ROUTER_URL.ADMIN.PROFILE}
+                              className="flex items-center space-x-3"
+                            >
+                              <span className="text-gray-700">
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  className="h-5 w-5"
+                                  viewBox="0 0 20 20"
+                                  fill="currentColor"
+                                >
+                                  <path
+                                    fillRule="evenodd"
+                                    d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                                    clipRule="evenodd"
+                                  />
+                                </svg>
+                              </span>
+                              <span>Thông tin tài khoản</span>
+                            </Link>
+                          ),
+                        },
+                        {
+                          key: 'logout',
+                          label: (
+                            <button
+                              onClick={logout}
+                              className="w-full text-center py-2 bg-red-600 hover:bg-red-700 text-white font-medium transition-colors rounded"
+                            >
+                              Đăng xuất
+                            </button>
+                          ),
+                          style: { padding: '0 16px', marginTop: '8px' },
+                        },
+                      ],
+                    }}
+                    placement="bottomRight"
+                    arrow={true}
+                    open={isDropdownOpen}
+                    onOpenChange={toggleDropdown}
+                    trigger={['click']}
+                  >
+                    <div className="flex items-center gap-3 cursor-pointer hover:bg-gray-50 px-3 py-1 rounded-full transition-all duration-200">
+                      {loading ? (
+                        <Spin size="small" />
+                      ) : (
+                        <Avatar
+                          src={getAvatar()}
+                          icon={<UserOutlined />}
+                          size="default"
+                          className="border border-gray-200"
+                        />
+                      )}
+                      <span className="font-medium text-gray-800">
+                        {userProfile?.fullname || currentUser?.fullName}
                       </span>
-                    </button>
-                    {isDropdownOpen && (
-                      <div className="absolute right-0 -mt-4 w-60 bg-white border border-gray-200 rounded-md shadow-md p-4">
-                        <div className="flex items-center space-x-2 px-3 mb-2 -mt-4">
-                          <img
-                            src={getAvatar()}
-                            alt="Avatar"
-                            className="w-10 h-10 rounded-full mt-6"
-                          />
-                          <div>
-                            <div className="font-medium text-gray-800">
-                              {userInfo?.fullName}
-                            </div>
-                            <div className="text-sm text-gray-500 -mt-5">
-                              0869872830
-                            </div>
-                          </div>
-                        </div>
-
-                        <button
-                          className="w-full mt-2 text-center text-base font-medium text-white bg-red-600 hover:bg-red-700 transition-colors px-3 py-2 rounded-md"
-                          onClick={logout}
-                        >
-                          Đăng xuất
-                        </button>
-                      </div>
-                    )}
-                  </div>
+                    </div>
+                  </Dropdown>
                 ) : (
-                  <></>
+                  <Link
+                    to="/login"
+                    className="text-gray-800 hover:text-red-600"
+                  >
+                    Đăng nhập
+                  </Link>
                 )}
               </div>
             </div>
