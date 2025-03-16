@@ -126,16 +126,16 @@ export const Header = () => {
 
         {/* Navigation Links */}
         <nav className="hidden md:flex space-x-8 font-bold">
-          <Link to="/" className="tab-custom">
+          <Link to={ROUTER_URL.COMMON.HOME} className="tab-custom">
             TRANG CHỦ
           </Link>
-          <Link to="/about" className="tab-custom">
+          <Link to={ROUTER_URL.COMMON.ABOUT} className="tab-custom">
             GIỚI THIỆU
           </Link>
-          <Link to="/product" className="tab-custom">
+          <Link to={ROUTER_URL.COMMON.PRODUCT} className="tab-custom">
             SẢN PHẨM
           </Link>
-          <Link to="/guide" className="tab-custom">
+          <Link to={ROUTER_URL.COMMON.GUIDE} className="tab-custom">
             HƯỚNG DẪN
           </Link>
         </nav>

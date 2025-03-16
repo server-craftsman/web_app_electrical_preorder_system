@@ -1,12 +1,12 @@
 import { lazy } from 'react';
 import { ROUTER_URL } from '../../const/router.path';
 import { RouteObject } from 'react-router-dom';
-import AboutPage from '../../pages/customer/about';
-import GuidePage from '../../pages/customer/guide';
 
 //================= PUBLIC SUB PATHS =================
 import { MainLayout } from '../../layout/main-layout/main.layout';
-import ProductsPage from '../../pages/publish/products';
+const AboutPage = lazy(() => import('../../pages/customer/about'));
+const GuidePage = lazy(() => import('../../pages/customer/guide'));
+const ProductsPage = lazy(() => import('../../pages/publish/products'));
 const Login = lazy(() => import('../../pages/login'));
 const Register = lazy(() => import('../../pages/register'));
 const Home = lazy(() => import('../../pages/home'));
