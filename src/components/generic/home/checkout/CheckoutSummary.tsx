@@ -13,7 +13,7 @@ interface CheckoutSummaryProps {
   onProceed?: () => void;
 }
 
-const CheckoutSummary: React.FC<CheckoutSummaryProps> = ({ onProceed }) => {
+const CheckoutSummary: React.FC<CheckoutSummaryProps> = () => {
   const { cartItems, updateQuantity } = useCart();
   const subtotal = cartItems.reduce(
     (total, item) => total + item.price * item.quantity,

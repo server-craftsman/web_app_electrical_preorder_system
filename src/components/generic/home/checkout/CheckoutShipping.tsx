@@ -1,24 +1,11 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import {
-  Card,
-  Typography,
-  Radio,
-  Button,
-  Divider,
-  message,
-  InputNumber,
-} from 'antd';
+import { Card, Typography, Radio, Button, Divider, InputNumber } from 'antd';
 import {
   CreditCardOutlined,
   DollarOutlined,
   ShoppingCartOutlined,
 } from '@ant-design/icons';
 import { useCart } from '../../../../contexts/CartContext';
-import { PaymentMethod } from '../../../../app/enums';
-import { CreateOrderRequestModel } from '../../../../models/api/request/order.req.model';
-import { CreatePaymentRequestModel } from '../../../../models/api/request/payment.req.model';
-
 const { Title, Text } = Typography;
 
 interface CheckoutShippingProps {
@@ -27,14 +14,9 @@ interface CheckoutShippingProps {
   onCheckout: () => void;
 }
 
-const CheckoutShipping: React.FC<CheckoutShippingProps> = ({
-  shippingInfo,
-  isFormValid,
-  onCheckout,
-}) => {
+const CheckoutShipping: React.FC<CheckoutShippingProps> = ({ onCheckout }) => {
   const [paymentMethod, setPaymentMethod] = useState('cod');
-  const [loading, setLoading] = useState(false);
-  const { cartItems, clearCart } = useCart();
+  const { cartItems } = useCart();
   const [quantity, setQuantity] = useState(
     cartItems.reduce((total, item) => total + item.quantity, 0)
   );
@@ -113,7 +95,6 @@ const CheckoutShipping: React.FC<CheckoutShippingProps> = ({
             type="primary"
             size="large"
             icon={<ShoppingCartOutlined />}
-            loading={loading}
             className="h-12 px-8 bg-gradient-to-r from-blue-600 to-blue-500 border-0 rounded-lg shadow-md hover:shadow-lg transition-all duration-300"
             onClick={onCheckout}
           >
@@ -124,12 +105,6 @@ const CheckoutShipping: React.FC<CheckoutShippingProps> = ({
             </span>
           </Button>
         </div>
-
-        {loading && (
-          <div className="mt-6 flex flex-col items-center">
-            <p className="mt-4 text-gray-600">Đang xử lý đơn hàng của bạn...</p>
-          </div>
-        )}
       </div>
     </div>
   );

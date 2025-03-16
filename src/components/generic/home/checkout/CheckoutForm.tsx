@@ -1,20 +1,15 @@
 import { useEffect } from 'react';
-import { Input, Form, Row, Col, Typography, Button, Select } from 'antd';
+import { Input, Form, Row, Col, Typography, Button } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { ROUTER_URL } from '../../../../const';
 import { useAuth } from '../../../../contexts/AuthContexts';
 import {
   UserOutlined,
-  MailOutlined,
   PhoneOutlined,
-  HomeOutlined,
   EnvironmentOutlined,
-  BankOutlined,
-  TagOutlined,
 } from '@ant-design/icons';
 
 const { Title, Text } = Typography;
-const { Option } = Select;
 
 interface CheckoutFormProps {
   onFormValuesChange: (values: any) => void;
@@ -48,6 +43,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
 
   const handleValuesChange = (changedValues: any, allValues: any) => {
     onFormValuesChange(allValues);
+    console.log(changedValues);
   };
 
   return (
