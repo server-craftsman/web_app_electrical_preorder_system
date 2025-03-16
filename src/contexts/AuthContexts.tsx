@@ -19,8 +19,8 @@ import { ROUTER_URL } from '../const/router.path';
 import { UserRole, HTTP_STATUS } from '../app/enums';
 import { AuthContextType } from '../app/interface/auth.context.interface';
 import { JwtPayload } from 'jwt-decode';
-import { getFCMToken } from "../services/config/firebaseConfig";
-import { UserService } from "../services/user/user.service";
+import { getFCMToken } from '../services/config/firebaseConfig';
+import { UserService } from '../services/user/user.service';
 interface DecodedToken extends JwtPayload {
   role: UserRole;
   sub: string;
@@ -145,15 +145,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           const fcmToken = await getFCMToken();
           if (fcmToken) {
             await UserService.deviceToken(userInfo.id, { token: fcmToken });
-            console.log("FCM token registered successfully");
+            console.log('FCM token registered successfully');
           } else {
-            console.log("FCM token not available");
+            console.log('FCM token not available');
           }
         } catch (fcmError) {
-          console.error("Error with FCM token registration:", fcmError);
+          console.error('Error with FCM token registration:', fcmError);
           // Continue with login process even if FCM registration fails
         }
-        
+
         navigate(getDefaultPath(userInfo.role as UserRole));
       }
     } catch (error) {
@@ -165,7 +165,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const logout = () => {
-    
     storage.clearLocalStorage();
     storage.removeItemInLocalStorage('role');
     storage.removeItemInLocalStorage('accessToken');
@@ -174,10 +173,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setIsRoleSet(false);
     setRole(null);
     navigate(ROUTER_URL.COMMON.HOME);
-    if (!localStorage.getItem('isReloaded')) {
-    localStorage.setItem('isReloaded', 'true');
-     window.location.reload();
-    }
+    // if (!localStorage.getItem('isReloaded')) {
+    // localStorage.setItem('isReloaded', 'true');
+    //  window.location.reload();
+    // }
   };
 
   const getCurrentUser = () => {

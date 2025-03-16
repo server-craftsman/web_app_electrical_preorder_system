@@ -34,7 +34,6 @@ const CreateCampaign: React.FC<CreateCampaignProps> = ({
   }, [form, formRef]);
 
   const [products, setProducts] = useState<Product[]>([]);
-  const [status, setStatus] = useState<string>(CampaignStatus.SCHEDULED); // Tùy chọn trạng thái
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -82,7 +81,6 @@ const CreateCampaign: React.FC<CreateCampaignProps> = ({
       'endDate',
     ]);
     const newStatus = determineCampaignStatus(startDate, endDate);
-    setStatus(newStatus); // Cập nhật trạng thái trong state
     form.setFieldsValue({ status: newStatus }); // Cập nhật giá trị trong form
   };
 
@@ -122,7 +120,7 @@ const CreateCampaign: React.FC<CreateCampaignProps> = ({
         ...values,
         startDate: formatDateWithUTC7(values.startDate),
         endDate: formatDateWithUTC7(values.endDate),
-        status: status,
+        // status: status,
       };
 
       const response = await CampaignService.create(formattedValues);
@@ -134,7 +132,6 @@ const CreateCampaign: React.FC<CreateCampaignProps> = ({
         onCategoryCreated(); // Cập nhật danh sách
         onClose(); // Đóng modal
         form.resetFields(); // Xóa dữ liệu form
-        setStatus(CampaignStatus.SCHEDULED);
       } else {
         helper.notificationMessage('Lỗi khi tạo chiến dịch!', 'error');
       }
@@ -316,7 +313,7 @@ const CreateCampaign: React.FC<CreateCampaignProps> = ({
                 <InputNumber min={0} className="w-full rounded-md" />
               </Form.Item>
             </Col>
-            <Col span={10}>
+            {/* <Col span={10}>
               <Form.Item
                 name="totalAmount"
                 label={
@@ -334,7 +331,7 @@ const CreateCampaign: React.FC<CreateCampaignProps> = ({
                   }
                 />
               </Form.Item>
-            </Col>
+            </Col> */}
           </Row>
 
           <Row gutter={16}>
@@ -362,7 +359,7 @@ const CreateCampaign: React.FC<CreateCampaignProps> = ({
                 </Select>
               </Form.Item>
             </Col>
-            <Col span={12}>
+            {/* <Col span={12}>
               <Form.Item
                 name="status"
                 label={
@@ -378,14 +375,12 @@ const CreateCampaign: React.FC<CreateCampaignProps> = ({
                 >
                   {Object.values(CampaignStatus).map((statusOption) => (
                     <Select.Option key={statusOption} value={statusOption}>
-                      {/* <Tag color={helper.formatCampaignStatus(statusOption)}> */}
                       {statusOption}
-                      {/* </Tag> */}
                     </Select.Option>
                   ))}
                 </Select>
               </Form.Item>
-            </Col>
+            </Col> */}
           </Row>
         </div>
 

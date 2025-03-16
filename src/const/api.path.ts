@@ -49,4 +49,10 @@ export const API_PATH = {
     MARK_AS_READ: (notificationId: string) => `/notifications/${notificationId}`,
     GET_BY_USER: (userId: string) => `/notifications/${userId}`,
   },
+  ORDER: {
+    CREATE: '/orders',
+  },
+  PAYMENT: {
+    CREATE: '/payments',
+  },
 };

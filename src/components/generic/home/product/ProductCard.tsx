@@ -56,10 +56,10 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, campaign }) => {
   }, [campaign]);
 
   return (
-    <div className="bg-white shadow-md rounded-md overflow-hidden w-[258px] h-auto">
-      {/* Hình ảnh sản phẩm */}
+    <div className="bg-white shadow-lg rounded-lg overflow-hidden w-[258px] h-auto border border-gray-100 hover:shadow-xl transition-all duration-300">
+      {/* Hình ảnh sản phẩm - Fixed aspect ratio container */}
       <div
-        className="relative h-[240px] flex justify-center items-center overflow-hidden object-cover cursor-pointer"
+        className="relative w-full h-0 pb-[100%] overflow-hidden cursor-pointer"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
@@ -73,11 +73,11 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, campaign }) => {
               : product.imageProducts[0].imageUrl
           }
           alt={product.name}
-          className="w-full h-full object-cover transition-transform duration-300 ease-in-out hover:scale-110"
+          className="absolute top-0 left-0 w-full h-full object-contain transition-transform duration-500 ease-in-out hover:scale-105"
         />
         {/* Thêm vào giỏ hàng */}
         <div
-          className={`font-semibold absolute bottom-0 left-0 w-full bg-black text-white text-center py-2 transition-all duration-300 ease-in-out flex items-center justify-center gap-2 cursor-pointer ${
+          className={`font-semibold absolute bottom-0 left-0 w-full bg-black/80 backdrop-blur-sm text-white text-center py-3 transition-all duration-300 ease-in-out flex items-center justify-center gap-2 cursor-pointer ${
             isHovered
               ? 'opacity-100 translate-y-0'
               : 'opacity-0 translate-y-full'
@@ -103,67 +103,69 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, campaign }) => {
       </div>
 
       {/* Nội dung sản phẩm */}
-      <div className="flex flex-col p-4 space-y-4 py-6">
+      <div className="flex flex-col p-5 space-y-4">
         <h3
           onClick={() =>
             navigate(`${ROUTER_URL.COMMON.PRODUCT}/${product.slug}`)
           }
-          className="text-lg font-semibold text-left cursor-pointer hover:text-red-500 -mt-3 truncate w-full"
+          className="text-lg font-semibold text-left cursor-pointer hover:text-red-500 truncate w-full"
         >
           {product.name}
         </h3>
         <div className="flex justify-between items-center">
-          <span className="text-red-500 font-bold text-base">
+          <span className="text-red-600 font-bold text-xl">
             {formatCurrency(product.price)}
           </span>
         </div>
 
         {/* Đếm ngược khuyến mãi */}
         {campaign && (
-          <div className="text-black-800 p-2 rounded-md text-xs">
-            <div className="font-semibold text-center flex items-center justify-center gap-2 -mt-3">
-              <CalendarOutlined className="text-xl text-black-600" />
-              <span>Dự kiến ra mắt:</span>
+          <div className="bg-gray-50 p-3 rounded-md text-xs border-l-4 border-blue-500">
+            <div className="font-semibold text-center flex items-center justify-center gap-2">
+              <CalendarOutlined className="text-xl text-blue-600" />
+              <span className="text-gray-700">Dự kiến ra mắt:</span>
             </div>
 
             <div className="flex flex-col mt-2 text-center text-base">
-              <p>{new Date(campaign.startDate).toLocaleTimeString()}</p>
+              <p className="text-gray-700">
+                {new Date(campaign.startDate).toLocaleTimeString()}
+              </p>
             </div>
-            <div className="flex flex-col mt-2 text-center bg-blue-500 text-white px-3 py-1 rounded-md text-xl">
+            <div className="flex flex-col mt-2 text-center bg-gradient-to-r from-blue-600 to-blue-400 text-white px-3 py-2 rounded-md text-xl shadow-sm">
               <p>{new Date(campaign.startDate).toLocaleDateString()}</p>
             </div>
             {/* Đếm ngược dạng cột dọc */}
             {countdown ? (
-              <div className="flex items-center justify-center space-x-2 text-center font-bold text-lg mt-2">
-                <div className="flex flex-col">
+              <div className="flex items-center justify-center space-x-2 text-center font-bold text-lg mt-3 bg-gray-100 rounded-md p-2">
+                <div className="flex flex-col bg-white px-2 py-1 rounded shadow-sm">
                   <span>{countdown.days}</span>
-                  <p className="text-sm font-normal">Ngày</p>
+                  <p className="text-sm font-normal text-gray-600">Ngày</p>
                 </div>
-                <span className="text-xl">:</span>
-                <div className="flex flex-col">
+                <span className="text-xl text-gray-400">:</span>
+                <div className="flex flex-col bg-white px-2 py-1 rounded shadow-sm">
                   <span>{countdown.hours}</span>
-                  <p className="text-sm font-normal">Giờ</p>
+                  <p className="text-sm font-normal text-gray-600">Giờ</p>
                 </div>
-                <span className="text-xl">:</span>
-                <div className="flex flex-col">
+                <span className="text-xl text-gray-400">:</span>
+                <div className="flex flex-col bg-white px-2 py-1 rounded shadow-sm">
                   <span>{countdown.minutes}</span>
-                  <p className="text-sm font-normal">Phút</p>
+                  <p className="text-sm font-normal text-gray-600">Phút</p>
                 </div>
-                <span className="text-xl">:</span>
-                <div className="flex flex-col">
+                <span className="text-xl text-gray-400">:</span>
+                <div className="flex flex-col bg-white px-2 py-1 rounded shadow-sm">
                   <span>{countdown.seconds}</span>
-                  <p className="text-sm font-normal">Giây</p>
+                  <p className="text-sm font-normal text-gray-600">Giây</p>
                 </div>
               </div>
             ) : (
-              <div className="text-center text-sm mt-2 font-bold">
+              <div className="text-center text-sm mt-2 font-bold bg-green-100 text-green-700 py-2 rounded-md">
                 Đã ra mắt
               </div>
             )}
           </div>
         )}
 
-        <p className="text-gray-700 text-xs h-[50px] overflow-hidden">
+        <p className="text-gray-600 text-xs h-[50px] overflow-hidden border-l-2 border-gray-200 pl-2 italic">
           {product.description.slice(0, 50)}...
         </p>
       </div>
