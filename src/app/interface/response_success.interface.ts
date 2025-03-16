@@ -41,7 +41,7 @@ export interface ResponseProductDetailSuccess<T> {
   message: string;
   data: {
     product?: T;
-    campaign?: CampaignResponseModel;
+    campaigns?: CampaignResponseModel[];
     totalPages?: number;
     totalElements?: number;
     currentPage?: number;

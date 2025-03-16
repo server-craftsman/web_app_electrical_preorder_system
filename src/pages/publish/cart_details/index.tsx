@@ -40,10 +40,10 @@ const CartPage = () => {
     const fetchCampaignIds = async () => {
       try {
         const campaignIds = await Promise.all(
-          productsInCart.map(async (product) => {
+          productsInCart.map(async (product: any) => {
             try {
               const response = await ProductService.getBySlug(product.slug);
-              return response.data?.data?.campaign?.id;
+              return response.data?.data?.campaigns?.[0]?.id;
             } catch (error) {
               console.error('Error fetching campaign by slug:', error);
               return null;
@@ -51,7 +51,7 @@ const CartPage = () => {
           })
         );
 
-        const validCampaignIds = campaignIds.filter((id) => id !== null);
+        const validCampaignIds = campaignIds.filter((id: any) => id !== null);
         if (validCampaignIds.length > 0) {
           setCampaignId(validCampaignIds[0] || null);
         } else {

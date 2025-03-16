@@ -6,6 +6,7 @@ import { helper } from '../../../utils';
 import { Tag } from 'antd';
 import CampaignStageDisplay from './stage/Display';
 import CreateStage from './stage/Create';
+import { ProductStatus } from '../../../app/enums/product.enum';
 
 interface CampaignDetailsProps {
   refresh?: boolean;
@@ -202,7 +203,7 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
                         label="Status"
                         value={
                           <p
-                            className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${helper.formatProductStatus(campaign.product.status)}`}
+                            className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${helper.formatProductStatus(campaign.product.status as ProductStatus)}`}
                             dangerouslySetInnerHTML={{
                               __html: campaign.product.status,
                             }}

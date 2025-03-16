@@ -1,5 +1,5 @@
 import { toast, ToastOptions } from 'react-toastify';
-import { CampaignStatus } from '../app/enums';
+import { CampaignStatus, ProductStatus } from '../app/enums';
 import moment from 'moment';
 
 //===========validate output
@@ -101,19 +101,18 @@ export const formatCampaignStatus = (status: string) => {
       return `${baseClasses} bg-gray-400`;
   }
 };
-
-export const formatProductStatus = (status: string) => {
-  switch (status.toLowerCase()) {
-    case 'AVAILABLE':
-      return 'bg-green-500 text-white rounded-lg px-4 py-2';
-    case 'OUT_OF_STOCK':
-      return 'bg-yellow-500 text-white rounded-lg px-4 py-2';
-    case 'PREORDER':
-      return 'bg-blue-500 text-white rounded-lg px-4 py-2';
-    case 'DISCONTINUED':
-      return 'bg-red-500 text-white rounded-lg px-4 py-2';
+export const formatProductStatus = (status: ProductStatus) => {
+  switch (status) {
+    case ProductStatus.AVAILABLE:
+      return 'green';
+    case ProductStatus.OUT_OF_STOCK:
+      return 'yellow';
+    case ProductStatus.PREORDER:
+      return 'blue';
+    case ProductStatus.DISCONTINUED:
+      return 'red';
     default:
-      return 'bg-gray-500 text-white rounded-lg px-4 py-2';
+      return 'gray';
   }
 };
 
