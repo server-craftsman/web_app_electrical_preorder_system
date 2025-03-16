@@ -3,18 +3,34 @@ import { useCart } from '../../../../contexts/CartContext';
 import { Button } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { ShoppingOutlined, CreditCardOutlined } from '@ant-design/icons';
+import { GetAllProductResponseModel } from '../../../../models/api/response/product.res.model';
 
 interface CartSummaryProps {
   selectedItems: string[];
+  campaignId: string | null;
+  products: GetAllProductResponseModel[];
 }
 
-const CartSummary: React.FC<CartSummaryProps> = ({ selectedItems }) => {
+const CartSummary: React.FC<CartSummaryProps> = ({
+  selectedItems,
+  campaignId,
+}) => {
   const { cartItems } = useCart();
   const navigate = useNavigate();
 
   const totalPrice = cartItems
     .filter((item) => selectedItems.includes(item.id))
     .reduce((total, item) => total + item.price * item.quantity, 0);
+
+  const handleCheckout = async () => {
+    // if (!campaignId) {
+    //   console.error('No campaign ID available for checkout');
+    //   return;
+    // }
+
+    // Navigate to the checkout page with the campaignId as a query parameter
+    navigate(`/checkout?campaignId=${campaignId}`);
+  };
 
   return (
     <div className="bg-white p-8 rounded-xl shadow-md w-full max-w-sm border border-gray-100">
@@ -47,7 +63,7 @@ const CartSummary: React.FC<CartSummaryProps> = ({ selectedItems }) => {
         <Button
           type="primary"
           className="w-full h-12 bg-gradient-to-r from-blue-600 to-blue-500 border-0 rounded-lg shadow-md hover:shadow-lg transition-all duration-300"
-          onClick={() => navigate('/checkout')}
+          onClick={handleCheckout}
           disabled={selectedItems.length === 0}
           icon={<CreditCardOutlined />}
         >
@@ -55,7 +71,6 @@ const CartSummary: React.FC<CartSummaryProps> = ({ selectedItems }) => {
             Tiến hành thanh toán
           </span>
         </Button>
-
         <Button
           type="default"
           className="w-full h-12 border border-gray-200 rounded-lg hover:border-blue-300 hover:text-blue-600 transition-all duration-300"

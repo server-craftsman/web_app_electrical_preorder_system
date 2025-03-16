@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Input, Form, Row, Col, Typography, Button } from 'antd';
+import { Input, Form, Row, Col, Typography, Button, Select } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { ROUTER_URL } from '../../../../const';
 import { useAuth } from '../../../../contexts/AuthContexts';
@@ -10,26 +10,45 @@ import {
   HomeOutlined,
   EnvironmentOutlined,
   BankOutlined,
+  TagOutlined,
 } from '@ant-design/icons';
 
 const { Title, Text } = Typography;
+const { Option } = Select;
 
-const CheckoutForm: React.FC = () => {
+interface CheckoutFormProps {
+  onFormValuesChange: (values: any) => void;
+  formValues: any;
+  campaigns?: Array<{ id: string; name: string }>;
+}
+
+const CheckoutForm: React.FC<CheckoutFormProps> = ({
+  onFormValuesChange,
+  formValues,
+  campaigns = [],
+}) => {
   const { getCurrentUser, logout } = useAuth();
   const user = getCurrentUser();
   const [form] = Form.useForm();
   const navigate = useNavigate();
 
   useEffect(() => {
-    form.setFieldsValue({
-      fullName: user?.fullName || '',
-      email: user?.email || user?.sub || '',
-      phone: '',
-      district: '',
-      city: '',
-      address: '',
-    });
-  }, [user, form]);
+    const initialValues = {
+      buyerName: user?.fullName || '',
+      buyerPhone: '',
+      buyerAddress: '',
+      campaignId:
+        formValues.campaignId || (campaigns.length > 0 ? campaigns[0].id : ''),
+      ...formValues,
+    };
+
+    form.setFieldsValue(initialValues);
+    onFormValuesChange(initialValues);
+  }, [user, form, onFormValuesChange, campaigns, formValues.campaignId]);
+
+  const handleValuesChange = (changedValues: any, allValues: any) => {
+    onFormValuesChange(allValues);
+  };
 
   return (
     <div className="bg-white p-8 rounded-xl shadow-sm border border-gray-100">
@@ -75,9 +94,14 @@ const CheckoutForm: React.FC = () => {
         </div>
       )}
 
-      <Form form={form} layout="vertical" className="mt-4">
+      <Form
+        form={form}
+        layout="vertical"
+        className="mt-4"
+        onValuesChange={handleValuesChange}
+      >
         <Form.Item
-          name="fullName"
+          name="buyerName"
           rules={[{ required: true, message: 'Vui lòng nhập họ và tên!' }]}
           className="mb-5"
         >
@@ -90,26 +114,9 @@ const CheckoutForm: React.FC = () => {
         </Form.Item>
 
         <Row gutter={20}>
-          <Col span={16}>
-            <Form.Item
-              name="email"
-              rules={[
-                { required: true, message: 'Vui lòng nhập email!' },
-                { type: 'email', message: 'Email không hợp lệ!' },
-              ]}
-              className="mb-5"
-            >
-              <Input
-                prefix={<MailOutlined className="text-gray-400 mr-2" />}
-                placeholder="Email"
-                size="large"
-                className="rounded-lg py-2 px-4"
-              />
-            </Form.Item>
-          </Col>
           <Col span={8}>
             <Form.Item
-              name="phone"
+              name="buyerPhone"
               rules={[
                 { required: true, message: 'Vui lòng nhập số điện thoại!' },
               ]}
@@ -126,50 +133,41 @@ const CheckoutForm: React.FC = () => {
         </Row>
 
         <Form.Item
-          name="address"
+          name="buyerAddress"
           rules={[{ required: true, message: 'Vui lòng nhập địa chỉ!' }]}
           className="mb-5"
         >
           <Input
-            prefix={<HomeOutlined className="text-gray-400 mr-2" />}
+            prefix={<EnvironmentOutlined className="text-gray-400 mr-2" />}
             placeholder="Địa chỉ"
             size="large"
             className="rounded-lg py-2 px-4"
           />
         </Form.Item>
 
-        <Row gutter={20}>
-          <Col span={12}>
-            <Form.Item
-              name="district"
-              rules={[
-                { required: true, message: 'Vui lòng nhập quận, huyện!' },
-              ]}
-              className="mb-5"
-            >
-              <Input
-                prefix={<EnvironmentOutlined className="text-gray-400 mr-2" />}
-                placeholder="Quận, huyện"
-                size="large"
-                className="rounded-lg py-2 px-4"
-              />
-            </Form.Item>
-          </Col>
-          <Col span={12}>
-            <Form.Item
-              name="city"
-              rules={[{ required: true, message: 'Vui lòng nhập thành phố!' }]}
-              className="mb-5"
-            >
-              <Input
-                prefix={<BankOutlined className="text-gray-400 mr-2" />}
-                placeholder="Thành phố"
-                size="large"
-                className="rounded-lg py-2 px-4"
-              />
-            </Form.Item>
-          </Col>
-        </Row>
+        {/* <Form.Item
+          name="campaignId"
+          label="Chọn chiến dịch"
+          rules={[{ required: true, message: 'Vui lòng chọn chiến dịch!' }]}
+          className="mb-5"
+        >
+          <Select
+            size="large"
+            placeholder="Chọn chiến dịch"
+            className="rounded-lg"
+            suffixIcon={<TagOutlined className="text-gray-400" />}
+          >
+            {campaigns.length > 0 ? (
+              campaigns.map((campaign) => (
+                <Option key={campaign.id} value={campaign.id}>
+                  {campaign.name}
+                </Option>
+              ))
+            ) : (
+              <Option value="">Mặc định</Option>
+            )}
+          </Select>
+        </Form.Item> */}
       </Form>
     </div>
   );

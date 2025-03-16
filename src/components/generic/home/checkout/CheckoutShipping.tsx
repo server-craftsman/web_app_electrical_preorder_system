@@ -1,20 +1,43 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Card, Typography, Radio, Button, Divider } from 'antd';
+import {
+  Card,
+  Typography,
+  Radio,
+  Button,
+  Divider,
+  message,
+  InputNumber,
+} from 'antd';
 import {
   CreditCardOutlined,
   DollarOutlined,
-  SafetyOutlined,
-  CheckCircleOutlined,
+  ShoppingCartOutlined,
 } from '@ant-design/icons';
+import { useCart } from '../../../../contexts/CartContext';
+import { PaymentMethod } from '../../../../app/enums';
+import { CreateOrderRequestModel } from '../../../../models/api/request/order.req.model';
+import { CreatePaymentRequestModel } from '../../../../models/api/request/payment.req.model';
 
 const { Title, Text } = Typography;
 
-const CheckoutShipping: React.FC = () => {
+interface CheckoutShippingProps {
+  shippingInfo: any;
+  isFormValid: boolean;
+  onCheckout: () => void;
+}
+
+const CheckoutShipping: React.FC<CheckoutShippingProps> = ({
+  shippingInfo,
+  isFormValid,
+  onCheckout,
+}) => {
   const [paymentMethod, setPaymentMethod] = useState('cod');
-  const navigate = useNavigate();
-  const successUrl = 'http://localhost:3000/payment-success';
-  const qrCodeUrl = `https://quickchart.io/qr?text=${encodeURIComponent(successUrl)}&size=200`;
+  const [loading, setLoading] = useState(false);
+  const { cartItems, clearCart } = useCart();
+  const [quantity, setQuantity] = useState(
+    cartItems.reduce((total, item) => total + item.quantity, 0)
+  );
 
   return (
     <div className="bg-white p-8 rounded-xl shadow-sm border border-gray-100 mt-6">
@@ -26,6 +49,19 @@ const CheckoutShipping: React.FC = () => {
       </div>
 
       <div className="mt-4">
+        <div className="mb-6">
+          <Text strong className="text-gray-700 block mb-2">
+            Số lượng sản phẩm:
+          </Text>
+          <InputNumber
+            min={1}
+            value={quantity}
+            onChange={(value) => setQuantity(value as number)}
+            className="w-32"
+            size="large"
+          />
+        </div>
+
         <Card className="border-0 shadow-sm rounded-xl overflow-hidden">
           <Radio.Group
             onChange={(e) => setPaymentMethod(e.target.value)}
@@ -72,32 +108,26 @@ const CheckoutShipping: React.FC = () => {
           </Radio.Group>
         </Card>
 
-        {paymentMethod === 'payos' && (
-          <div className="mt-6 flex flex-col items-center bg-blue-50 p-6 rounded-xl border border-blue-100">
-            <div className="w-14 h-14 rounded-full bg-blue-100 flex items-center justify-center mb-4">
-              <SafetyOutlined className="text-blue-600 text-2xl" />
-            </div>
-            <Title level={4} className="text-gray-800 m-0 mb-4">
-              Quét mã QR để thanh toán
-            </Title>
+        <div className="mt-6 flex justify-center">
+          <Button
+            type="primary"
+            size="large"
+            icon={<ShoppingCartOutlined />}
+            loading={loading}
+            className="h-12 px-8 bg-gradient-to-r from-blue-600 to-blue-500 border-0 rounded-lg shadow-md hover:shadow-lg transition-all duration-300"
+            onClick={onCheckout}
+          >
+            <span className="ml-2 font-medium">
+              {paymentMethod === 'cod'
+                ? 'Hoàn tất đặt hàng'
+                : 'Thanh toán ngay'}
+            </span>
+          </Button>
+        </div>
 
-            <div className="bg-white p-3 rounded-xl shadow-sm">
-              <img src={qrCodeUrl} alt="QR Code" className="w-48 h-48" />
-            </div>
-
-            <p className="text-gray-600 text-sm mt-4 text-center max-w-md">
-              Sử dụng ứng dụng ngân hàng hoặc ví điện tử để quét mã QR. Sau khi
-              quét, bạn sẽ được chuyển đến trang xác nhận thanh toán.
-            </p>
-
-            <Button
-              type="primary"
-              className="mt-6 h-12 px-8 bg-gradient-to-r from-blue-600 to-blue-500 border-0 rounded-lg shadow-md hover:shadow-lg transition-all duration-300"
-              onClick={() => navigate('/payment-success')}
-              icon={<CheckCircleOutlined />}
-            >
-              <span className="ml-2 font-medium">Tôi đã thanh toán</span>
-            </Button>
+        {loading && (
+          <div className="mt-6 flex flex-col items-center">
+            <p className="mt-4 text-gray-600">Đang xử lý đơn hàng của bạn...</p>
           </div>
         )}
       </div>
