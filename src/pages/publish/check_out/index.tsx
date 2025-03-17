@@ -6,9 +6,11 @@ import CheckoutSummary from '../../../components/generic/home/checkout/CheckoutS
 import { CampaignService } from '../../../services/campaign/campaign.service';
 import { OrderService } from '../../../services/order/order.service';
 import { PaymentService } from '../../../services/payment/payment.service';
-import { message } from 'antd';
+import { PaymentMethod } from '../../../app/enums';
 import logo1 from '../../../assets/Elecee_logo.jpg';
+import { useCart } from '../../../contexts/CartContext';
 import { Link } from 'react-router-dom';
+import { helper } from '../../../utils';
 
 const CheckoutPage: React.FC = () => {
   const [formValues, setFormValues] = useState<any>({});
@@ -19,6 +21,7 @@ const CheckoutPage: React.FC = () => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const campaignId = queryParams.get('campaignId');
+  const { cartItems } = useCart();
 
   useEffect(() => {
     const fetchCampaigns = async () => {
@@ -34,7 +37,10 @@ const CheckoutPage: React.FC = () => {
         }
       } catch (error) {
         console.error('Error fetching campaigns:', error);
-        message.error('Không thể tải danh sách chiến dịch');
+        helper.notificationMessage(
+          'Không thể tải danh sách chiến dịch',
+          'error'
+        );
       }
     };
 
@@ -52,43 +58,82 @@ const CheckoutPage: React.FC = () => {
 
   const handleCheckout = async () => {
     if (!isFormValid) {
-      message.error('Vui lòng điền đầy đủ thông tin vận chuyển');
+      helper.notificationMessage(
+        'Vui lòng điền đầy đủ thông tin vận chuyển',
+        'error'
+      );
+      return;
+    }
+
+    // Validate campaign ID
+    if (!formValues.campaignId) {
+      helper.notificationMessage(
+        'Không tìm thấy chiến dịch. Vui lòng thử lại.',
+        'error'
+      );
       return;
     }
 
     try {
       // Create order
       const orderRequest = {
-        campaignId: formValues.campaignId || '',
-        quantity: formValues.quantity || 0,
+        campaignId: formValues.campaignId,
+        quantity: cartItems.reduce(
+          (total, item) => total + (item.quantity || 1),
+          0
+        ),
       };
+
+      console.log('Order request:', orderRequest); // Debug log
+
       const orderResponse = await OrderService.createOrder(orderRequest);
       const newOrderId = orderResponse.data.data.orderId;
 
       // Handle payment
-      if (formValues.paymentMethod === 'payos') {
+      if (formValues.paymentMethod === PaymentMethod.BANK_TRANSFER) {
         const paymentRequest = {
           orderIds: [newOrderId],
           buyerName: formValues.buyerName,
           buyerPhone: formValues.buyerPhone,
-          buyerAddress: `${formValues.address}, ${formValues.district}, ${formValues.city}`,
+          buyerAddress: formValues.buyerAddress,
           method: formValues.paymentMethod,
         };
+
+        console.log('Payment request:', paymentRequest); // Debug log
+
         const paymentResponse =
           await PaymentService.createPayment(paymentRequest);
         if (paymentResponse.data.data.paymentUrl) {
+          helper.notificationMessage(
+            'Đang chuyển hướng đến trang thanh toán...',
+            'info'
+          );
           window.location.href = paymentResponse.data.data.paymentUrl;
         } else {
           throw new Error('Không nhận được URL thanh toán');
         }
       } else {
-        message.success('Đặt hàng thành công!');
+        helper.notificationMessage('Đặt hàng thành công!', 'success');
+        // Redirect to order confirmation page or home page
       }
     } catch (error) {
       console.error('Checkout error:', error);
-      message.error('Có lỗi xảy ra khi xử lý đơn hàng. Vui lòng thử lại.');
+      helper.notificationMessage(
+        'Có lỗi xảy ra khi xử lý đơn hàng. Vui lòng thử lại.',
+        'error'
+      );
     }
   };
+
+  // Set default campaign ID if not already set
+  useEffect(() => {
+    if (campaigns.length > 0 && !formValues.campaignId) {
+      setFormValues((prev: any) => ({
+        ...prev,
+        campaignId: campaignId || campaigns[0].id,
+      }));
+    }
+  }, [campaigns, campaignId, formValues.campaignId]);
 
   return (
     <div className="checkout-page flex justify-center items-start gap-6 p-6">

@@ -28,18 +28,26 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
   const navigate = useNavigate();
 
   useEffect(() => {
+    // Make sure we have a valid campaignId
+    const effectiveCampaignId =
+      formValues.campaignId || (campaigns.length > 0 ? campaigns[0].id : '');
+
     const initialValues = {
       buyerName: user?.fullName || '',
       buyerPhone: '',
       buyerAddress: '',
-      campaignId:
-        formValues.campaignId || (campaigns.length > 0 ? campaigns[0].id : ''),
+      campaignId: effectiveCampaignId,
       ...formValues,
     };
 
+    // Ensure campaignId is set even if formValues already has other properties
+    if (!initialValues.campaignId && campaigns.length > 0) {
+      initialValues.campaignId = campaigns[0].id;
+    }
+
     form.setFieldsValue(initialValues);
     onFormValuesChange(initialValues);
-  }, [user, form, onFormValuesChange, campaigns, formValues.campaignId]);
+  }, [user, form, onFormValuesChange, campaigns, formValues]);
 
   const handleValuesChange = (changedValues: any, allValues: any) => {
     onFormValuesChange(allValues);
@@ -140,30 +148,6 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
             className="rounded-lg py-2 px-4"
           />
         </Form.Item>
-
-        {/* <Form.Item
-          name="campaignId"
-          label="Chọn chiến dịch"
-          rules={[{ required: true, message: 'Vui lòng chọn chiến dịch!' }]}
-          className="mb-5"
-        >
-          <Select
-            size="large"
-            placeholder="Chọn chiến dịch"
-            className="rounded-lg"
-            suffixIcon={<TagOutlined className="text-gray-400" />}
-          >
-            {campaigns.length > 0 ? (
-              campaigns.map((campaign) => (
-                <Option key={campaign.id} value={campaign.id}>
-                  {campaign.name}
-                </Option>
-              ))
-            ) : (
-              <Option value="">Mặc định</Option>
-            )}
-          </Select>
-        </Form.Item> */}
       </Form>
     </div>
   );
