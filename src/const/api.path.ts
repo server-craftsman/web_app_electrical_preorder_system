@@ -55,5 +55,7 @@ export const API_PATH = {
   },
   PAYMENT: {
     CREATE: '/payments',
+    GET_PAYMENT_BY_ORDER_CODE: '/payments/payment-link/:id'
+
   },
 };
