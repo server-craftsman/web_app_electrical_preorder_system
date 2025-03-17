@@ -1,9 +1,10 @@
 import React from 'react';
 import { useCart } from '../../../../contexts/CartContext';
-import { Button } from 'antd';
+import { Button, notification } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { ShoppingOutlined, CreditCardOutlined } from '@ant-design/icons';
 import { GetAllProductResponseModel } from '../../../../models/api/response/product.res.model';
+import { OrderService } from '../../../../services/order/order.service';
 
 interface CartSummaryProps {
   selectedItems: string[];
@@ -23,13 +24,41 @@ const CartSummary: React.FC<CartSummaryProps> = ({
     .reduce((total, item) => total + item.price * item.quantity, 0);
 
   const handleCheckout = async () => {
-    // if (!campaignId) {
-    //   console.error('No campaign ID available for checkout');
-    //   return;
-    // }
+    try {
+      if (!campaignId) {
+        notification.error({
+          message: 'Lỗi',
+          description: 'Không tìm thấy thông tin chiến dịch',
+        });
+        return;
+      }
 
-    // Navigate to the checkout page with the campaignId as a query parameter
-    navigate(`/checkout?campaignId=${campaignId}`);
+      // Calculate total quantity of selected items
+      const totalQuantity = cartItems
+        .filter((item) => selectedItems.includes(item.id))
+        .reduce((total, item) => total + item.quantity, 0);
+
+      // Create order
+      const orderData = {
+        campaignId: campaignId,
+        quantity: totalQuantity,
+      };
+
+      const response = await OrderService.createOrder(orderData);
+
+      if (response?.data?.data?.id) {
+        // Navigate to checkout page with campaign ID and order ID
+        navigate(`/checkout?campaignId=${campaignId}&orderId=${response.data.data.id}`);
+      } else {
+        throw new Error('Failed to create order');
+      }
+    } catch (error) {
+      console.error('Error creating order:', error);
+      notification.error({
+        message: 'Lỗi',
+        description: 'Có lỗi xảy ra khi tạo đơn hàng. Vui lòng thử lại!',
+      });
+    }
   };
 
   return (

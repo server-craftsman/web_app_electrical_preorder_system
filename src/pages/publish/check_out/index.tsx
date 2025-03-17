@@ -63,7 +63,7 @@ const CheckoutPage: React.FC = () => {
         quantity: formValues.quantity || 0,
       };
       const orderResponse = await OrderService.createOrder(orderRequest);
-      const newOrderId = orderResponse.data.data.orderId;
+      const newOrderId = orderResponse.data.data.id;
 
       // Handle payment
       if (formValues.paymentMethod === 'payos') {
@@ -76,8 +76,8 @@ const CheckoutPage: React.FC = () => {
         };
         const paymentResponse =
           await PaymentService.createPayment(paymentRequest);
-        if (paymentResponse.data.data.paymentUrl) {
-          window.location.href = paymentResponse.data.data.paymentUrl;
+        if (paymentResponse.data.data.checkoutUrl) {
+          window.location.href = paymentResponse.data.data.checkoutUrl;
         } else {
           throw new Error('Không nhận được URL thanh toán');
         }
