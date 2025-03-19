@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import CheckoutForm from '../../../components/generic/home/checkout/CheckoutForm';
 import CheckoutShipping from '../../../components/generic/home/checkout/CheckoutShipping';
 import CheckoutSummary from '../../../components/generic/home/checkout/CheckoutSummary';
@@ -8,15 +8,34 @@ import { OrderService } from '../../../services/order/order.service';
 import { PaymentService } from '../../../services/payment/payment.service';
 import { message } from 'antd';
 import logo1 from '../../../assets/Elecee_logo.jpg';
-import { Link } from 'react-router-dom';
 
 const CheckoutPage: React.FC = () => {
   const [formValues, setFormValues] = useState<any>({});
   const [isFormValid, setIsFormValid] = useState(false);
+  const location = useLocation();
+  const { state } = location;
+  const { orderData } = state || {};
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (orderData) {
+      // Set the form values with the order data
+      setFormValues({
+        campaignId: orderData.campaignId,
+        quantity: orderData.quantity,
+        totalAmount: orderData.totalAmount,
+        buyerName: orderData.buyerName,
+        buyerPhone: orderData.buyerPhone,
+        buyerAddress: orderData.buyerAddress,
+        productName: orderData.productName,
+        campaignName: orderData.campaignName,
+        productPrice: orderData.productPrice,
+      });
+    }
+  }, [orderData]);
   const [campaigns, setCampaigns] = useState<
     Array<{ id: string; name: string }>
   >([]);
-  const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const campaignId = queryParams.get('campaignId');
 
@@ -47,7 +66,7 @@ const CheckoutPage: React.FC = () => {
     const isValid = requiredFields.every(
       (field) => values[field] && values[field].toString().trim() !== ''
     );
-    setIsFormValid(isValid);
+    setIsFormValid(isValid);  
   };
 
   const handleCheckout = async () => {
@@ -93,21 +112,20 @@ const CheckoutPage: React.FC = () => {
   return (
     <div className="checkout-page flex justify-center items-start gap-6 p-6">
       <div className="flex flex-col gap-6 w-2/3">
-        {/* Logo */}
         <div className="flex flex-col">
-          <Link
-            to="/"
-            className="flex items-center space-x-3 hover:opacity-80 transition-opacity"
+          <div
+            onClick={() => navigate('/')}
+            className="flex items-center space-x-3 hover:opacity-80 transition-opacity cursor-pointer"
           >
             <img
               src={logo1}
-              alt="Eureka Logo"
+              alt="Eleece Logo"
               className="w-10 h-10 rounded-full object-cover shadow-sm"
             />
             <span className="text-2xl font-bold bg-gradient-to-r from-red-600 to-black text-transparent bg-clip-text tracking-tight">
               Elecee
             </span>
-          </Link>
+          </div>
           <hr className="border-t border-gray-300 mt-6" />
         </div>
         <CheckoutForm
@@ -118,12 +136,15 @@ const CheckoutPage: React.FC = () => {
         <div className="-mt-6">
           <CheckoutShipping
             shippingInfo={{ ...formValues, campaignId }}
+            orderData={orderData}
             isFormValid={isFormValid}
             onCheckout={handleCheckout}
           />
         </div>
       </div>
-      <CheckoutSummary />
+      <CheckoutSummary 
+      orderData={orderData}
+      />
     </div>
   );
 };

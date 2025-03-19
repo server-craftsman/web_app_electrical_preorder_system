@@ -11,15 +11,25 @@ import {
 
 interface CheckoutSummaryProps {
   onProceed?: () => void;
+  orderData?: {
+    quantity: number;
+    totalAmount: number;
+    productName: string;
+    campaignName: string;
+    productPrice: number;
+    imageUrl?: string;
+  };
 }
 
-const CheckoutSummary: React.FC<CheckoutSummaryProps> = () => {
+const CheckoutSummary: React.FC<CheckoutSummaryProps> = ({ orderData }) => {
   const { cartItems, updateQuantity } = useCart();
-  const subtotal = cartItems.reduce(
-    (total, item) => total + item.price * item.quantity,
-    0
-  );
-  const shipping = 0; // Free shipping
+  
+  // Handle both cart and order data
+  const isOrderCheckout = !!orderData;
+  const subtotal = isOrderCheckout 
+    ? orderData.totalAmount 
+    : cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+  const shipping = 0;
   const totalPrice = subtotal + shipping;
 
   return (
@@ -32,22 +42,58 @@ const CheckoutSummary: React.FC<CheckoutSummaryProps> = () => {
           </h2>
         </div>
         <Badge
-          count={cartItems.reduce((total, item) => total + item.quantity, 0)}
+          count={isOrderCheckout ? orderData.quantity : cartItems.reduce((total, item) => total + item.quantity, 0)}
           showZero
           color="#3b82f6"
         />
       </div>
 
-      {cartItems.length === 0 ? (
-        <div className="text-center py-8">
-          <div className="text-gray-400 text-6xl mb-4">
-            <ShoppingOutlined />
+      {isOrderCheckout ? (
+        // Order data display
+        <div className="max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
+          <div className="mb-4 last:mb-0">
+            <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg">
+              <div className="relative">
+                <div className="w-16 h-16 bg-white rounded-md p-1 border border-gray-100 flex items-center justify-center">
+                  <img
+                    src={orderData.imageUrl || '/placeholder.png'}
+                    alt={orderData.productName}
+                    className="max-w-full max-h-full object-contain"
+                  />
+                </div>
+                <Badge
+                  count={orderData.quantity}
+                  className="absolute -top-2 -right-2"
+                  style={{ backgroundColor: '#3b82f6' }}
+                />
+              </div>
+              <div className="flex-1">
+                <h3 className="font-medium text-gray-800 mb-1">
+                  {orderData.productName}
+                </h3>
+                <p className="text-sm text-gray-500">{orderData.campaignName}</p>
+                <div className="flex items-center justify-between mt-2">
+                  <span className="text-gray-600">Số lượng: {orderData.quantity}</span>
+                  <span className="font-bold text-blue-600">
+                    {orderData.productPrice.toLocaleString()}đ
+                  </span>
+                </div>
+              </div>
+            </div>
           </div>
-          <p className="text-gray-500">Giỏ hàng của bạn đang trống</p>
         </div>
       ) : (
-        <>
+        // Cart items display (existing code)
+        cartItems.length === 0 ? (
+          <div className="text-center py-8">
+            <div className="text-gray-400 text-6xl mb-4">
+              <ShoppingOutlined />
+            </div>
+            <p className="text-gray-500">Giỏ hàng của bạn đang trống</p>
+          </div>
+        ) : (
           <div className="max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
+            {/* Existing cart items mapping */}
             {cartItems.map((item) => (
               <div key={item.id} className="mb-4 last:mb-0">
                 <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
@@ -103,67 +149,48 @@ const CheckoutSummary: React.FC<CheckoutSummaryProps> = () => {
               </div>
             ))}
           </div>
-
-          <Divider className="my-6" />
-
-          <div className="space-y-3">
-            <div className="flex justify-between items-center text-gray-600">
-              <span>Tạm tính</span>
-              <span>{subtotal.toLocaleString()}đ</span>
-            </div>
-            <div className="flex justify-between items-center text-gray-600">
-              <span>Phí vận chuyển</span>
-              <span className="text-green-600 font-medium">Miễn phí</span>
-            </div>
-
-            <div className="pt-4 mt-2 border-t border-dashed border-gray-200">
-              <div className="flex justify-between items-center">
-                <span className="text-lg font-bold text-gray-800">
-                  Tổng cộng
-                </span>
-                <span className="text-xl font-bold text-blue-600">
-                  {totalPrice.toLocaleString()}đ
-                </span>
-              </div>
-              <p className="text-xs text-gray-500 mt-1 text-right">
-                (Đã bao gồm VAT nếu có)
-              </p>
-            </div>
-          </div>
-
-          <div className="mt-6 pt-4 border-t border-gray-100">
-            <div className="flex items-center text-gray-600 mb-3">
-              <GiftOutlined className="text-green-600 mr-2" />
-              <span className="text-sm">
-                Đơn hàng của bạn đủ điều kiện để được giao hàng miễn phí
-              </span>
-            </div>
-            <div className="flex items-center text-gray-600">
-              <TagOutlined className="text-blue-600 mr-2" />
-              <span className="text-sm">
-                Áp dụng mã giảm giá ở bước tiếp theo
-              </span>
-            </div>
-          </div>
-        </>
+        )
       )}
 
-      <style>{`
-        .custom-scrollbar::-webkit-scrollbar {
-          width: 6px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-          background: #f1f1f1;
-          border-radius: 10px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-          background: #d1d5db;
-          border-radius: 10px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-          background: #9ca3af;
-        }
-      `}</style>
+      <Divider className="my-6" />
+
+      <div className="space-y-3">
+        <div className="flex justify-between items-center text-gray-600">
+          <span>Tạm tính</span>
+          <span>{subtotal.toLocaleString()}đ</span>
+        </div>
+        <div className="flex justify-between items-center text-gray-600">
+          <span>Phí vận chuyển</span>
+          <span className="text-green-600 font-medium">Miễn phí</span>
+        </div>
+
+        <div className="pt-4 mt-2 border-t border-dashed border-gray-200">
+          <div className="flex justify-between items-center">
+            <span className="text-lg font-bold text-gray-800">Tổng cộng</span>
+            <span className="text-xl font-bold text-blue-600">
+              {totalPrice.toLocaleString()}đ
+            </span>
+          </div>
+          <p className="text-xs text-gray-500 mt-1 text-right">
+            (Đã bao gồm VAT nếu có)
+          </p>
+        </div>
+      </div>
+
+      <div className="mt-6 pt-4 border-t border-gray-100">
+        <div className="flex items-center text-gray-600 mb-3">
+          <GiftOutlined className="text-green-600 mr-2" />
+          <span className="text-sm">
+            Đơn hàng của bạn đủ điều kiện để được giao hàng miễn phí
+          </span>
+        </div>
+        <div className="flex items-center text-gray-600">
+          <TagOutlined className="text-blue-600 mr-2" />
+          <span className="text-sm">
+            Áp dụng mã giảm giá ở bước tiếp theo
+          </span>
+        </div>
+      </div>
     </div>
   );
 };

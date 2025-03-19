@@ -15,6 +15,7 @@ export const ROUTER_URL = {
     CAMPAIGN_DETAIL: '/admin/campaign/:id',
     ACCOUNT_DETAIL: '/admin/account/:id',
     PROFILE: '/admin/profile',
+    ORDER: '/admin/order',
   },
   STAFF: {
     BASE: '/staff',
