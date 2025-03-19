@@ -62,3 +62,15 @@ export interface ResponseProductDetailSuccess<T> {
     empty?: boolean;
   };
 }
+
+export interface ResponseOrderViewSuccess<T> {
+  message: string;
+  data: {
+    orders: T[];  // Changed from T to T[] and made required
+    totalAmount: number;
+    totalPages: number;
+    totalElements: number;
+    currentPage: number;
+    pageSize: number;
+  }
+}

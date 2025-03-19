@@ -52,6 +52,7 @@ export const API_PATH = {
   },
   ORDER: {
     CREATE: '/orders',
+    VIEW_ORDER: '/users/orders'
   },
   PAYMENT: {
     CREATE: '/payments',

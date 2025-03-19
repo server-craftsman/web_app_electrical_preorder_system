@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
-import { Card, Typography, Radio, Button, Divider, InputNumber, Spin, notification, Modal } from 'antd';
+import { Card, Typography, Radio, Button, Divider, InputNumber, Spin, notification, Modal, Row, Col, Descriptions } from 'antd';
 // import QRCode from 'qrcode.react'; // Add this import
 
 import { QRCodeSVG } from 'qrcode.react';
 
 import {
   CreditCardOutlined,
-  DollarOutlined,
   ShoppingCartOutlined,
   QrcodeOutlined,
   CheckCircleOutlined,
@@ -20,12 +19,20 @@ const { Title, Text } = Typography;
 
 interface CheckoutShippingProps {
   shippingInfo: any;
+  orderData?: {
+    quantity: number;
+    totalAmount: number;
+    productName: string;
+    campaignName: string;
+    productPrice: number;
+    imageUrl?: string;
+  };
   isFormValid: boolean;
   onCheckout: () => void;
 }
 
-const CheckoutShipping: React.FC<CheckoutShippingProps> = ({ shippingInfo, isFormValid }) => {
-  const [paymentMethod, setPaymentMethod] = useState<string>('cod');
+const CheckoutShipping: React.FC<CheckoutShippingProps> = ({ shippingInfo, isFormValid, orderData }) => {
+  const [paymentMethod, setPaymentMethod] = useState<string>('payos');
   const [loading, setLoading] = useState(false);
   const [qrCodeUrl, setQrCodeUrl] = useState<string | null>(null);
   const [showQrModal, setShowQrModal] = useState(false);
@@ -40,6 +47,7 @@ const CheckoutShipping: React.FC<CheckoutShippingProps> = ({ shippingInfo, isFor
     cartItems.reduce((total, item) => total + item.quantity, 0)
   );
   const [orderCode, setOrderCode] = useState<string | null>(null);
+  const [paymentInitiated, setPaymentInitiated] = useState(false);
 
   const handlePayment = async () => {
     if (!isFormValid) {
@@ -76,6 +84,8 @@ const CheckoutShipping: React.FC<CheckoutShippingProps> = ({ shippingInfo, isFor
           setQrCodeUrl(response.data.data.qrCode);
           setOrderCode(response.data.data.orderCode.toString());
           setShowQrModal(true);
+          // Set payment initiated to true
+          setPaymentInitiated(true);
         } else {
           throw new Error('Payment processing failed');
         }
@@ -118,8 +128,8 @@ const CheckoutShipping: React.FC<CheckoutShippingProps> = ({ shippingInfo, isFor
         description: 'Cảm ơn bạn đã thanh toán. Đơn hàng của bạn đang được xử lý!',
       });
       
-      // Navigate to payment success page
-      navigate('/payment-success');
+    // Navigate using window.location
+    window.location.href = '/';
     } catch (error) {
       console.error('Payment confirmation error:', error);
       notification.error({
@@ -160,7 +170,7 @@ const CheckoutShipping: React.FC<CheckoutShippingProps> = ({ shippingInfo, isFor
             value={paymentMethod}
             className="w-full"
           >
-            <div className="p-4 hover:bg-gray-50 transition-colors duration-200">
+            {/* <div className="p-4 hover:bg-gray-50 transition-colors duration-200">
               <Radio value="cod" className="w-full">
                 <div className="flex items-center ml-2">
                   <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center mr-3">
@@ -176,7 +186,7 @@ const CheckoutShipping: React.FC<CheckoutShippingProps> = ({ shippingInfo, isFor
                   </div>
                 </div>
               </Radio>
-            </div>
+            </div> */}
 
             <Divider className="m-0" />
 
@@ -204,6 +214,7 @@ const CheckoutShipping: React.FC<CheckoutShippingProps> = ({ shippingInfo, isFor
           {loading ? (
             <Spin size="large" />
           ) : (
+            <div className="flex flex-col items-center gap-3">
             <Button
               type="primary"
               size="large"
@@ -218,6 +229,20 @@ const CheckoutShipping: React.FC<CheckoutShippingProps> = ({ shippingInfo, isFor
                   : 'Thanh toán ngay'}
               </span>
             </Button>
+
+            {/* Add reopen QR code button if payment was initiated */}
+            {paymentInitiated && !showQrModal && (
+                <Button
+                  type="default"
+                  size="large"
+                  icon={<QrcodeOutlined />}
+                  onClick={() => setShowQrModal(true)}
+                  className="h-10 px-6 border-blue-400 text-blue-600 hover:text-blue-700 hover:border-blue-500"
+                >
+                  <span className="ml-2">Mở lại mã QR thanh toán</span>
+                </Button>
+            )}
+            </div> 
           )}
         </div>
       </div>
@@ -227,7 +252,7 @@ const CheckoutShipping: React.FC<CheckoutShippingProps> = ({ shippingInfo, isFor
         title={
           <div className="flex items-center">
             <QrcodeOutlined className="text-blue-500 mr-2" />
-            <span>Quét mã QR để thanh toán</span>
+            <span>Thanh toán đơn hàng</span>
           </div>
         }
         open={showQrModal}
@@ -249,10 +274,11 @@ const CheckoutShipping: React.FC<CheckoutShippingProps> = ({ shippingInfo, isFor
             Tôi đã thanh toán
           </Button>
         ]}
-        width={400}
-        centered
+        width="100%"
+        style={{ top: 0, maxWidth: '100%', paddingBottom: 0,  height: 'calc(100vh - 108px)', overflow: 'auto' }}
+        // bodyStyle={{ height: 'calc(100vh - 108px)', overflow: 'auto' }}
       >
-        <div className="flex flex-col items-center">
+        {/* <div className="flex flex-col items-center">
           {qrCodeUrl && (
             <div className="mt-4 p-4 bg-white border border-gray-200 rounded-lg">
               <QRCodeSVG
@@ -267,7 +293,67 @@ const CheckoutShipping: React.FC<CheckoutShippingProps> = ({ shippingInfo, isFor
             Quét mã QR bằng ứng dụng ngân hàng hoặc ví điện tử để thanh toán.<br />
             Sau khi thanh toán, nhấn "Tôi đã thanh toán".
           </p>
-        </div>
+        </div> */}
+
+        <Row gutter={24}>
+          {/* Order Information - Left Side */}
+          <Col xs={24} md={12}>
+            <Card title="Thông tin đơn hàng" className="mb-4">
+              <Descriptions bordered column={1}>
+              <Descriptions.Item label="Tên người mua">
+                  {shippingInfo.buyerName}
+                </Descriptions.Item>
+                <Descriptions.Item label="Số điện thoại">
+                  {shippingInfo.buyerPhone}
+                </Descriptions.Item>
+                <Descriptions.Item label="Địa chỉ">
+                  {shippingInfo.buyerAddress}
+                </Descriptions.Item>
+              </Descriptions> 
+          </Card>
+          <Card title="Thông tin sản phẩm" className="mb-4">
+          <Descriptions bordered column={1}>
+          <Descriptions.Item label="Tên chiến dịch">
+                  {orderData?.campaignName || 'N/A'}
+                </Descriptions.Item>
+                <Descriptions.Item label="Tên sản phẩm">
+                  {orderData?.productName || 'N/A'}
+                </Descriptions.Item>
+                <Descriptions.Item label="Số lượng">
+                  {orderData?.quantity || 'N/A'}
+                </Descriptions.Item>
+                <Descriptions.Item label="Tổng tiền">
+                <span className="text-red-500 font-bold">
+                    {orderData?.totalAmount ? `${orderData?.totalAmount.toLocaleString()}đ` : 'N/A'}
+                  </span>
+                </Descriptions.Item>
+                </Descriptions>
+          </Card>
+          </Col>
+
+          {/* QR Code - Right Side */}
+          <Col xs={24} md={12}>
+          <div className="flex flex-col items-center justify-center h-full">
+          {qrCodeUrl && (
+                <div className="mt-4 p-6 bg-white border border-gray-200 rounded-lg shadow-md flex flex-col items-center">
+                 <h3 className="text-center text-lg font-medium mb-4">Quét mã QR để thanh toán</h3>
+                 <div className='flex justify-center'>
+                 <QRCodeSVG
+                    value={qrCodeUrl}
+                    size={300}
+                    level="H"
+                    includeMargin={true}
+                  />
+                 </div>
+                   <p className="text-gray-500 text-sm mt-6 text-center">
+                   Quét mã QR bằng ứng dụng ngân hàng hoặc ví điện tử để thanh toán.<br />
+                   Sau khi thanh toán, nhấn "Tôi đã thanh toán".
+                   </p>
+          </div>
+          )}
+          </div>
+          </Col>
+          </Row>
       </Modal>
     </div>
   );
