@@ -54,10 +54,11 @@ export const API_PATH = {
     CREATE: '/orders',
     VIEW_ORDER: '/users/orders',
     VIEW_ORDER_BY_ADMIN: '/orders',
+    DELETE_ORDER: '/orders/:id',
   },
   PAYMENT: {
     CREATE: '/payments',
-    GET_PAYMENT_BY_ORDER_CODE: '/payments/payment-link/:id'
-
+    GET_PAYMENT_BY_ORDER_CODE: '/payments/payment-link/:id',
+    PAYMENT: '/payments',
   },
 };

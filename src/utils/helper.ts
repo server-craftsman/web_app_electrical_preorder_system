@@ -132,3 +132,21 @@ export const formatRoleAccountColor = (role: string) => {
       return 'bg-gray-500 text-white rounded-lg px-4 py-2';
   }
 };
+
+export const formatPaymentStatusColor = (status: string) => {
+  switch (status) {
+    case 'COMPLETED':
+    case 'PAID':
+      return 'bg-green-600 text-white rounded-lg px-4 py-2';
+    case 'PENDING':
+      return 'bg-yellow-600 text-white rounded-lg px-4 py-2';
+    case 'FAILED':
+      return 'bg-red-600 text-white rounded-lg px-4 py-2';
+    case 'CANCELLED':
+      return 'bg-gray-600 text-white rounded-lg px-4 py-2';
+    case 'REFUNDED':
+      return 'bg-blue-600 text-white rounded-lg px-4 py-2';
+    default:
+      return 'bg-gray-500 text-white rounded-lg px-4 py-2';
+  }
+};

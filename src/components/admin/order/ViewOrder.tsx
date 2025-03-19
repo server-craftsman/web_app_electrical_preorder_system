@@ -11,6 +11,7 @@ import {
   EditOutlined
 } from '@ant-design/icons';
 import ModalOrder from './ModalOrder';
+import ModalDelete from './ModalDelete';
 
 const { Option } = Select;
 
@@ -26,8 +27,9 @@ const ViewOrder: React.FC = () => {
   });
   const [totalAmount, setTotalAmount] = useState(0);
   
-  // New state variables for modal
+  // Modal state variables
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState<OrderViewResModel | null>(null);
 
   // Existing functions
@@ -78,7 +80,7 @@ const ViewOrder: React.FC = () => {
     return colors[status] || 'default';
   };
 
-  // New functions for modal
+  // Modal functions
   const showOrderDetail = (order: OrderViewResModel) => {
     setSelectedOrder(order);
     setIsModalVisible(true);
@@ -86,6 +88,20 @@ const ViewOrder: React.FC = () => {
 
   const handleCloseModal = () => {
     setIsModalVisible(false);
+  };
+
+  // Delete modal functions
+  const showDeleteModal = (order: OrderViewResModel) => {
+    setSelectedOrder(order);
+    setIsDeleteModalVisible(true);
+  };
+
+  const handleCloseDeleteModal = () => {
+    setIsDeleteModalVisible(false);
+  };
+
+  const handleDeleteSuccess = () => {
+    fetchOrders(pagination.current, status);
   };
 
   const columns = [
@@ -179,7 +195,7 @@ const ViewOrder: React.FC = () => {
               
               <button
                 className="flex items-center justify-center w-9 h-9 rounded-full bg-red-50 text-red-600 hover:bg-red-100 transition-all duration-200"
-                onClick={() => {/* Cancel order function */}}
+                onClick={() => showDeleteModal(record)}
                 title="Hủy đơn hàng"
               >
                 <DeleteOutlined className="text-lg" />
@@ -203,7 +219,6 @@ const ViewOrder: React.FC = () => {
               style={{ width: 200 }}
               className="mr-4"
             >
-              <Option value="all">Tất cả</Option>
               <Option value="PENDING">Chờ xác nhận</Option>
               <Option value="CONFIRMED">Đã xác nhận</Option>
               <Option value="SHIPPED">Đang giao hàng</Option>
@@ -249,6 +264,14 @@ const ViewOrder: React.FC = () => {
         visible={isModalVisible}
         onClose={handleCloseModal}
         orderData={selectedOrder}
+      />
+
+      {/* Delete Order Modal */}
+      <ModalDelete
+        visible={isDeleteModalVisible}
+        onClose={handleCloseDeleteModal}
+        orderData={selectedOrder}
+        onSuccess={handleDeleteSuccess}
       />
     </div>
   );

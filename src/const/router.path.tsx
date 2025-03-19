@@ -16,6 +16,7 @@ export const ROUTER_URL = {
     ACCOUNT_DETAIL: '/admin/account/:id',
     PROFILE: '/admin/profile',
     ORDER: '/admin/order',
+    PAYMENT: '/admin/payment',
   },
   STAFF: {
     BASE: '/staff',

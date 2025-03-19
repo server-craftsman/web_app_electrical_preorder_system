@@ -20,5 +20,10 @@ export const OrderService = {
     return BaseService.get<ResponseOrderViewSuccess<OrderViewResModel>>({
       url: `${API_PATH.ORDER.VIEW_ORDER_BY_ADMIN}?status=${status}&page=${page}&size=${size}`,
     });
-  }
+  },
+  deleteOrder(id: string) {
+    return BaseService.remove<formatResponseSuccess<OrderResModel>>({
+      url: API_PATH.ORDER.DELETE_ORDER.replace(':id', id),
+    });
+  },
 };

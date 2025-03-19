@@ -74,3 +74,15 @@ export interface ResponseOrderViewSuccess<T> {
     pageSize: number;
   }
 }
+
+export interface ResponsePaymentSuccess<T> {
+  message: string;
+  data: {
+    payments: T[];
+    totalAmount: number;
+    totalPages: number;
+    totalElements: number;
+    currentPage: number;
+    pageSize: number;
+  };
+}
