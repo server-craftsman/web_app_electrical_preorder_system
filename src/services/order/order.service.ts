@@ -16,4 +16,9 @@ export const OrderService = {
       url: `${API_PATH.ORDER.VIEW_ORDER}?status=${status}&page=${page}&size=${size}`,
     });
   },
+  viewOrderByAdmin(status = 'PENDING', page = 0, size = 10) {
+    return BaseService.get<ResponseOrderViewSuccess<OrderViewResModel>>({
+      url: `${API_PATH.ORDER.VIEW_ORDER_BY_ADMIN}?status=${status}&page=${page}&size=${size}`,
+    });
+  }
 };

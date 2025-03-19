@@ -52,7 +52,8 @@ export const API_PATH = {
   },
   ORDER: {
     CREATE: '/orders',
-    VIEW_ORDER: '/users/orders'
+    VIEW_ORDER: '/users/orders',
+    VIEW_ORDER_BY_ADMIN: '/orders',
   },
   PAYMENT: {
     CREATE: '/payments',
