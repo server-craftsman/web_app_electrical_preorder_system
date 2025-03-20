@@ -98,6 +98,11 @@ export const ProductService = {
       url: `${API_PATH.PRODUCT.DELETE_MULTIPLE}?${queryParams}`,
     });
   },
+  countProduct() {
+    return BaseService.get<formatResponseSuccess<any>>({
+      url: API_PATH.PRODUCT.COUNT_PRODUCT,
+    });
+  },
   // search(query: string, page: number = 0, size: number = 10) {
   //   return BaseService.get<ResponseSuccessForList<GetAllProductResponseModel>>({
   //     url: API_PATH.PRODUCT.SEARCH,

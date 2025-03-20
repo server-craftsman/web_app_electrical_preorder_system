@@ -24,6 +24,7 @@ export const API_PATH = {
     DELETE: '/products/:id',
     DELETE_MULTIPLE: '/products',
     SEARCH: '/products/search',
+    COUNT_PRODUCT: '/products/count',
   },
   CATEGORY: {
     BASE: '/categories',
