@@ -27,9 +27,13 @@ const ProductList: React.FC = () => {
           Đặt hàng sớm cùng Elecee
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-14">
-          {products.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
+        {products.map((product) => (
+        <ProductCard 
+          key={product.id} 
+          product={product}
+          initialQuantity={product.quantity} // Pass the quantity directly from product
+        />
+      ))}
         </div>
       </div>
     </div>

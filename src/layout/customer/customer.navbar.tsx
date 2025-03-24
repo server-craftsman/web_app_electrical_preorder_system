@@ -7,9 +7,9 @@ import {
   UserOutlined,
   ShoppingCartOutlined,
   StarOutlined,
-  LockOutlined,
-  LogoutOutlined,
-  RollbackOutlined,
+  // LockOutlined,
+  // LogoutOutlined,
+  // RollbackOutlined,
 } from '@ant-design/icons';
 
 const CustomerNavbar = () => {
@@ -36,24 +36,24 @@ const CustomerNavbar = () => {
       icon: <ShoppingCartOutlined style={{ fontSize: '20px' }} />,
       path: ROUTER_URL.CUSTOMER.ORDERS,
     },
-    {
-      label: 'Hoàn trả đơn hàng',
-      key: 'return-orders',
-      icon: <RollbackOutlined style={{ fontSize: '20px' }} />,
-      path: ROUTER_URL.CUSTOMER.RETURN_ORDER,
-    },
-    {
-      label: 'Thay đổi mật khẩu',
-      key: 'change-password',
-      icon: <LockOutlined style={{ fontSize: '20px' }} />,
-      path: ROUTER_URL.CUSTOMER.CHANGE_PASSWORD,
-    },
-    {
-      label: 'Đăng xuất',
-      key: 'logout',
-      icon: <LogoutOutlined style={{ fontSize: '20px', color: 'red' }} />,
-      path: ROUTER_URL.CUSTOMER.LOGOUT,
-    },
+    // {
+    //   label: 'Hoàn trả đơn hàng',
+    //   key: 'return-orders',
+    //   icon: <RollbackOutlined style={{ fontSize: '20px' }} />,
+    //   path: ROUTER_URL.CUSTOMER.RETURN_ORDER,
+    // },
+    // {
+    //   label: 'Thay đổi mật khẩu',
+    //   key: 'change-password',
+    //   icon: <LockOutlined style={{ fontSize: '20px' }} />,
+    //   path: ROUTER_URL.CUSTOMER.CHANGE_PASSWORD,
+    // },
+    // {
+    //   label: 'Đăng xuất',
+    //   key: 'logout',
+    //   icon: <LogoutOutlined style={{ fontSize: '20px', color: 'red' }} />,
+    //   path: ROUTER_URL.CUSTOMER.LOGOUT,
+    // },
   ];
 
   useEffect(() => {

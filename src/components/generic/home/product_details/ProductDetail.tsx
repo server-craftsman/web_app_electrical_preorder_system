@@ -5,6 +5,8 @@ import { useCart } from '../../../../contexts/CartContext';
 import { notification } from 'antd';
 import { ProductService } from '../../../../services/product/product.service';
 import { useParams } from 'react-router-dom';
+import { Progress, Tag } from 'antd';
+import { useLocation } from 'react-router-dom';
 
 const ProductDetail: React.FC = () => {
   const { slug } = useParams();
@@ -14,16 +16,25 @@ const ProductDetail: React.FC = () => {
   );
   const [mainImage, setMainImage] = useState('');
   const [quantity, setQuantity] = useState(1);
+  const [originalQuantity, setOriginalQuantity] = useState<number>(0);
 
+  const location = useLocation();
+  const initialQuantityFromNav = location.state?.initialQuantity;
+  
   useEffect(() => {
     const fetchProductDetails = async () => {
       try {
         if (slug) {
           const response = await ProductService.getBySlug(slug);
-          const productData = response.data.data
-            .product as GetAllProductResponseModel;
+          const productData = {
+            ...response.data.data.product,
+            campaigns: response.data.data.campaigns
+          } as GetAllProductResponseModel;
+          // Set original quantity from navigation state or fall back to product quantity
+          const initialQty = initialQuantityFromNav;
+          setOriginalQuantity(initialQty);
           setProduct(productData);
-          // Set main image only if product has images
+
           if (productData?.imageProducts?.length > 0) {
             setMainImage(productData.imageProducts[0].imageUrl);
           }
@@ -38,7 +49,8 @@ const ProductDetail: React.FC = () => {
     };
 
     fetchProductDetails();
-  }, [slug]);
+  }, [slug, location.state]);
+  
   if (!product) {
     return (
       <div className="space-y-6 animate-pulse">
@@ -66,13 +78,11 @@ const ProductDetail: React.FC = () => {
       ? product.imageProducts.map((img) => img.imageUrl)
       : ['https://via.placeholder.com/500'];
 
+  const hasCampaign = product?.campaigns && product.campaigns.length > 0;
+  const isPreview = !hasCampaign;
+
   const handleAddToCart = () => {
-    if (
-      !product ||
-      !product.imageProducts ||
-      product.imageProducts.length === 0
-    )
-      return;
+    if (!product || !product.imageProducts || product.imageProducts.length === 0 || isPreview) return;
 
     addToCart({
       id: product.id,
@@ -91,6 +101,79 @@ const ProductDetail: React.FC = () => {
     });
   };
 
+  const renderCampaignProgress = (campaign: any) => {
+    const now = new Date();
+    const startDate = new Date(campaign.startDate);
+    const endDate = new Date(campaign.endDate);
+    const isActive = campaign.status === 'ACTIVE' && now >= startDate && now <= endDate;
+
+// Calculate sold quantity and progress
+    const soldQuantity = originalQuantity - (product?.quantity || 0);
+    const totalProgress = (soldQuantity / originalQuantity) * 100;
+
+    return (
+      <div key={campaign.id} className="bg-blue-50 p-4 rounded-lg space-y-4">
+        <div className="flex justify-between items-center">
+          <h3 className="text-lg font-semibold text-blue-800">{campaign.name}</h3>
+          <Tag color={isActive ? 'success' : 'default'}>
+            {isActive ? 'Đang diễn ra' : 'Sắp diễn ra'}
+          </Tag>
+        </div>
+
+        <div className="space-y-2">
+          <div className="flex justify-between text-sm">
+            <span className="text-gray-700">Tiến độ chiến dịch</span>
+            <span className="text-blue-600 font-medium">
+              {soldQuantity}/{originalQuantity} sản phẩm ({Math.round(totalProgress)}%)
+            </span>
+          </div>
+          <Progress 
+            percent={Math.round(totalProgress)}
+            status={totalProgress >= 100 ? 'success' : 'active'}
+            strokeColor={{
+              '0%': '#108ee9',
+              '100%': '#87d068',
+            }}
+          />
+          <div className="flex justify-between text-xs text-gray-500">
+            <span>{new Date(campaign.startDate).toLocaleDateString('vi-VN')}</span>
+            <span>{new Date(campaign.endDate).toLocaleDateString('vi-VN')}</span>
+          </div>
+        </div>
+        
+        {campaign.stages.map((stage: any) => {
+          const progress = (stage.quantitySold / stage.targetQuantity) * 100;
+          return (
+            <div key={stage.id} className="space-y-2 border-t pt-4 mt-4">
+              <div className="flex justify-between text-sm">
+                <span className="text-gray-700">{stage.name}</span>
+                <span className="text-blue-600 font-medium">
+                  {stage.quantitySold}/{stage.targetQuantity} suất
+                </span>
+              </div>
+              <Progress 
+                percent={Math.round(progress)}
+                status={progress >= 100 ? 'success' : 'active'}
+                strokeColor={{
+                  '0%': '#108ee9',
+                  '100%': '#87d068',
+                }}
+                size="small"
+              />
+            </div>
+          );
+        })}
+        
+        <div className="text-sm text-gray-600 space-y-2 border-t pt-4">
+          <p>• Số lượng tối thiểu: {campaign.minQuantity} sản phẩm</p>
+          <p>• Số lượng tối đa: {campaign.maxQuantity} sản phẩm</p>
+          <p>• Số lượng còn lại: {product?.quantity || 0} sản phẩm</p>
+        </div>
+      </div>
+    );
+  };
+
+  // Update the product quantity display in the main section
   return (
     <div className="max-w-7xl mx-auto p-10 grid grid-cols-1 md:grid-cols-2 gap-12 bg-white rounded-xl shadow-sm">
       <div className="flex flex-col items-center">
@@ -168,6 +251,13 @@ const ProductDetail: React.FC = () => {
               </div>
             </div>
 
+            {/* Add campaign progress section */}
+            {product.campaigns && product.campaigns.length > 0 && (
+              <div className="space-y-4">
+                {product.campaigns.map((campaign: any) => renderCampaignProgress(campaign))}
+              </div>
+            )}
+
             <div className="bg-yellow-50 p-4 rounded-lg border-l-4 border-yellow-400 flex items-start">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -223,14 +313,45 @@ const ProductDetail: React.FC = () => {
             </div>
 
             <div className="pt-4 flex space-x-4">
-              <button className="flex-1 px-6 py-3 bg-gradient-to-r from-red-600 to-red-500 text-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 font-medium">
-                Mua ngay
+              <button 
+                className={`flex-1 px-6 py-3 ${
+                  isPreview 
+                    ? 'bg-gray-300 cursor-not-allowed' 
+                    : 'bg-gradient-to-r from-red-600 to-red-500 hover:shadow-lg'
+                } text-white rounded-lg shadow-md transition-all duration-300 font-medium`}
+                disabled={isPreview}
+                onClick={() => {
+                  if (isPreview) {
+                    notification.info({
+                      message: 'Sản phẩm xem trước',
+                      description: 'Sản phẩm này hiện chưa có chiến dịch, chỉ có thể xem trước.',
+                      placement: 'topRight',
+                    });
+                  }
+                }}
+              >
+                {isPreview ? 'chưa có chiến dịch' : 'Đặt hàng ngày'}
               </button>
               <button
-                className="flex-1 px-6 py-3 bg-gradient-to-r from-yellow-500 to-yellow-400 text-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 font-medium"
-                onClick={handleAddToCart}
+                className={`flex-1 px-6 py-3 ${
+                  isPreview 
+                    ? 'bg-gray-300 cursor-not-allowed' 
+                    : 'bg-gradient-to-r from-yellow-500 to-yellow-400 hover:shadow-lg'
+                } text-white rounded-lg shadow-md transition-all duration-300 font-medium`}
+                onClick={() => {
+                  if (isPreview) {
+                    notification.info({
+                      message: 'Sản phẩm xem trước',
+                      description: 'Sản phẩm này hiện chưa có chiến dịch, chỉ có thể xem trước.',
+                      placement: 'topRight',
+                    });
+                  } else {
+                    handleAddToCart();
+                  }
+                }}
+                disabled={isPreview}
               >
-                Thêm vào giỏ hàng
+                {isPreview ? 'Chưa có chiến dịch' : 'Thêm vào giỏ hàng'}
               </button>
             </div>
 

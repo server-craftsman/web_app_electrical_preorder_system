@@ -11,9 +11,10 @@ import { CampaignResponseModel } from '../../../../models/api/response/campaign.
 interface ProductCardProps {
   product: GetAllProductResponseModel;
   campaign?: CampaignResponseModel;
+  initialQuantity: number;
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ product, campaign }) => {
+const ProductCard: React.FC<ProductCardProps> = ({ product, campaign, initialQuantity }) => {
   const [isHovered, setIsHovered] = useState(false);
   // const [campaign, setCampaign] = useState<CampaignResponseModel | null>(null);
   const [countdown, setCountdown] = useState<{
@@ -55,18 +56,21 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, campaign }) => {
     return () => clearInterval(interval);
   }, [campaign]);
 
+  const handleProductClick = () => {
+    navigate(`${ROUTER_URL.COMMON.PRODUCT}/${product.slug}`, {
+      state: { initialQuantity: initialQuantity } // Pass the initialQuantity prop instead of product.quantity
+    });
+  };
+
   return (
     <div className="bg-white shadow-lg rounded-lg overflow-hidden w-[258px] h-auto border border-gray-100 hover:shadow-xl transition-all duration-300">
-      {/* Hình ảnh sản phẩm - Fixed aspect ratio container */}
       <div
         className="relative w-full h-0 pb-[100%] overflow-hidden cursor-pointer"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
         <img
-          onClick={() =>
-            navigate(`${ROUTER_URL.COMMON.PRODUCT}/${product.slug}`)
-          }
+          onClick={handleProductClick}
           src={
             product.imageProducts.length > 1 && isHovered
               ? product.imageProducts[1].imageUrl
@@ -105,9 +109,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, campaign }) => {
       {/* Nội dung sản phẩm */}
       <div className="flex flex-col p-5 space-y-4">
         <h3
-          onClick={() =>
-            navigate(`${ROUTER_URL.COMMON.PRODUCT}/${product.slug}`)
-          }
+          onClick={handleProductClick} // Use the handler here too
           className="text-lg font-semibold text-left cursor-pointer hover:text-red-500 truncate w-full"
         >
           {product.name}

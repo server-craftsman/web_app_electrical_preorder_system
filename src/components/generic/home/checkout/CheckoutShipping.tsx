@@ -36,7 +36,7 @@ const CheckoutShipping: React.FC<CheckoutShippingProps> = ({ shippingInfo, isFor
   const [loading, setLoading] = useState(false);
   const [qrCodeUrl, setQrCodeUrl] = useState<string | null>(null);
   const [showQrModal, setShowQrModal] = useState(false);
-  const { cartItems } = useCart();
+  const { cartItems, clearCart } = useCart(); // Add clearCart
   const navigate = useNavigate();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -84,7 +84,6 @@ const CheckoutShipping: React.FC<CheckoutShippingProps> = ({ shippingInfo, isFor
           setQrCodeUrl(response.data.data.qrCode);
           setOrderCode(response.data.data.orderCode.toString());
           setShowQrModal(true);
-          // Set payment initiated to true
           setPaymentInitiated(true);
         } else {
           throw new Error('Payment processing failed');
@@ -118,6 +117,8 @@ const CheckoutShipping: React.FC<CheckoutShippingProps> = ({ shippingInfo, isFor
 
       // Call API to confirm payment
       await PaymentService.getPaymentByOrderCode(orderCode);
+
+      clearCart(); // Clear cart after successful payment
 
       // Close the QR modal
       setShowQrModal(false);

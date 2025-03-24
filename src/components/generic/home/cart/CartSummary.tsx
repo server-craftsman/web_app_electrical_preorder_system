@@ -47,6 +47,7 @@ const CartSummary: React.FC<CartSummaryProps> = ({
       const response = await OrderService.createOrder(orderData);
 
       if (response?.data?.data?.id) {
+        // Remove the removeFromCart calls from here
         // Navigate to checkout page with campaign ID and order ID
         navigate(`/checkout?campaignId=${campaignId}&orderId=${response.data.data.id}`);
       } else {

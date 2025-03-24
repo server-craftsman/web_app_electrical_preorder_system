@@ -8,6 +8,32 @@ export interface ImageProduct {
   altText: string;
 }
 
+export interface CampaignStageResponseModel {
+  id: string;
+  name: string;
+  startDate: string;
+  endDate: string;
+  quantitySold: number;
+  targetQuantity: number;
+  status: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CampaignResponseModel {
+  id: string; // UUID
+  name: string;
+  startDate: string; // LocalDateTime
+  endDate: string; // LocalDateTime
+  minQuantity: number; // Integer
+  maxQuantity: number; // Integer
+  totalAmount: number; // BigDecimal
+  status: string; // CampaignStatus
+  createdAt: string; // LocalDateTime
+  updatedAt: string; // LocalDateTime
+  stages: CampaignStageResponseModel[];
+}
+
 export interface GetAllProductResponseModel {
   id: string;
   productCode: string;
@@ -23,6 +49,7 @@ export interface GetAllProductResponseModel {
   updatedAt: string;
   deleted: boolean;
   slug: string;
+  campaigns?: CampaignResponseModel[];
 }
 
 export interface CreateProductResponseModel {
