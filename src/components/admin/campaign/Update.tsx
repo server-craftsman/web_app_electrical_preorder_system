@@ -320,25 +320,6 @@ const UpdateCampaign: React.FC<UpdateCampaignProps> = ({
                 <InputNumber min={0} className="w-full rounded-md" />
               </Form.Item>
             </Col>
-            <Col span={10}>
-              <Form.Item
-                name="totalAmount"
-                label={
-                  <span className="flex items-center">
-                    Tổng số tiền <span className="text-red-500 ml-1">*</span>
-                  </span>
-                }
-                rules={validateForm.totalAmount as Rule[]}
-              >
-                <InputNumber
-                  min={0}
-                  className="w-full rounded-md"
-                  formatter={(value) =>
-                    `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-                  }
-                />
-              </Form.Item>
-            </Col>
           </Row>
 
           <Row gutter={16}>
